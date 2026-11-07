@@ -1,0 +1,81 @@
+system: SYS-09
+defaults: {ind: [ALL], lvl: [process, equipment], status: draft}
+records:
+- id: EQP-09-001
+  fa: "سامانه جمع‌آوری کندانس کویل‌های تهویه (HVAC)"
+  en: "HVAC cooling-coil condensate collection system"
+  sub: hvac_condensate
+  role: [recovery]
+  out: [reclaimed_water]
+  params: [flow_rate, volume, humidity, temperature]
+  note: "کندانس کویل سرمایشی منبع آب کم‌املاح است؛ در سند برای جبران برج خنک‌کن پیشنهاد شده و کیفیت آن پیش از مصرف باید بررسی شود."
+  ref: [M2-2.2, M1-6.1]
+- id: EQP-09-002
+  fa: "رطوبت‌ساز هواساز (بخار یا آدیاباتیک)"
+  en: "Air-handling unit humidifier (steam or adiabatic)"
+  sub: humidifier
+  role: [use]
+  in: [fresh_water, ro_permeate]
+  out: [evaporation]
+  flows: [leakage_overflow]
+  params: [flow_rate, humidity, temperature, ec]
+  note: "آب رطوبت‌ساز تقریباً کامل به تبخیر می‌رود؛ مصرف با رطوبت نسبی هدف و دبی هوا قابل تخمین است."
+  ref: [M2-2.2]
+- id: EQP-09-003
+  fa: "کولر تبخیری و پد خنک‌کننده"
+  en: "Evaporative air cooler and cooling pad"
+  sub: evaporative_air_cooler
+  role: [use]
+  in: [fresh_water]
+  out: [evaporation, blowdown]
+  params: [flow_rate, humidity, wet_bulb_temperature, ec]
+  note: "مصرف آب با شرایط هوای محیط تغییر می‌کند؛ تخلیه دوره‌ای حوضچه برای کنترل املاح ثبت شود."
+  ref: [M2-2.2]
+- id: EQP-09-004
+  fa: "هواشوی و محفظه پاششی تهویه"
+  en: "Air washer and spray chamber"
+  sub: air_washer
+  role: [use]
+  in: [fresh_water, recycled_water]
+  out: [evaporation, blowdown]
+  params: [flow_rate, humidity, temperature, ec]
+  note: "در صنایعی مانند نساجی برای کنترل رطوبت سالن؛ آب مدار باید با تخلیه کنترل‌شده تازه شود."
+  ind: [IND-07, IND-10, IND-12]
+- id: EQP-09-005
+  fa: "سامانه تولید آب مقطر یا یون‌زدایی آزمایشگاه"
+  en: "Laboratory distilled or deionized water unit"
+  sub: lab_water_unit
+  role: [treatment]
+  in: [fresh_water]
+  out: [process_water, wastewater]
+  params: [flow_rate, volume, ec]
+  note: "بخشی از آب ورودی به پساب دفع می‌شود؛ نسبت تولید به خوراک باید ثبت شود."
+  ref: [M2-2.2]
+- id: EQP-09-006
+  fa: "مصارف عمومی آزمایشگاه (سینک، شست‌وشوی ظروف، خنک‌کاری دستگاه‌ها)"
+  en: "General laboratory use (sinks, glassware washing, instrument cooling)"
+  sub: laboratory_use
+  role: [use]
+  in: [fresh_water, potable_water]
+  out: [wastewater]
+  params: [flow_rate, volume]
+  note: "مصرف پراکنده و معمولاً بی‌کنتور؛ خنک‌کاری یک‌بارگذر دستگاه‌ها مصرف قابل اصلاح است."
+  ref: [M2-2.2]
+- id: EQP-09-007
+  fa: "مدار خنک‌کاری کمپرسور هوا (بین‌خنک و پس‌خنک آبی)"
+  en: "Air compressor water-cooled intercooler and aftercooler circuit"
+  sub: compressor_cooling
+  role: [use]
+  in: [cooling_water]
+  out: [cooling_water]
+  params: [flow_rate, temperature, pressure, run_time]
+  note: "اگر یک‌بارگذر باشد مصرف زیاد و قابل بازچرخانی است؛ دما و ساعات کارکرد کمپرسور مبنای تخمین دبی است."
+- id: EQP-09-008
+  fa: "پمپ خلأ آب‌بند (حلقه مایع)"
+  en: "Liquid-ring vacuum pump (seal water)"
+  sub: vacuum_pump
+  role: [use]
+  in: [fresh_water, process_water, recycled_water]
+  out: [wastewater, recycled_water]
+  params: [flow_rate, temperature, run_time, electric_power]
+  note: "آب آب‌بند در حالت یک‌بارگذر مصرف قابل توجه دارد؛ بازچرخانی با خنک‌کن مصرف را کاهش می‌دهد."

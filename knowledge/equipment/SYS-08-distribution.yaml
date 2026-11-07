@@ -1,0 +1,186 @@
+system: SYS-08
+defaults: {ind: [ALL], lvl: [process, equipment], status: draft}
+records:
+- id: EQP-08-001
+  fa: "پمپ گریز از مرکز تک‌مرحله‌ای (مکش انتهایی)"
+  en: "Single-stage centrifugal pump (end-suction)"
+  sub: pump
+  role: [transport]
+  in: [raw_water, fresh_water, process_water, cooling_water, recycled_water]
+  out: [raw_water, fresh_water, process_water, cooling_water, recycled_water]
+  flows: [leakage_overflow]
+  params: [flow_rate, pressure, head, electric_power, motor_current, vibration, run_time]
+  note: "بازده پمپ از نسبت توان هیدرولیکی (ρgQH) به توان الکتریکی به دست می‌آید؛ انحراف از منحنی پمپ نشانه فرسایش یا تغییر نقطه کار است."
+  ref: [M2-2.2, M2-4.6]
+- id: EQP-08-002
+  fa: "پمپ گریز از مرکز چندمرحله‌ای و تقویت فشار"
+  en: "Multistage centrifugal and booster pump"
+  sub: pump
+  role: [transport]
+  in: [fresh_water, process_water, potable_water]
+  out: [fresh_water, process_water, potable_water]
+  flows: [leakage_overflow]
+  params: [flow_rate, pressure, head, electric_power, motor_current, vibration, run_time]
+  note: "برای تأمین فشار بالا در شبکه توزیع؛ فشار اضافی شبکه معمولاً نشتی را افزایش می‌دهد."
+  ref: [M2-2.2, M2-4.6]
+- id: EQP-08-003
+  fa: "پمپ توربینی عمودی (برداشت از حوضچه یا رودخانه)"
+  en: "Vertical turbine pump (basin or river intake)"
+  sub: pump
+  role: [intake, transport]
+  in: [raw_water]
+  out: [raw_water]
+  params: [flow_rate, head, level, electric_power, motor_current, vibration, run_time]
+  note: "پمپ برداشت از منبع سطحی؛ حجم برداشت باید با کنتور ثبت و با مجوز برداشت مقایسه شود."
+  ref: [M2-2.2, M2-4.6]
+- id: EQP-08-004
+  fa: "پمپ شناور چاه عمیق"
+  en: "Submersible deep-well pump"
+  sub: pump
+  role: [intake, transport]
+  out: [raw_water]
+  params: [flow_rate, head, level, electric_power, motor_current, run_time]
+  note: "سطح دینامیکی چاه و دبی برداشت باید هم‌زمان ثبت شود تا افت سطح آب و مصرف ویژه انرژی قابل پایش باشد."
+  ref: [M2-4.6]
+- id: EQP-08-005
+  fa: "ایستگاه پمپاژ با درایو دور متغیر (VFD)"
+  en: "Variable-frequency-drive (VFD) pump station"
+  sub: pumping_station
+  role: [transport, control]
+  in: [fresh_water, process_water, potable_water]
+  out: [fresh_water, process_water, potable_water]
+  flows: [leakage_overflow]
+  params: [flow_rate, pressure, head, electric_power, motor_current, run_time]
+  note: "فشار شبکه را به نیاز واقعی نزدیک می‌کند؛ اثر آن بر نشتی و انرژی باید با اندازه‌گیری قبل و بعد سنجیده شود."
+- id: EQP-08-006
+  fa: "میدان چاه‌های بهره‌برداری"
+  en: "Production well field"
+  sub: well_field
+  role: [intake]
+  out: [raw_water]
+  params: [flow_rate, volume, level, ec, tds, run_time]
+  note: "هر چاه باید کنتور مستقل داشته باشد؛ شوری و افت سطح آب روند پایداری منبع را نشان می‌دهد."
+  ref: [M1-2.2]
+- id: EQP-08-007
+  fa: "سازه برداشت آب سطحی (رودخانه، کانال یا سد) با آشغال‌گیر"
+  en: "Surface water intake structure with screens (river, canal or dam)"
+  sub: surface_intake
+  role: [intake]
+  out: [raw_water]
+  params: [flow_rate, volume, level, turbidity, tss]
+  note: "کدورت و مواد معلق ورودی بار پیش‌تصفیه و مصرف آب شست‌وشوی معکوس فیلترها را تعیین می‌کند."
+  ref: [M1-2.2]
+- id: EQP-08-008
+  fa: "مخزن یا استخر ذخیره آب خام"
+  en: "Raw water storage reservoir or pond"
+  sub: raw_water_reservoir
+  role: [storage]
+  in: [raw_water, rainwater]
+  out: [raw_water, evaporation]
+  flows: [leakage_overflow]
+  params: [level, volume, temperature, ec, tds]
+  note: "در موازنه، تغییر موجودی مخزن، تبخیر سطحی و سرریز باید جدا از مصرف ثبت شوند."
+  ref: [M2-2.2]
+- id: EQP-08-009
+  fa: "مخزن زمینی ذخیره آب تازه"
+  en: "Ground-level fresh water storage tank"
+  sub: storage_tank
+  role: [storage]
+  in: [fresh_water]
+  out: [fresh_water]
+  flows: [leakage_overflow]
+  params: [level, volume]
+  note: "سرریز و نشتی مخزن از مصارف اصلی بی‌کنتور است؛ کنترل سطح خودکار و هشدار سرریز توصیه می‌شود."
+  ref: [M2-2.2]
+- id: EQP-08-010
+  fa: "مخزن هوایی ذخیره آب"
+  en: "Elevated water storage tank"
+  sub: storage_tank
+  role: [storage]
+  in: [fresh_water, potable_water]
+  out: [fresh_water, potable_water]
+  flows: [leakage_overflow]
+  params: [level, volume, pressure]
+  note: "فشار شبکه را با ارتفاع تأمین می‌کند؛ سرریز هنگام پر شدن بیش از حد رایج‌ترین اتلاف آن است."
+  ref: [M2-2.2]
+- id: EQP-08-011
+  fa: "مخزن بافر آب فرآیندی"
+  en: "Process water buffer tank"
+  sub: storage_tank
+  role: [storage]
+  in: [process_water, recycled_water]
+  out: [process_water]
+  flows: [leakage_overflow]
+  params: [level, volume, temperature, ec]
+  note: "نقطه اختلاط آب تازه و آب بازچرخانی؛ کیفیت مخزن باید با کاربرد مجاز جریان‌های خروجی سازگار باشد."
+- id: EQP-08-012
+  fa: "مخزن ذخیره آب شرب"
+  en: "Potable water storage tank"
+  sub: storage_tank
+  role: [storage]
+  in: [potable_water]
+  out: [potable_water]
+  flows: [leakage_overflow]
+  params: [level, volume, residual_chlorine]
+  note: "کلر باقی‌مانده و زمان ماند مخزن برای ایمنی بهداشتی باید پایش شود."
+- id: EQP-08-013
+  fa: "شبکه خطوط اصلی توزیع آب"
+  en: "Main water distribution pipeline network"
+  sub: distribution_network
+  role: [transport]
+  in: [fresh_water, potable_water, process_water, cooling_water]
+  out: [fresh_water, potable_water, process_water, cooling_water]
+  flows: [leakage_overflow]
+  params: [flow_rate, volume, pressure, velocity, diff_pressure]
+  note: "اختلاف مجموع کنتورهای ورودی و خروجی هر منطقه از شبکه، مبنای تخمین نشتی شبکه است."
+  ref: [M2-2.2]
+- id: EQP-08-014
+  fa: "خط انتقال یا کانال روباز آب خام"
+  en: "Raw water conveyance pipeline or open canal"
+  sub: conveyance
+  role: [transport]
+  in: [raw_water]
+  out: [raw_water, evaporation]
+  flows: [leakage_overflow]
+  params: [flow_rate, volume, level, velocity]
+  note: "در کانال روباز تبخیر و نشت بستر بخشی از اتلاف انتقال است؛ در خط لوله فقط نشتی."
+- id: EQP-08-015
+  fa: "ایستگاه تنظیم فشار (شیر کاهنده فشار)"
+  en: "Pressure-reducing valve station"
+  sub: pressure_control
+  role: [control]
+  in: [fresh_water, process_water, potable_water]
+  out: [fresh_water, process_water, potable_water]
+  params: [pressure, diff_pressure, flow_rate]
+  note: "کاهش فشار اضافی یکی از روش‌های کاهش نشتی است؛ حداقل فشار لازم مصرف‌کننده‌ها باید رعایت شود."
+- id: EQP-08-016
+  fa: "شیر کنترل سطح (شناور یا ارتفاعی) مخازن"
+  en: "Tank level-control valve (float or altitude valve)"
+  sub: level_control
+  role: [control]
+  in: [fresh_water]
+  out: [fresh_water]
+  flows: [leakage_overflow]
+  params: [level, flow_rate]
+  note: "از سرریز مخازن جلوگیری می‌کند؛ خرابی آن باید با هشدار سطح بالا آشکار شود."
+- id: EQP-08-017
+  fa: "ایستگاه کنتورگذاری اصلی و فرعی"
+  en: "Main and sub-metering station"
+  sub: metering_station
+  role: [control]
+  in: [raw_water, fresh_water, potable_water, process_water, cooling_water]
+  out: [raw_water, fresh_water, potable_water, process_water, cooling_water]
+  params: [flow_rate, volume, pressure, diff_pressure]
+  note: "گره اندازه‌گیری در شبکه آب؛ انتخاب و مشخصات ابزار اندازه‌گیری در بانک اندازه‌گیری (بانک شماره ۳) تدوین می‌شود."
+  ref: [M1-2.2]
+- id: EQP-08-018
+  fa: "سامانه جمع‌آوری و ذخیره آب باران"
+  en: "Rainwater collection and storage system"
+  sub: rainwater_harvesting
+  role: [intake, storage]
+  in: [rainwater]
+  out: [rainwater]
+  flows: [leakage_overflow]
+  params: [level, volume, turbidity, tss]
+  note: "برداشت آب باران به بارش، سطح آبگیر و اولین‌شست‌وشوی سطح بستگی دارد؛ کیفیت پیش از مصرف باید بررسی شود."
+  ref: [M1-2.2]

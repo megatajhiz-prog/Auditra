@@ -1,0 +1,83 @@
+system: SYS-12
+defaults: {ind: [ALL], lvl: [process, equipment], status: draft}
+records:
+- id: EQP-12-001
+  fa: "مخزن ذخیره اختصاصی آب آتش‌نشانی"
+  en: "Dedicated firewater storage tank"
+  sub: firewater_tank
+  role: [storage]
+  in: [fresh_water, raw_water, reclaimed_water]
+  out: [fresh_water, raw_water, reclaimed_water]
+  flows: [leakage_overflow]
+  params: [level, volume]
+  note: "حجم ذخیره بخشی از ایمنی است و نباید به‌عنوان آب قابل برداشت عادی در موازنه محاسبه شود؛ فقط تغییر موجودی ثبت شود."
+  ref: [M2-2.2]
+- id: EQP-12-002
+  fa: "پمپ جوکی (نگهدارنده فشار شبکه آتش‌نشانی)"
+  en: "Jockey pump (firewater network pressure maintenance)"
+  sub: firewater_pump
+  role: [transport, control]
+  in: [fresh_water, raw_water]
+  out: [fresh_water, raw_water]
+  params: [pressure, flow_rate, run_time, electric_power]
+  note: "دفعات روشن‌شدن بالای پمپ جوکی نشانه نشتی در شبکه آتش‌نشانی است."
+  ref: [M2-2.2]
+- id: EQP-12-003
+  fa: "پمپ‌های اصلی آتش‌نشانی (برقی و دیزلی)"
+  en: "Main firewater pumps (electric and diesel)"
+  sub: firewater_pump
+  role: [transport]
+  in: [fresh_water, raw_water]
+  out: [fresh_water, raw_water]
+  params: [flow_rate, pressure, head, run_time, vibration]
+  note: "آزمون دوره‌ای پمپ‌ها مصرف قابل ثبت دارد؛ حجم آزمون باید جدا از مصرف عملیاتی ثبت شود."
+  ref: [M2-2.2]
+- id: EQP-12-004
+  fa: "شبکه حلقوی و هیدرانت‌های آتش‌نشانی"
+  en: "Firewater ring main and hydrant network"
+  sub: firewater_network
+  role: [transport]
+  in: [fresh_water, raw_water]
+  out: [fresh_water, raw_water]
+  flows: [leakage_overflow]
+  params: [pressure, flow_rate, diff_pressure]
+  note: "شبکه همیشه تحت فشار است و نشتی آن بدون کنتور اختصاصی دیده نمی‌شود؛ افت فشار در حالت آماده‌به‌کار شاخص نشتی است."
+  ref: [M2-2.2]
+- id: EQP-12-005
+  fa: "سامانه‌های اسپرینکلر و سیلابی (دلوژ)"
+  en: "Sprinkler and deluge systems"
+  sub: sprinkler_deluge
+  role: [use]
+  in: [fresh_water, raw_water]
+  out: [wastewater]
+  params: [flow_rate, pressure, volume]
+  note: "مصرف فقط هنگام حادثه یا آزمون است؛ آب خروجی ممکن است آلوده باشد و نیاز به جمع‌آوری داشته باشد."
+- id: EQP-12-006
+  fa: "آزمون و شست‌وشوی دوره‌ای هیدرانت‌ها"
+  en: "Periodic hydrant testing and flushing"
+  sub: hydrant_testing
+  role: [use]
+  in: [fresh_water, raw_water]
+  out: [wastewater]
+  params: [flow_rate, volume, run_time]
+  note: "مصرف برنامه‌ریزی‌شده و قابل برآورد؛ جمع‌آوری یا هدایت آب آزمون به مصرف دیگر ممکن است."
+- id: EQP-12-007
+  fa: "سامانه آب‌پاش خنک‌کننده مخازن ذخیره (دلوژ مخزن)"
+  en: "Storage tank cooling water spray (tank deluge)"
+  sub: tank_cooling_spray
+  role: [use]
+  in: [fresh_water, raw_water]
+  out: [evaporation, wastewater]
+  params: [flow_rate, pressure, volume]
+  note: "در تأسیسات نفت، گاز و شیمیایی؛ مصرف تنها هنگام تهدید یا آزمون."
+  ind: [IND-01, IND-02, IND-09]
+- id: EQP-12-008
+  fa: "حوضچه جمع‌آوری آب آلوده ناشی از اطفای حریق"
+  en: "Firewater runoff containment basin"
+  sub: runoff_containment
+  role: [storage]
+  in: [wastewater]
+  out: [wastewater]
+  flows: [leakage_overflow]
+  params: [level, volume, cod, oil_grease]
+  note: "حجم حوضچه باید برای آب اطفاء و بارش هم‌زمان کفایت کند؛ تخلیه فقط پس از آزمایش کیفیت."

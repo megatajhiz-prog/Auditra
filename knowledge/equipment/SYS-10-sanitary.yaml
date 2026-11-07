@@ -1,0 +1,102 @@
+system: SYS-10
+defaults: {ind: [ALL], lvl: [process, equipment], status: draft}
+records:
+- id: EQP-10-001
+  fa: "توالت و سرویس‌های فلاش"
+  en: "Toilets and flush fixtures"
+  sub: toilet
+  role: [use]
+  in: [potable_water, reclaimed_water, fresh_water]
+  out: [wastewater]
+  flows: [leakage_overflow]
+  params: [flow_rate, volume]
+  note: "نشتی فلاش‌تانک از اتلاف‌های رایج و پنهان است؛ استفاده از آب غیرشرب برای فلاش نیازمند شبکه جدا و نشانه‌گذاری است."
+  ref: [M2-2.2]
+- id: EQP-10-002
+  fa: "دست‌شویی و شیرآلات"
+  en: "Washbasins and taps"
+  sub: tap
+  role: [use]
+  in: [potable_water]
+  out: [wastewater]
+  flows: [leakage_overflow]
+  params: [flow_rate, volume]
+  note: "مصرف با مدت استفاده و دبی شیر تعیین می‌شود؛ نشتی شیرآلات نیز در این گروه است."
+  ref: [M2-2.2]
+- id: EQP-10-003
+  fa: "حمام و رختکن کارکنان"
+  en: "Staff showers and locker rooms"
+  sub: shower
+  role: [use]
+  in: [potable_water]
+  out: [wastewater]
+  params: [flow_rate, volume, temperature]
+  note: "مصرف تابع تعداد کارکنان و شیفت‌هاست؛ با تعداد نفر-شیفت نرمال می‌شود."
+  ref: [M2-2.2]
+- id: EQP-10-004
+  fa: "آشپزخانه و غذاخوری صنعتی"
+  en: "Industrial kitchen and canteen"
+  sub: kitchen
+  role: [use]
+  in: [potable_water]
+  out: [wastewater]
+  params: [flow_rate, volume, oil_grease]
+  note: "پساب آشپزخانه چربی بالا دارد و پیش از ورود به شبکه فاضلاب به چربی‌گیر نیاز دارد."
+  ref: [M2-2.2]
+- id: EQP-10-005
+  fa: "ماشین ظرفشویی صنعتی"
+  en: "Industrial dishwasher"
+  sub: dishwasher
+  role: [use]
+  in: [potable_water]
+  out: [wastewater]
+  params: [flow_rate, volume, temperature]
+  note: "مصرف به ازای هر سبد شست‌وشو ثابت و قابل اندازه‌گیری است."
+- id: EQP-10-006
+  fa: "نقاط آب آشامیدنی"
+  en: "Drinking water points"
+  sub: drinking_point
+  role: [use]
+  in: [potable_water]
+  out: [wastewater]
+  params: [flow_rate, volume]
+  note: "سهم آن از کل مصرف ناچیز است ولی در ممیزی کارکنانی باید ثبت شود."
+- id: EQP-10-007
+  fa: "سامانه آب گرم مصرفی (آبگرمکن و مدار گردش)"
+  en: "Domestic hot water system (heater and recirculation loop)"
+  sub: hot_water_system
+  role: [use]
+  in: [potable_water]
+  out: [potable_water]
+  flows: [leakage_overflow]
+  params: [flow_rate, temperature, volume]
+  note: "تخلیه آب سرد تا رسیدن آب گرم و نشتی مدار گردش اتلاف‌های قابل بررسی هستند."
+- id: EQP-10-008
+  fa: "چربی‌گیر آشپزخانه"
+  en: "Kitchen grease trap"
+  sub: grease_trap
+  role: [treatment]
+  in: [wastewater]
+  out: [wastewater]
+  flows: [sludge_moisture]
+  params: [flow_rate, oil_grease]
+  note: "چربی جداشده باید دوره‌ای تخلیه شود؛ پر بودن چربی‌گیر راندمان حذف را کاهش می‌دهد."
+- id: EQP-10-009
+  fa: "سامانه تفکیک و بازیافت پساب خاکستری برای فلاش"
+  en: "Greywater separation and reuse system for flushing"
+  sub: greywater_reuse
+  role: [treatment, recovery]
+  in: [wastewater]
+  out: [reclaimed_water]
+  params: [flow_rate, turbidity, cod, total_coliform, residual_chlorine]
+  note: "فقط پساب دست‌شویی و حمام مناسب بازیافت است؛ کیفیت میکروبی باید با کاربرد مجاز بازیافت سازگار باشد."
+- id: EQP-10-010
+  fa: "فاضلاب‌رو بهداشتی با چاه جذبی یا مخزن تصفیه ساده"
+  en: "Septic tank with absorption well"
+  sub: septic_tank
+  role: [treatment, discharge]
+  in: [wastewater]
+  out: [wastewater]
+  flows: [sludge_moisture]
+  params: [volume, level, bod5, cod]
+  note: "تخلیه به چاه جذبی خروجی کنتورنشده است و باید با ضوابط محیط‌زیستی محل مطابقت داده شود."

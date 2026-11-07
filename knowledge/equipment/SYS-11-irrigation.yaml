@@ -1,0 +1,76 @@
+system: SYS-11
+defaults: {ind: [ALL], lvl: [process, equipment], status: draft}
+records:
+- id: EQP-11-001
+  fa: "آبیاری بارانی فضای سبز"
+  en: "Sprinkler irrigation of landscaping"
+  sub: sprinkler_irrigation
+  role: [use]
+  in: [fresh_water, reclaimed_water, recycled_water, rainwater]
+  out: [evaporation]
+  flows: [leakage_overflow]
+  params: [flow_rate, volume, pressure, ec, humidity]
+  note: "بخش عمده آب با تبخیر-تعرق از دسترس خارج می‌شود؛ پاشش در ساعات باد یا گرما اتلاف را افزایش می‌دهد."
+  ref: [M2-2.2]
+- id: EQP-11-002
+  fa: "آبیاری قطره‌ای فضای سبز"
+  en: "Drip irrigation of landscaping"
+  sub: drip_irrigation
+  role: [use]
+  in: [fresh_water, reclaimed_water, recycled_water, rainwater]
+  out: [evaporation]
+  flows: [leakage_overflow]
+  params: [flow_rate, volume, pressure, ec]
+  note: "تبخیر مستقیم کمتر از بارانی است؛ گرفتگی و ترکیدگی لوله‌ها نشتی ایجاد می‌کند."
+  ref: [M2-2.2]
+- id: EQP-11-003
+  fa: "آبیاری دستی با شلنگ"
+  en: "Manual hose watering"
+  sub: hose_watering
+  role: [use]
+  in: [fresh_water, reclaimed_water]
+  out: [evaporation]
+  flows: [leakage_overflow]
+  params: [flow_rate, volume, run_time]
+  note: "مصرف بی‌کنتور و وابسته به رفتار؛ با ساعت کار و دبی شلنگ تخمین زده می‌شود."
+  ref: [M1-2.2]
+- id: EQP-11-004
+  fa: "کنترلر آبیاری هوشمند (مبتنی بر تبخیر-تعرق و آب‌وهوا)"
+  en: "Smart irrigation controller (evapotranspiration and weather based)"
+  sub: irrigation_controller
+  role: [control]
+  in: [fresh_water, reclaimed_water]
+  out: [evaporation]
+  params: [flow_rate, run_time, temperature, humidity]
+  note: "زمان و مقدار آبیاری را با شرایط جوی تنظیم می‌کند؛ صرفه‌جویی آن باید با داده قبل و بعد صحه‌گذاری شود."
+- id: EQP-11-005
+  fa: "مخزن یا استخر ذخیره آب آبیاری (پساب بازیافتی و باران)"
+  en: "Irrigation storage tank or pond (reclaimed water and rainwater)"
+  sub: irrigation_storage
+  role: [storage]
+  in: [reclaimed_water, rainwater]
+  out: [reclaimed_water, evaporation]
+  flows: [leakage_overflow]
+  params: [level, volume, ec, tds]
+  note: "ذخیره فصلی بازیافتی؛ شوری و کیفیت میکروبی باید با نوع پوشش گیاهی سازگار باشد."
+- id: EQP-11-006
+  fa: "گلخانه صنعتی با تغذیه آبیاری و محلول غذایی"
+  en: "Industrial greenhouse irrigation and fertigation unit"
+  sub: greenhouse_irrigation
+  role: [use, recovery]
+  in: [fresh_water, ro_permeate, recycled_water]
+  out: [evaporation, wastewater]
+  flows: [water_in_product]
+  params: [flow_rate, volume, ec, ph, humidity]
+  note: "در سامانه‌های بسته زهکش جمع‌آوری و بازچرخانی می‌شود؛ بخشی از آب در محصول می‌ماند."
+  ind: [IND-13]
+- id: EQP-11-007
+  fa: "آب‌پاشی جاده‌ها و محوطه برای کنترل گردوغبار"
+  en: "Road and yard watering for dust control"
+  sub: yard_watering
+  role: [use]
+  in: [fresh_water, reclaimed_water, recycled_water]
+  out: [evaporation]
+  params: [flow_rate, volume, run_time]
+  note: "کاربرد اصلی معدن و صنایع مصالح؛ استفاده از آب بازیافتی در این مصرف رایج‌ترین راه جایگزینی است."
+  ind: [IND-04, IND-05, IND-03]
