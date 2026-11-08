@@ -1,11 +1,13 @@
 # Water-consuming / water-handling system groups (Methodology.doc, part 2, section 2.2).
+# SYS-03 renamed by the project owner (2026-11-08) from "RO and membranes" to cover thermal desalination too.
+# SYS-07 Persian name changed by the project owner (2026-11-08) to avoid clashing with SYS-03 (was "آب‌شیرین‌کن و آماده‌سازی (DM)").
 - {id: SYS-01, en: "Cooling", fa: "خنک‌کاری", equipment_examples: "Cooling Tower, Heat Exchanger"}
 - {id: SYS-02, en: "Steam", fa: "بخار و بویلر", equipment_examples: "Boiler, Condensate System"}
-- {id: SYS-03, en: "RO and membranes", fa: "اسمز معکوس و غشایی", equipment_examples: "RO, UF, MF, NF"}
+- {id: SYS-03, en: "Membrane and thermal desalination", fa: "آب‌شیرین‌کن غشایی و حرارتی", equipment_examples: "RO, UF, MF, NF, EDR, MED, MSF, MVC"}
 - {id: SYS-04, en: "Process", fa: "فرآیندی", equipment_examples: "Process Water Consumers"}
 - {id: SYS-05, en: "Washing", fa: "شست‌وشو", equipment_examples: "CIP, Cleaning, Rinsing"}
 - {id: SYS-06, en: "Wastewater", fa: "فاضلاب", equipment_examples: "ETP, STP, MBR"}
-- {id: SYS-07, en: "Demineralization and conditioning", fa: "آب‌شیرین‌کن و آماده‌سازی (DM)", equipment_examples: "DM Plant, Ion Exchange"}
+- {id: SYS-07, en: "Demineralization and conditioning", fa: "دمینرالیزاسیون و آماده‌سازی آب (DM)", equipment_examples: "DM Plant, Ion Exchange"}
 - {id: SYS-08, en: "Distribution", fa: "انتقال و توزیع", equipment_examples: "Pumps, Tanks, Pipelines"}
 - {id: SYS-09, en: "Utilities", fa: "تأسیسات", equipment_examples: "HVAC, Laboratory"}
 - {id: SYS-10, en: "Sanitary", fa: "بهداشتی", equipment_examples: "Toilets, Kitchen"}

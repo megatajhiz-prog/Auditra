@@ -1,5 +1,5 @@
 system: SYS-03
-defaults: {ind: [ALL], lvl: [process, equipment], status: draft}
+defaults: {ind: [ALL], lvl: [process, equipment], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-08"}
 records:
 - id: EQP-03-001
   fa: "اسمز معکوس آب لب‌شور (BWRO)"
@@ -111,3 +111,54 @@ records:
   params: [flow_rate, pressure, ec, energy_consumption]
   note: "کیفیت آب بالا برای دیگ بخار یا فرآیند؛ کنسانتره مرحله دوم اغلب به ورودی مرحله اول برمی‌گردد."
   ref: [M1-6.3]
+- id: EQP-03-012
+  fa: "آب‌شیرین‌کن حرارتی چندمرحله‌ای (MED)"
+  en: "Multiple-effect distillation (MED) desalination"
+  sub: thermal_desalination
+  ind: [IND-01, IND-02, IND-09]
+  role: [treatment]
+  in: [raw_water]
+  out: [fresh_water, blowdown, cooling_water, condensate]
+  flows: [steam]
+  params: [flow_rate, temperature, pressure, tds, ec, steam_flow, energy_consumption, electric_power, level]
+  note: "آب دریا در چند مرحله تبخیر و میعان می‌شود و آب شیرین (مقطر) با شوری بسیار کم تولید می‌کند. خروجی‌ها: آب شیرین، شورابه‌ی تخلیه‌شده (در این بانک با نوع جریان تخلیه ثبت می‌شود)، آب خنک‌کاری گرم‌شده‌ی کندانسور نهایی و کندانس بخار گرمایشی. مصرف بخار گرمایشی و نسبت آب تولیدی به بخار از شاخص‌های اصلی است."
+- id: EQP-03-013
+  fa: "آب‌شیرین‌کن MED با کمپرسور حرارتی بخار (MED-TVC)"
+  en: "MED with thermal vapor compression (MED-TVC)"
+  sub: thermal_desalination
+  ind: [IND-01, IND-02, IND-09]
+  role: [treatment]
+  in: [raw_water]
+  out: [fresh_water, blowdown, cooling_water, condensate]
+  flows: [steam]
+  params: [flow_rate, temperature, pressure, tds, ec, steam_flow, energy_consumption, electric_power, level]
+  note: "بخشی از بخار یکی از مراحل با اجکتور بخار فشرده و دوباره به‌عنوان بخار گرمایشی استفاده می‌شود. مصرف بخار گرمایشی کمتر از MED ساده است. فشار و دبی بخار محرک اجکتور باید پایش شود."
+- id: EQP-03-014
+  fa: "آب‌شیرین‌کن تبخیر ناگهانی چندمرحله‌ای (MSF)"
+  en: "Multi-stage flash (MSF) desalination"
+  sub: thermal_desalination
+  ind: [IND-01, IND-02, IND-09]
+  role: [treatment]
+  in: [raw_water]
+  out: [fresh_water, blowdown, cooling_water, condensate]
+  flows: [steam]
+  params: [flow_rate, temperature, pressure, tds, ec, steam_flow, energy_consumption, electric_power, level]
+  note: "آب دریای گرم‌شده در مرحله‌های پیاپی با فشار کاهنده به‌صورت ناگهانی تبخیر می‌شود. معمولاً کنار نیروگاه یا پالایشگاه نصب می‌شود. مصرف انرژی ویژه‌ی آن معمولاً از MED و RO بیشتر است و شورابه و آب خنک‌کاری حجم زیادی دارند."
+- id: EQP-03-015
+  fa: "آب‌شیرین‌کن تبخیری با تراکم مکانیکی بخار (MVC)"
+  en: "Mechanical vapor compression (MVC) desalination"
+  sub: thermal_desalination
+  role: [treatment]
+  in: [raw_water, wastewater, ro_concentrate]
+  out: [fresh_water, blowdown]
+  params: [flow_rate, temperature, pressure, tds, ec, electric_power, energy_consumption, level]
+  note: "بخار تولیدشده با کمپرسور فشرده می‌شود و گرمای نهان آن دوباره تبخیر را تأمین می‌کند. انرژی اصلی برق است و بخار گرمایشی ندارد (جز هنگام راه‌اندازی). برای تغلیظ شورابه و پساب صنعتی هم به کار می‌رود."
+- id: EQP-03-016
+  fa: "الکترودیالیز معکوس (EDR)"
+  en: "Electrodialysis reversal (EDR)"
+  sub: electrodialysis
+  role: [treatment]
+  in: [fresh_water, raw_water, reclaimed_water]
+  out: [ro_permeate, ro_concentrate]
+  params: [flow_rate, ec, tds, ph, pressure, diff_pressure, electric_power, energy_consumption]
+  note: "نمک‌ها با میدان الکتریکی و غشاهای انتخابگر یونی جدا می‌شوند و جهت جریان به‌صورت دوره‌ای معکوس می‌شود تا رسوب کم شود. مناسب آب لب‌شور و بازیافت پساب با شوری متوسط. ذرات معلق و ترکیبات غیریونی را حذف نمی‌کند. نوع جریان محصول و تغلیظ‌شده تا تعریف نوع جدید با انواع RO ثبت می‌شود."

@@ -18,7 +18,8 @@ EQUIP = ROOT / "knowledge" / "equipment"
 MIN_RECORDS = 150  # first-package target (Methodology.doc, first executable package, output 1)
 
 REQUIRED = ["id", "fa", "en", "sub", "role", "params", "note"]
-OPTIONAL = ["in", "out", "flows", "ind", "lvl", "ref", "status", "links"]
+OPTIONAL = ["in", "out", "flows", "ind", "lvl", "ref", "status", "links", "reviewed_by", "reviewed_on"]
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 ID_RE = re.compile(r"^EQP-(\d{2})-(\d{3})$")
 SUB_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 
@@ -127,8 +128,18 @@ def main():
                     errors.append(f"{where}: 'ALL' cannot be mixed with industry codes")
             if r.get("status") not in v["statuses"]:
                 errors.append(f"{where}: unknown status {r.get('status')}")
-            if r.get("status") in ("expert_reviewed", "approved") and not r.get("ref"):
-                errors.append(f"{where}: reviewed/approved records must cite a source")
+            # Review rule (agreed with the project owner): an expert sign-off, recorded as reviewer
+            # name + date, is enough for expert_reviewed/approved; a written source is not required.
+            reviewed = r.get("status") in ("expert_reviewed", "approved")
+            if reviewed:
+                by = r.get("reviewed_by")
+                if not isinstance(by, str) or not by.strip():
+                    errors.append(f"{where}: reviewed/approved records need 'reviewed_by' (reviewer name)")
+                on = str(r.get("reviewed_on", ""))
+                if not DATE_RE.match(on):
+                    errors.append(f"{where}: reviewed/approved records need 'reviewed_on' as YYYY-MM-DD")
+            elif r.get("reviewed_by") or r.get("reviewed_on"):
+                errors.append(f"{where}: reviewed_by/reviewed_on are only allowed on reviewed or approved records")
             # physical sanity: a treatment role must transform something
             if "treatment" in r.get("role", []) and not (ins and (outs or flows)):
                 errors.append(f"{where}: treatment equipment needs inputs and outputs")
@@ -180,7 +191,8 @@ def main():
         indnames = {row["id"]: row for row in load("industries.yaml")}
         lines = ["# Equipment bank coverage (generated)", "",
                  f"Total records: **{len(records)}** (first-package target: at least {MIN_RECORDS}).",
-                 "All records are `draft`: none has been reviewed by an expert.", "",
+                 f"Expert-reviewed or approved: **{sum(1 for r in records if r.get('status') in ('expert_reviewed', 'approved'))}** of {len(records)}; "
+                 f"still draft: **{sum(1 for r in records if r.get('status') == 'draft')}**.", "",
                  "## By system", "", "| System | Name | Records |", "|---|---|---|"]
         for s in sorted(per_system):
             lines.append(f"| {s} | {sysnames[s]['en']} / {sysnames[s]['fa']} | {per_system[s]} |")

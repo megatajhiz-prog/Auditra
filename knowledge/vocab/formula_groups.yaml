@@ -1,0 +1,12 @@
+# Groups of the formula and model bank (Methodology.doc part 1 section 4/6, part 2 section 4).
+- {id: WB, en: "Water balance", fa: "موازنه‌ی آب"}
+- {id: CE, en: "Consumption and efficiency", fa: "مصرف و بهره‌وری"}
+- {id: BS, en: "Baseline and savings", fa: "خط مبنا و صرفه‌جویی"}
+- {id: CT, en: "Cooling systems", fa: "سیستم‌های خنک‌کاری"}
+- {id: ST, en: "Steam and boilers", fa: "بخار و بویلر"}
+- {id: MB, en: "Membrane and thermal desalination", fa: "آب‌شیرین‌کن غشایی و حرارتی"}
+- {id: PH, en: "Pumps and hydraulics", fa: "پمپ و هیدرولیک"}
+- {id: WQ, en: "Wastewater and water quality", fa: "فاضلاب و کیفیت آب"}
+- {id: EC, en: "Economics", fa: "اقتصاد"}
+- {id: LD, en: "Loss detection and data quality", fa: "تشخیص اتلاف و کیفیت داده"}
+- {id: NO, en: "Network optimization", fa: "بهینه‌سازی شبکه"}

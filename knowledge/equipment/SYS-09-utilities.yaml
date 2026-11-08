@@ -1,5 +1,5 @@
 system: SYS-09
-defaults: {ind: [ALL], lvl: [process, equipment], status: draft}
+defaults: {ind: [ALL], lvl: [process, equipment], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-08"}
 records:
 - id: EQP-09-001
   fa: "سامانه جمع‌آوری کندانس کویل‌های تهویه (HVAC)"

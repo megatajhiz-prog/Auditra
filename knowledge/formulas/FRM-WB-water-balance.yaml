@@ -1,0 +1,128 @@
+group: WB
+defaults: {lvl: [site, process, equipment], status: draft}
+records:
+- id: FRM-WB-001
+  fa: "معادله‌ی پایه‌ی موازنه‌ی جرم آب"
+  en: "Basic water mass balance"
+  expr: "sum(Q_in) - sum(Q_out) = dS/dt"
+  vars: [{s: Q_in, n: "جریان‌های ورودی", u: "m3/h", p: flow_rate}, {s: Q_out, n: "جریان‌های خروجی", u: "m3/h", p: flow_rate}, {s: S, n: "موجودی آب مخازن و مدارها", u: "m3", p: volume}]
+  unit: "m3/h"
+  cond: "هر گره (مجتمع، واحد فرآیندی یا تجهیز) با مرز مشخص و یک بازه‌ی زمانی."
+  chk: "مرز گره و بازه‌ی زمانی همه‌ی جریان‌ها یکسان باشد و واحدها پیش از جمع هم‌سان شوند."
+  ref: [M1-4.1, M2-4.2]
+- id: FRM-WB-002
+  fa: "موازنه‌ی کل مجتمع"
+  en: "Whole-site water balance"
+  expr: "W_in + W_rain + W_reused = W_product + W_discharge + W_evap + W_other + dS"
+  vars: [{s: W_in, n: "آب ورودی از منابع", u: "m3", p: volume}, {s: W_rain, n: "آب باران", u: "m3", p: volume}, {s: W_reused, n: "آب بازیافتی ورودی", u: "m3", p: volume}, {s: W_product, n: "آب در محصول", u: "m3", p: volume}, {s: W_discharge, n: "پساب تخلیه‌شده", u: "m3", p: volume}, {s: W_evap, n: "تبخیر", u: "m3", p: volume}, {s: W_other, n: "سایر خروجی‌ها", u: "m3", p: volume}, {s: dS, n: "تغییر موجودی", u: "m3", p: volume}]
+  unit: "m3"
+  cond: "مرز مجتمع؛ جریان بازیافتی داخلی که در یک نقطه خارج و در نقطه‌ی دیگر داخل می‌شود، دوبار منبع جدید شمرده نمی‌شود."
+  chk: "اختلاف دو طرف تساوی باقیمانده‌ی موازنه است و نباید خودکار نشتی فرض شود."
+  ref: [M1-4.1]
+- id: FRM-WB-003
+  fa: "باقیمانده‌ی موازنه‌ی حجمی"
+  en: "Volumetric balance residual"
+  expr: "R_V = sum(V_in) - sum(V_out) - dS"
+  vars: [{s: R_V, n: "باقیمانده", u: "m3", p: volume}, {s: V_in, n: "حجم ورودی", u: "m3", p: volume}, {s: V_out, n: "حجم خروجی", u: "m3", p: volume}, {s: dS, n: "تغییر موجودی", u: "m3", p: volume}]
+  unit: "m3"
+  cond: "جریان‌ها به‌صورت حجم در یک بازه ثبت شده باشند."
+  chk: "باقیمانده مقدار علامت‌دار است؛ همراه با زمان اندازه‌گیری، کیفیت داده و عدم قطعیت گزارش شود."
+  ref: [M2-4.2]
+- id: FRM-WB-004
+  fa: "باقیمانده‌ی موازنه بر حسب دبی"
+  en: "Balance residual as a flow rate"
+  expr: "R = sum(Q_in) - sum(Q_out) - dV/dt"
+  vars: [{s: R, n: "باقیمانده", u: "m3/h", p: flow_rate}, {s: Q_in, n: "دبی ورودی", u: "m3/h", p: flow_rate}, {s: Q_out, n: "دبی خروجی", u: "m3/h", p: flow_rate}, {s: V, n: "حجم موجودی", u: "m3", p: volume}]
+  unit: "m3/h"
+  cond: "بازه‌ی زمانی کوتاه با دبی‌های هم‌زمان."
+  chk: "ثبت دبی‌ها باید هم‌زمان باشد، وگرنه اختلاف زمانی کنتورها باقیمانده‌ی کاذب می‌سازد."
+  ref: [M2-4.2]
+- id: FRM-WB-005
+  fa: "آب حسابرسی‌نشده"
+  en: "Unaccounted water"
+  expr: "W_unacc = W_input - W_accounted"
+  vars: [{s: W_unacc, n: "آب حسابرسی‌نشده", u: "m3", p: volume}, {s: W_input, n: "ورودی کل", u: "m3", p: volume}, {s: W_accounted, n: "مجموع مصارف و خروجی‌های ثبت‌شده", u: "m3", p: volume}]
+  unit: "m3"
+  cond: "همه‌ی مصارف و خروجی‌های شناخته‌شده در W_accounted آمده باشند."
+  chk: "علت می‌تواند نشتی، خطای اندازه‌گیری، خطای تخمین، اختلاف زمانی ثبت یا تغییر موجودی باشد و بدون بررسی به نشتی نسبت داده نمی‌شود."
+  ref: [M1-4.2]
+- id: FRM-WB-006
+  fa: "درصد اختلاف موازنه"
+  en: "Balance discrepancy percentage"
+  expr: "R_bal = W_unacc / W_input * 100"
+  vars: [{s: R_bal, n: "درصد اختلاف", u: "%"}, {s: W_unacc, n: "آب حسابرسی‌نشده", u: "m3", p: volume}, {s: W_input, n: "ورودی کل", u: "m3", p: volume}]
+  unit: "%"
+  cond: "W_input بزرگ‌تر از صفر باشد."
+  chk: "عدد ۱۰ درصد EPA و DOE فقط آستانه‌ی غربالگری است؛ حد پذیرش هر مجتمع را با عدم قطعیت اندازه‌گیری تعیین کنید."
+  ref: [M1-4.2]
+- id: FRM-WB-007
+  fa: "ورودی خالص مجتمع از مرز"
+  en: "Net site input across the boundary"
+  expr: "W_site_in = W_withdrawal + W_purchased + W_rain"
+  vars: [{s: W_site_in, n: "ورودی مجتمع", u: "m3", p: volume}, {s: W_withdrawal, n: "برداشت از منابع", u: "m3", p: volume}, {s: W_purchased, n: "آب خریداری‌شده", u: "m3", p: volume}, {s: W_rain, n: "آب باران جمع‌آوری‌شده", u: "m3", p: volume}]
+  unit: "m3"
+  cond: "فقط جریان‌هایی که از مرز مجتمع عبور می‌کنند."
+  chk: "بازچرخانی داخلی در این جمع نیاید تا منبع جدید دوبار شمرده نشود."
+  ref: [M1-4.1]
+- id: FRM-WB-008
+  fa: "تغییر موجودی مخزن از تراز"
+  en: "Tank storage change from level"
+  expr: "dS = A * (L_end - L_start)"
+  vars: [{s: dS, n: "تغییر موجودی", u: "m3", p: volume}, {s: A, n: "سطح مقطع مخزن", u: "m2"}, {s: L_end, n: "تراز پایان", u: "m", p: level}, {s: L_start, n: "تراز آغاز", u: "m", p: level}]
+  unit: "m3"
+  cond: "مخزن منشوری یا استوانه‌ای با سطح مقطع ثابت."
+  chk: "اگر سطح مقطع متغیر است، از جدول ظرفیت-تراز مخزن استفاده شود."
+  subs: [storage_tank, feedwater_tank, tower_basin, raw_water_reservoir, firewater_tank]
+  ref: [M1-4.1]
+- id: FRM-WB-009
+  fa: "حجم از ثبت‌های دبی"
+  en: "Volume from flow readings"
+  expr: "V = sum(Q_i * dt_i)"
+  vars: [{s: V, n: "حجم", u: "m3", p: volume}, {s: Q_i, n: "دبی ثبت‌شده", u: "m3/h", p: flow_rate}, {s: dt_i, n: "طول بازه‌ی ثبت", u: "h"}]
+  unit: "m3"
+  cond: "ثبت‌های دبی پیوسته و بازه‌ها بدون هم‌پوشانی."
+  chk: "ثبت‌های ناقص با روش تکمیل مشخص و برچسب کیفیت داده پر شوند."
+- id: FRM-WB-010
+  fa: "حجم از اختلاف قرائت شمارنده"
+  en: "Volume from cumulative meter readings"
+  expr: "V = M_end - M_start"
+  vars: [{s: V, n: "حجم دوره", u: "m3", p: volume}, {s: M_end, n: "قرائت پایان", u: "m3"}, {s: M_start, n: "قرائت آغاز", u: "m3"}]
+  unit: "m3"
+  cond: "شمارنده‌ی تجمعی بدون تعویض یا ریست در دوره."
+  chk: "در صورت ریست یا تعویض کنتور، مقدار حداکثر شمارنده یا قرائت جدید لحاظ و ثبت شود."
+  subs: [metering_station]
+- id: FRM-WB-011
+  fa: "عدم قطعیت باقیمانده‌ی موازنه"
+  en: "Uncertainty of the balance residual"
+  expr: "u_R = sqrt(sum(u_i^2))"
+  vars: [{s: u_R, n: "عدم قطعیت باقیمانده", u: "m3"}, {s: u_i, n: "عدم قطعیت هر جریان", u: "m3"}]
+  unit: "m3"
+  cond: "خطاهای اندازه‌گیری مستقل از هم."
+  chk: "اگر خطاها همبسته‌اند، کوواریانس هم وارد محاسبه شود."
+  ref: [M2-4.3]
+- id: FRM-WB-012
+  fa: "شاخص معناداری باقیمانده"
+  en: "Residual significance index"
+  expr: "Z_R = R / u_R"
+  vars: [{s: Z_R, n: "شاخص معناداری", u: "-"}, {s: R, n: "باقیمانده", u: "m3"}, {s: u_R, n: "عدم قطعیت باقیمانده", u: "m3"}]
+  unit: "-"
+  cond: "u_R بزرگ‌تر از صفر باشد."
+  chk: "قدر مطلق بزرگ یعنی اختلاف نسبت به عدم قطعیت اندازه‌گیری معنادار است؛ آستانه‌ی هشدار را برای هر مجتمع تعیین کنید."
+  ref: [M2-4.3]
+- id: FRM-WB-013
+  fa: "مصرف خالص آب"
+  en: "Net water consumption"
+  expr: "W_cons = W_withdrawal - W_discharge"
+  vars: [{s: W_cons, n: "مصرف خالص", u: "m3", p: volume}, {s: W_withdrawal, n: "برداشت", u: "m3", p: volume}, {s: W_discharge, n: "آب تخلیه‌شده", u: "m3", p: volume}]
+  unit: "m3"
+  cond: "برداشت، مصرف واقعی و تخلیه سه مفهوم جدا هستند؛ این رابطه فقط مصرف خالص را می‌دهد."
+  chk: "آب تبخیرشده و آب موجود در محصول جزو مصرف خالص‌اند."
+  ref: [M1-7]
+- id: FRM-WB-014
+  fa: "تجمیع زمانی حجم‌ها"
+  en: "Temporal aggregation of volumes"
+  expr: "V_month = sum(V_day); V_year = sum(V_month)"
+  vars: [{s: V_month, n: "حجم ماه", u: "m3", p: volume}, {s: V_year, n: "حجم سال", u: "m3", p: volume}, {s: V_day, n: "حجم روز", u: "m3", p: volume}]
+  unit: "m3"
+  cond: "مبنای ذخیره روز میلادی (UTC) است؛ ماه و سال شمسی یا میلادی در لایه‌ی تجمیع، طبق انتخاب کاربر، محاسبه می‌شود."
+  chk: "جمع ماه‌ها باید دقیقاً برابر سال و جمع روزها برابر ماه باشد؛ تفاوت مرز ماه شمسی و میلادی در مبنای تجمیع لحاظ شود."
