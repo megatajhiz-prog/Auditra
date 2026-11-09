@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build app/index.html (the offline Windows viewer) from the YAML knowledge bank. Needs: pip install pyyaml"""
-import glob, json
+import base64, glob, json
 from datetime import date
 from pathlib import Path
 import yaml
@@ -16,9 +16,10 @@ for f in sorted(glob.glob(str(ROOT / "knowledge" / "equipment" / "SYS-*.yaml")))
                      "out": r.get("out", []), "fl": r.get("flows", []), "ind": r.get("ind", ["ALL"]), "pa": r["params"], "no": r["note"],
                      "rv": r.get("status") in ("expert_reviewed", "approved")})
 pick = lambda rows: [{"id": x["id"], "fa": x["fa"], "en": x["en"]} for x in rows]
-D = {"meta": {"v": "0.2.0", "built": str(date.today())}, "S": pick(load("systems.yaml")), "I": pick(load("industries.yaml")),
+D = {"meta": {"v": "0.2.1", "built": str(date.today())}, "S": pick(load("systems.yaml")), "I": pick(load("industries.yaml")),
      "T": pick(load("stream_types.yaml")), "X": pick(load("other_flows.yaml")), "R": pick(load("roles.yaml")),
      "P": [{"id": x["id"], "fa": x["fa"], "en": x["en"], "u": x["unit"]} for x in load("parameters.yaml")], "E": recs}
-html = (ROOT / "tools" / "app_template.html").read_text(encoding="utf-8").replace("/*DATA*/", "const D=" + json.dumps(D, ensure_ascii=False) + ";")
+uri = lambda f: "data:image/png;base64," + base64.b64encode((ROOT / "assets" / f).read_bytes()).decode()
+html = (ROOT / "tools" / "app_template.html").read_text(encoding="utf-8").replace("/*DATA*/", "const D=" + json.dumps(D, ensure_ascii=False) + ";").replace("/*LOGO*/", uri("logo.png")).replace("/*ICON*/", uri("icon-64.png"))
 out = ROOT / "app" / "index.html"; out.parent.mkdir(exist_ok=True); out.write_text(html, encoding="utf-8")
 print(f"app/index.html written: {len(recs)} records, {len(html)//1024} KB")
