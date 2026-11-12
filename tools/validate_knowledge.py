@@ -32,6 +32,111 @@ def ids(name):
     return {row["id"] for row in load(name)}
 
 
+CALC = ROOT / "knowledge" / "calculations"
+FRM_RE = re.compile(r"^FRM-(\d{2})-(\d{3})$")
+CALC_REQ = ["id", "fa", "en", "expr", "vars", "res", "lvl", "eq", "valid", "err"]
+CALC_OPT = ["ref", "status", "reviewed_by", "reviewed_on", "note"]
+
+
+def check_calcs(v, subs, errors):
+    """Validate knowledge/calculations/CAL-*.yaml. Returns the list of formula records."""
+    engines = ids("calc_engines.yaml")
+    out, seen_id, seen_en, seen_fa = [], {}, set(), set()
+    pending = []  # (where, from_id) resolved after all files are read
+    for f in sorted(CALC.glob("CAL-*.yaml")):
+        doc = yaml.safe_load(f.read_text(encoding="utf-8"))
+        eng = doc.get("engine")
+        if eng not in engines:
+            errors.append(f"{f.name}: unknown engine {eng}")
+            continue
+        if not f.name.startswith(eng):
+            errors.append(f"{f.name}: file name must start with its engine code {eng}")
+        for rec in doc.get("records", []):
+            r = {**doc.get("defaults", {}), **rec}
+            rid = r.get("id", "<no id>")
+            where = f"{f.name}:{rid}"
+            for k in CALC_REQ:
+                if not r.get(k):
+                    errors.append(f"{where}: missing required field '{k}'")
+            for k in r:
+                if k not in CALC_REQ + CALC_OPT:
+                    errors.append(f"{where}: unknown field '{k}'")
+            m = FRM_RE.match(str(rid))
+            if not m or f"CAL-{m.group(1)}" != eng:
+                errors.append(f"{where}: id must look like FRM-NN-NNN with NN matching engine {eng}")
+            if rid in seen_id:
+                errors.append(f"{where}: duplicate id (also in {seen_id[rid]})")
+            seen_id[rid] = f.name
+            for key, seen in (("en", seen_en), ("fa", seen_fa)):
+                val = (r.get(key) or "").strip().lower()
+                if val in seen:
+                    errors.append(f"{where}: duplicate {key} name '{r.get(key)}'")
+                seen.add(val)
+            expr = str(r.get("expr", ""))
+            syms = set()
+            for var in r.get("vars", []) or []:
+                for k in ("s", "fa", "u", "k"):
+                    if not var.get(k):
+                        errors.append(f"{where}: variable missing '{k}': {var}")
+                sym = var.get("s")
+                if sym in syms:
+                    errors.append(f"{where}: duplicate variable symbol {sym}")
+                syms.add(sym)
+                if sym and sym not in expr:
+                    errors.append(f"{where}: variable {sym} does not appear in expr")
+                kind = var.get("k")
+                if kind not in ("m", "d", "c"):
+                    errors.append(f"{where}: variable {sym} kind must be m, d or c")
+                elif kind == "m":
+                    if var.get("p") not in v["params"]:
+                        errors.append(f"{where}: measured variable {sym} needs a valid parameter 'p', got {var.get('p')}")
+                elif var.get("p"):
+                    errors.append(f"{where}: only measured (m) variables may carry 'p' ({sym})")
+                frm = var.get("from")
+                if frm is not None:
+                    if kind != "d":
+                        errors.append(f"{where}: 'from' is only for derived (d) variables ({sym})")
+                    for x in (frm if isinstance(frm, list) else [frm]):
+                        pending.append((where, x))
+            res = r.get("res") or {}
+            for k in ("s", "fa", "u"):
+                if not res.get(k):
+                    errors.append(f"{where}: result missing '{k}'")
+            if res.get("s"):
+                if res["s"] in syms:
+                    errors.append(f"{where}: result symbol {res['s']} is also an input variable")
+                if res["s"] not in expr:
+                    errors.append(f"{where}: result {res['s']} does not appear in expr")
+            lv = r.get("lvl", [])
+            bad = [x for x in lv if x not in v["levels"]] if isinstance(lv, list) else ["not a list"]
+            if bad:
+                errors.append(f"{where}: unknown lvl values {bad}")
+            eq = r.get("eq", [])
+            if eq != ["ALL"]:
+                bad = [x for x in eq if x not in subs] if isinstance(eq, list) else ["not a list"]
+                if bad:
+                    errors.append(f"{where}: unknown equipment sub values {bad}")
+            bad = [x for x in r.get("ref", []) if x not in v["sources"]]
+            if bad:
+                errors.append(f"{where}: unknown ref {bad}")
+            if r.get("status") not in v["statuses"]:
+                errors.append(f"{where}: unknown status {r.get('status')}")
+            reviewed = r.get("status") in ("expert_reviewed", "approved")
+            if reviewed:
+                if not (isinstance(r.get("reviewed_by"), str) and r["reviewed_by"].strip()):
+                    errors.append(f"{where}: reviewed/approved records need 'reviewed_by'")
+                if not DATE_RE.match(str(r.get("reviewed_on", ""))):
+                    errors.append(f"{where}: reviewed/approved records need 'reviewed_on' as YYYY-MM-DD")
+            elif r.get("reviewed_by") or r.get("reviewed_on"):
+                errors.append(f"{where}: reviewed_by/reviewed_on only allowed on reviewed or approved records")
+            r["_engine"] = eng
+            out.append(r)
+    for where, x in pending:
+        if x not in seen_id:
+            errors.append(f"{where}: 'from' refers to unknown formula {x}")
+    return out
+
+
 def main():
     errors = []
     v = {
@@ -151,6 +256,7 @@ def main():
             r["_file"] = f.name
             records.append(r)
 
+    formulas = check_calcs(v, {r["sub"] for r in records}, errors)
     # coverage checks
     per_system = Counter(r["_system"] for r in records)
     for s in sorted(v["systems"]):
@@ -176,6 +282,8 @@ def main():
     refs_used = Counter(x for r in records for x in r.get("ref", []))
 
     print(f"records: {len(records)} | systems: {len(per_system)} | errors: {len(errors)}")
+    per_engine = Counter(r["_engine"] for r in formulas)
+    print(f"formulas: {len(formulas)} (first-package target for output 2: 100) | engines with formulas: {len(per_engine)}/10")
     for s in sorted(per_system):
         print(f"  {s}: {per_system[s]}")
     if unused_params:

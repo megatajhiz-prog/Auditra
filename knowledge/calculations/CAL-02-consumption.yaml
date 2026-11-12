@@ -1,0 +1,191 @@
+engine: CAL-02
+defaults: {lvl: [site, process, equipment], eq: [ALL], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-09"}
+records:
+- id: FRM-02-001
+  fa: "کل آب برداشت‌شده (ورودی ناخالص)"
+  en: "Gross water intake"
+  expr: "V_gross = sum(V_source)"
+  vars:
+  - {s: V_source, fa: "حجم دریافتی از هر منبع (چاه، شبکه، تانکر، باران و غیره)", u: "m3", k: m, p: volume}
+  res: {s: V_gross, fa: "کل ورودی ناخالص", u: "m3"}
+  valid: "همه‌ی منابع خارجی در یک بازه‌ی یکسان جمع شوند. بازچرخانی داخلی منبع نیست."
+  err: "منبع بدون کنتور با برچسب برآوردی ثبت شود و جدا گزارش شود."
+  lvl: [site]
+- id: FRM-02-002
+  fa: "مصرف خالص آب (ورودی منهای آب برگشتی به محیط)"
+  en: "Net water consumption"
+  expr: "V_net = V_gross - V_returned"
+  vars:
+  - {s: V_gross, fa: "کل ورودی ناخالص", u: "m3", k: d, from: [FRM-02-001]}
+  - {s: V_returned, fa: "آب برگشتی به محیط با کیفیت قابل‌قبول", u: "m3", k: m, p: volume}
+  res: {s: V_net, fa: "مصرف خالص", u: "m3"}
+  valid: "فقط آبی برگشتی حساب شود که از نظر کیفیت و محل تخلیه مجاز است."
+  err: "مصرف خالص شامل تبخیر، آب در محصول و تلفات است. با موازنه‌ی مجتمع (FRM-01-012) هم‌خوان باشد."
+  lvl: [site]
+- id: FRM-02-003
+  fa: "سهم مصرف هر گره از کل"
+  en: "Share of each node in total consumption"
+  expr: "share = V_node / V_total * 100"
+  vars:
+  - {s: V_node, fa: "مصرف گره (واحد یا تجهیز)", u: "m3", k: m, p: volume}
+  - {s: V_total, fa: "مصرف کل سطح بالاتر", u: "m3", k: d}
+  res: {s: share, fa: "سهم مصرف", u: "%"}
+  valid: "مقایسه فقط بین گره‌های هم‌سطح و در یک بازه."
+  err: "اگر جمع سهم‌ها با ۱۰۰ نمی‌خواند، تفاوت به‌صورت «آب حسابرسی‌نشده» جدا گزارش شود."
+- id: FRM-02-004
+  fa: "تجمیع حجم بازه‌های کوچک‌تر (روز به ماه، ماه به سال)"
+  en: "Aggregation of sub-period volumes (days to month, months to year)"
+  expr: "V_period = sum(V_sub)"
+  vars:
+  - {s: V_sub, fa: "حجم هر زیربازه (روز یا ماه)", u: "m3", k: m, p: volume}
+  res: {s: V_period, fa: "حجم بازه‌ی بزرگ‌تر", u: "m3"}
+  valid: "مرز ماه و سال بر اساس تقویم انتخابی کاربر (شمسی یا میلادی) تعیین شود. زیربازه‌ها هم‌پوشانی یا شکاف نداشته باشند."
+  err: "تعداد زیربازه‌های گمشده بررسی و گزارش شود. جمع با داده‌ی ناقص «برآوردی» است."
+- id: FRM-02-005
+  fa: "دبی متوسط در بازه‌ی کارکرد"
+  en: "Average flow over operating time"
+  expr: "Q_avg = V / t_run"
+  vars:
+  - {s: V, fa: "حجم مصرفی بازه", u: "m3", k: m, p: volume}
+  - {s: t_run, fa: "زمان کارکرد در بازه", u: "h", k: m, p: run_time}
+  res: {s: Q_avg, fa: "دبی متوسط", u: "m3/h"}
+  valid: "t_run بزرگ‌تر از صفر. زمان توقف جداگانه حساب شود."
+  err: "برای تجهیز با کارکرد متناوب، میانگین دبی با دبی لحظه‌ای فرق دارد."
+- id: FRM-02-006
+  fa: "مقدار تولید از روی نرخ تولید"
+  en: "Production quantity from production rate"
+  expr: "P = sum(r_i * dt_i)"
+  vars:
+  - {s: r_i, fa: "نرخ تولید در گام i", u: "t/h", k: m, p: production_rate}
+  - {s: dt_i, fa: "طول گام i", u: "h", k: c}
+  res: {s: P, fa: "مقدار تولید", u: "t"}
+  valid: "برای محصولات چندگانه، هر محصول جداگانه محاسبه شود. واحد (تن، عدد، مترمکعب) با واحد نرخ تولید یکی باشد."
+  err: "تولید ثبت‌شده در سیستم تولید با مقدار محاسبه‌شده مقایسه شود."
+- id: FRM-02-007
+  fa: "مصرف ویژه‌ی آب (مصرف به ازای واحد تولید)"
+  en: "Specific water consumption"
+  expr: "SWC = V / P"
+  vars:
+  - {s: V, fa: "حجم آب مصرفی بازه", u: "m3", k: d, from: [FRM-02-001, FRM-02-002]}
+  - {s: P, fa: "مقدار تولید همان بازه", u: "t", k: d, from: [FRM-02-006]}
+  res: {s: SWC, fa: "مصرف ویژه", u: "m3/t"}
+  valid: "P بزرگ‌تر از صفر. مرز مصرف (فقط آب تازه یا کل ورودی) و مرز تولید یکسان باشد."
+  err: "در دوره‌های توقف یا تولید کم، مصرف ثابت خدماتی عدد را بزرگ می‌کند. با خط مبنا (CAL-07) تحلیل شود."
+  ref: [M1-4.3]
+- id: FRM-02-008
+  fa: "مصرف سرانه‌ی آب بهداشتی"
+  en: "Per-capita sanitary water consumption"
+  expr: "q = V * 1000 / (N * n_days)"
+  vars:
+  - {s: V, fa: "حجم آب بهداشتی و آشامیدنی", u: "m3", k: m, p: volume}
+  - {s: N, fa: "تعداد افراد", u: "نفر", k: c}
+  - {s: n_days, fa: "تعداد روزهای حضور", u: "day", k: c}
+  res: {s: q, fa: "مصرف سرانه", u: "L/person/day"}
+  valid: "N میانگین افراد حاضر است، نه کل پرسنل. شیفت‌ها و پیمانکاران لحاظ شوند."
+  err: "کنتور بهداشتی از مصارف فرآیندی جدا باشد."
+  lvl: [site, process]
+- id: FRM-02-009
+  fa: "دامنه‌ی دمای خنک‌کاری (اختلاف دمای ورودی و خروجی برج)"
+  en: "Cooling range"
+  expr: "dT = T_hot - T_cold"
+  vars:
+  - {s: T_hot, fa: "دمای آب گرم ورودی به برج", u: "°C", k: m, p: temperature}
+  - {s: T_cold, fa: "دمای آب سرد خروجی برج", u: "°C", k: m, p: temperature}
+  res: {s: dT, fa: "دامنه‌ی دما", u: "K"}
+  valid: "دماها هم‌زمان و در حالت پایدار و پس از اختلاط کامل خوانده شوند."
+  err: "سنسور دما کالیبره و در محل مناسب نصب شده باشد."
+  lvl: [equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+- id: FRM-02-010
+  fa: "تبخیر برج خنک‌کن از بار حرارتی"
+  en: "Cooling tower evaporation from heat duty"
+  expr: "E = Q_c * c_p * dT / h_fg"
+  vars:
+  - {s: Q_c, fa: "دبی آب گردشی", u: "m3/h", k: m, p: flow_rate}
+  - {s: c_p, fa: "گرمای ویژه‌ی آب (حدود ۴٫۱۸)", u: "kJ/kg.K", k: c}
+  - {s: dT, fa: "دامنه‌ی دما", u: "K", k: d, from: [FRM-02-009]}
+  - {s: h_fg, fa: "گرمای نهان تبخیر (حدود ۲۴۰۰ در شرایط معمول برج)", u: "kJ/kg", k: c}
+  res: {s: E, fa: "دبی تبخیر", u: "m3/h"}
+  valid: "تقریب: چگالی آب گردشی و تبخیرشده یکسان و کل بار حرارتی با تبخیر دفع می‌شود. سهم انتقال حرارت محسوس صرف‌نظر شده است."
+  err: "با مقدار حاصل از موازنه‌ی آب برج مقایسه شود. اختلاف زیاد نشانه‌ی دبی نادرست یا نشتی است."
+  lvl: [equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+- id: FRM-02-011
+  fa: "دبی بلودان برج خنک‌کن بر اساس دور تغلیظ"
+  en: "Cooling tower blowdown from cycles of concentration"
+  expr: "B = E / (COC - 1) - D"
+  vars:
+  - {s: E, fa: "دبی تبخیر", u: "m3/h", k: d, from: [FRM-02-010]}
+  - {s: COC, fa: "دور تغلیظ", u: "-", k: d}
+  - {s: D, fa: "دبی دریفت", u: "m3/h", k: c}
+  res: {s: B, fa: "دبی بلودان", u: "m3/h"}
+  valid: "COC بزرگ‌تر از ۱. فرض: حالت پایدار و فقط تبخیر، بلودان و دریفت و بدون نشتی."
+  err: "نشتی یا سرریز نادیده‌گرفته‌شده، بلودان واقعی را بیشتر نشان می‌دهد. با کنتور بلودان مقایسه شود."
+  lvl: [equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+  ref: [M1-6.1]
+  note: "روش‌شناسی رابطه‌ی تقریبی B ≈ E/(COC−1) را آورده است. این‌جا نسخه‌ی دقیق‌تری ثبت شد که دریفت را کم می‌کند و با D=0 همان رابطه‌ی روش‌شناسی می‌شود."
+- id: FRM-02-012
+  fa: "آب جبرانی برج خنک‌کن"
+  en: "Cooling tower make-up water"
+  expr: "M = E + B + D + L"
+  vars:
+  - {s: E, fa: "دبی تبخیر", u: "m3/h", k: d, from: [FRM-02-010]}
+  - {s: B, fa: "دبی بلودان", u: "m3/h", k: m, p: flow_rate}
+  - {s: D, fa: "دبی دریفت", u: "m3/h", k: c}
+  - {s: L, fa: "نشتی و سرریز", u: "m3/h", k: d}
+  res: {s: M, fa: "دبی آب جبرانی", u: "m3/h"}
+  valid: "حالت پایدار (تغییر موجودی حوضچه صفر یا اصلاح‌شده)."
+  err: "با کنتور آب جبرانی مقایسه شود. اختلاف نشانه‌ی نشتی، سرریز یا خطای کنتور است."
+  lvl: [equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+  ref: [M1-6.1]
+- id: FRM-02-013
+  fa: "آب جبرانی بویلر"
+  en: "Boiler make-up water"
+  expr: "M_b = m_s - m_c + B_b"
+  vars:
+  - {s: m_s, fa: "بخار تولیدی", u: "t/h", k: m, p: steam_flow}
+  - {s: m_c, fa: "کندانس بازگشتی", u: "m3/h", k: m, p: flow_rate}
+  - {s: B_b, fa: "دبی بلودان بویلر", u: "m3/h", k: m, p: flow_rate}
+  res: {s: M_b, fa: "آب جبرانی بویلر", u: "m3/h"}
+  valid: "برای آب مایع، هر ۱ تن تقریباً برابر ۱ مترمکعب است. حالت پایدار، بدون نشتی شبکه‌ی بخار."
+  err: "نشتی بخار و تله‌های معیوب به صورت اختلاف دیده می‌شود. جداگانه بازرسی شود."
+  lvl: [equipment]
+  eq: [boiler, condensate_return, blowdown_system]
+- id: FRM-02-014
+  fa: "نسبت بازگشت کندانس"
+  en: "Condensate return ratio"
+  expr: "CR = m_c / m_s * 100"
+  vars:
+  - {s: m_c, fa: "کندانس بازگشتی", u: "m3/h", k: m, p: flow_rate}
+  - {s: m_s, fa: "بخار تولیدی", u: "t/h", k: m, p: steam_flow}
+  res: {s: CR, fa: "نسبت بازگشت", u: "%"}
+  valid: "m_s بزرگ‌تر از صفر. بخار مصرف‌شده‌ی مستقیم (تزریق به فرآیند) بازگشتی ندارد."
+  err: "عدد بالای ۱۰۰ درصد نشان‌دهنده‌ی خطای کنتور یا ورود آب از منبع دیگر است."
+  lvl: [process, equipment]
+  eq: [boiler, condensate_return, steam_consumer]
+  ref: [M1-6.2]
+  note: "در روش‌شناسی مخرج «کندانس بالقوه‌ی بخار» است. این‌جا برابر بخار تولیدی گرفته شده است."
+- id: FRM-02-015
+  fa: "آب موجود در محصول"
+  en: "Water embedded in product"
+  expr: "V_prod = P * w"
+  vars:
+  - {s: P, fa: "مقدار تولید", u: "t", k: d, from: [FRM-02-006]}
+  - {s: w, fa: "کسر جرمی آب در محصول", u: "-", k: c}
+  res: {s: V_prod, fa: "آب خارج‌شده در محصول", u: "m3"}
+  valid: "برای آب با چگالی تقریباً ۱ تن بر مترمکعب. کسر جرمی از آنالیز محصول گرفته شود."
+  err: "کسر آب محصول با آزمایش تأیید شود. این مقدار در موازنه‌ی مجتمع (FRM-01-012) به‌کار می‌رود."
+  lvl: [site, process]
+  ref: [M1-4.1]
+- id: FRM-02-016
+  fa: "درصد تغییر مصرف نسبت به دوره‌ی قبل"
+  en: "Consumption change versus previous period"
+  expr: "delta = (W_t - W_prev) / W_prev * 100"
+  vars:
+  - {s: W_t, fa: "مصرف دوره‌ی جاری", u: "m3", k: m, p: volume}
+  - {s: W_prev, fa: "مصرف دوره‌ی مقایسه", u: "m3", k: m, p: volume}
+  res: {s: delta, fa: "تغییر مصرف", u: "%"}
+  valid: "دوره‌ها هم‌طول و هم‌نوع باشند. برای مقایسه‌ی عادلانه، تولید و فصل لحاظ شود."
+  err: "تغییر خام مصرف را بدون تعدیل با تولید و دما نتیجه‌ی صرفه‌جویی ندانید. از خط مبنا (CAL-07) استفاده شود."

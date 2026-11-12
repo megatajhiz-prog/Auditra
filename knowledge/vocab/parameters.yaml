@@ -39,3 +39,4 @@
 - {id: energy_consumption, symbol: E, unit: "kWh/m3", group: operating, en: "Specific energy consumption", fa: "مصرف ویژه انرژی", origin: methodology_formula}
 - {id: humidity, symbol: RH, unit: "%", group: operating, en: "Relative humidity", fa: "رطوبت نسبی", origin: methodology_formula}
 - {id: residual_chlorine, symbol: Cl2, unit: "mg/L", group: quality, en: "Residual chlorine", fa: "کلر باقی‌مانده", origin: added_pending_review}
+- {id: calcium_hardness, symbol: CaH, unit: "mg/L as CaCO3", group: quality, en: "Calcium hardness", fa: "سختی کلسیم", origin: added_pending_review}

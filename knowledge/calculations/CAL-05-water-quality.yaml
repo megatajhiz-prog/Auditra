@@ -1,0 +1,157 @@
+engine: CAL-05
+defaults: {lvl: [site, process, equipment], eq: [ALL], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-09"}
+records:
+- id: FRM-05-001
+  fa: "راندمان حذف آلاینده"
+  en: "Pollutant removal efficiency"
+  expr: "eta_rem = (C_in - C_out) / C_in * 100"
+  vars:
+  - {s: C_in, fa: "غلظت آلاینده در ورودی", u: "mg/L", k: m, p: cod}
+  - {s: C_out, fa: "غلظت آلاینده در خروجی", u: "mg/L", k: m, p: cod}
+  res: {s: eta_rem, fa: "راندمان حذف", u: "%"}
+  valid: "C_in بزرگ‌تر از صفر. ورودی و خروجی از یک پارامتر و یک روش آزمون و در زمان‌های متناظر (با لحاظ زمان ماند) باشند. پارامتر COD نمونه است و برای هر آلاینده‌ی دیگر هم کاربرد دارد."
+  err: "نمونه‌برداری لحظه‌ای ممکن است نماینده‌ی کل بازه نباشد. از نمونه‌ی ترکیبی یا میانگین وزنی دبی (FRM-05-003) استفاده شود."
+  lvl: [process, equipment]
+  ref: [M2-4.6]
+- id: FRM-05-002
+  fa: "بار جرمی آلاینده"
+  en: "Pollutant mass load"
+  expr: "L = Q * C / 1000"
+  vars:
+  - {s: Q, fa: "دبی جریان", u: "m3/h", k: m, p: flow_rate}
+  - {s: C, fa: "غلظت آلاینده", u: "mg/L", k: m, p: cod}
+  res: {s: L, fa: "بار جرمی", u: "kg/h"}
+  valid: "mg/L برابر g/m3 است، پس تقسیم بر ۱۰۰۰ برای تبدیل به کیلوگرم. دبی و غلظت هم‌زمان باشند."
+  err: "برای بار روزانه یا سالانه، بار لحظه‌ای در زمان ضرب و جمع شود، نه میانگین‌ها."
+- id: FRM-05-003
+  fa: "غلظت متوسط وزنی با دبی (اختلاط جریان‌ها)"
+  en: "Flow-weighted average concentration (blending)"
+  expr: "C_avg = sum(Q_i * C_i) / sum(Q_i)"
+  vars:
+  - {s: Q_i, fa: "دبی جریان i", u: "m3/h", k: m, p: flow_rate}
+  - {s: C_i, fa: "غلظت جریان i", u: "mg/L", k: m, p: tds}
+  res: {s: C_avg, fa: "غلظت متوسط وزنی", u: "mg/L"}
+  valid: "برای پارامترهای پایستار (مثل املاح، TDS و COD بدون واکنش). برای pH، دما و هدایت الکتریکی تقریبی است. پارامتر TDS نمونه است."
+  err: "برای pH و پارامترهای واکنشی از موازنه‌ی شیمیایی استفاده شود."
+- id: FRM-05-004
+  fa: "تصحیح هدایت الکتریکی به دمای ۲۵ درجه"
+  en: "Electrical conductivity corrected to 25 °C"
+  expr: "EC25 = EC_T / (1 + a * (T - 25))"
+  vars:
+  - {s: EC_T, fa: "هدایت الکتریکی اندازه‌گیری‌شده", u: "uS/cm", k: m, p: ec}
+  - {s: T, fa: "دمای نمونه", u: "°C", k: m, p: temperature}
+  - {s: a, fa: "ضریب دمایی هدایت (حدود ۰٫۰۲ بر درجه برای آب طبیعی)", u: "1/°C", k: c}
+  res: {s: EC25, fa: "هدایت الکتریکی در ۲۵ درجه", u: "uS/cm"}
+  valid: "برای آب با شوری معمول. بعضی هدایت‌سنج‌ها تصحیح دما را خودشان انجام می‌دهند و نباید دوباره اعمال شود."
+  err: "ضریب را از کالیبراسیون یا مشخصات سنسور بگیرید. دمای نمونه با دمای سنسور هم‌خوان باشد."
+- id: FRM-05-005
+  fa: "برآورد TDS از هدایت الکتریکی"
+  en: "TDS estimated from electrical conductivity"
+  expr: "TDS = k_ec * EC25"
+  vars:
+  - {s: k_ec, fa: "ضریب تبدیل (معمولاً ۰٫۵۵ تا ۰٫۷۵)", u: "mg/L per uS/cm", k: c}
+  - {s: EC25, fa: "هدایت الکتریکی در ۲۵ درجه", u: "uS/cm", k: d, from: [FRM-05-004]}
+  res: {s: TDS, fa: "TDS برآوردی", u: "mg/L"}
+  valid: "ضریب با نمونه‌های آزمایشگاهی همان منبع آب کالیبره شود و برای شورابه و پساب صنعتی تغییر می‌کند."
+  err: "TDS برآوردی را با برچسب «برآوردی» ثبت کنید و در بازه‌های مشخص با آزمایش تأیید کنید."
+- id: FRM-05-006
+  fa: "نسبت انطباق با حد مجاز"
+  en: "Compliance ratio against a limit"
+  expr: "CR = C / C_limit"
+  vars:
+  - {s: C, fa: "مقدار اندازه‌گیری‌شده", u: "mg/L", k: m, p: cod}
+  - {s: C_limit, fa: "حد مجاز برای کاربرد یا تخلیه", u: "mg/L", k: c}
+  res: {s: CR, fa: "نسبت انطباق (کمتر یا مساوی ۱ یعنی منطبق)", u: "-"}
+  valid: "C_limit از استاندارد یا مجوز مرتبط با کاربرد همان جریان گرفته شود. پارامتر COD نمونه است."
+  err: "حد مجاز و استاندارد مرجع همراه نتیجه ثبت شود. برای pH که محدوده دارد، از دو حد کمینه و بیشینه استفاده شود."
+- id: FRM-05-007
+  fa: "پرچم تخطی از حد مجاز"
+  en: "Limit exceedance flag"
+  expr: "exceed = C > C_limit"
+  vars:
+  - {s: C, fa: "مقدار اندازه‌گیری‌شده", u: "mg/L", k: m, p: cod}
+  - {s: C_limit, fa: "حد مجاز", u: "mg/L", k: c}
+  res: {s: exceed, fa: "تخطی (درست/نادرست)", u: "-"}
+  valid: "دقت و عدم قطعیت آزمایش در تفسیر نتایج نزدیک حد لحاظ شود."
+  err: "تخطی تک‌نمونه با روش نمونه‌برداری مجاز تأیید شود."
+- id: FRM-05-008
+  fa: "تناسب کیفیت جریان با کاربرد مجاز"
+  en: "Suitability of a stream for its permitted use"
+  expr: "suitable = all(C_k <= C_limit_k)"
+  vars:
+  - {s: C_k, fa: "مقدار هر پارامتر کیفی k", u: "mg/L", k: m, p: tds}
+  - {s: C_limit_k, fa: "حد مجاز پارامتر k برای آن کاربرد", u: "mg/L", k: c}
+  res: {s: suitable, fa: "کیفیت مناسب کاربرد است (درست/نادرست)", u: "-"}
+  valid: "حدود هر کاربرد از «کاربرد مجاز» بانک جریان‌ها بیاید. پارامترهای بدون حد، بررسی‌نشده علامت بخورند، نه منطبق."
+  err: "نبود داده برای یک پارامتر یعنی نامشخص، نه مناسب."
+- id: FRM-05-009
+  fa: "نسبت قابلیت تجزیه‌ی زیستی (BOD5 به COD)"
+  en: "Biodegradability ratio (BOD5 to COD)"
+  expr: "BI = BOD5 / COD"
+  vars:
+  - {s: BOD5, fa: "اکسیژن‌خواهی زیستی پنج‌روزه", u: "mg/L", k: m, p: bod5}
+  - {s: COD, fa: "اکسیژن‌خواهی شیمیایی", u: "mg/L", k: m, p: cod}
+  res: {s: BI, fa: "نسبت تجزیه‌پذیری", u: "-"}
+  valid: "COD بزرگ‌تر از صفر. هر دو از یک نمونه باشند."
+  err: "نسبت کم یعنی بخش بزرگی از بار مقاوم است و تصفیه‌ی زیستی به‌تنهایی کافی نیست. تفسیر با تصفیه‌پذیری آزمایشگاهی تأیید شود."
+  lvl: [process, equipment]
+- id: FRM-05-010
+  fa: "pH اشباع کلسیم کربنات (pH_s)"
+  en: "Calcium carbonate saturation pH (pH_s)"
+  expr: "pH_s = (9.3 + (log10(TDS) - 1) / 10 + (-13.12 * log10(T + 273) + 34.55)) - ((log10(CaH) - 0.4) + log10(Alk))"
+  vars:
+  - {s: TDS, fa: "مواد محلول", u: "mg/L", k: m, p: tds}
+  - {s: T, fa: "دمای آب", u: "°C", k: m, p: temperature}
+  - {s: CaH, fa: "سختی کلسیم بر حسب CaCO3", u: "mg/L as CaCO3", k: m, p: calcium_hardness}
+  - {s: Alk, fa: "قلیاییت بر حسب CaCO3", u: "mg/L as CaCO3", k: m, p: alkalinity}
+  res: {s: pH_s, fa: "pH اشباع", u: "-"}
+  valid: "رابطه‌ی تقریبی رایج برای آب شیرین و لب‌شور. برای شورابه با TDS بسیار بالا دقت کم می‌شود. غلظت‌ها بر حسب mg/L."
+  err: "برای تصمیم‌های مهم، با نرم‌افزار شیمی آب یا آزمایش تأیید شود. سختی کلسیم را با سختی کل اشتباه نگیرید."
+  lvl: [equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser, boiler, heat_exchanger]
+- id: FRM-05-011
+  fa: "شاخص لانژلیه (LSI)"
+  en: "Langelier saturation index (LSI)"
+  expr: "LSI = pH - pH_s"
+  vars:
+  - {s: pH, fa: "pH آب", u: "-", k: m, p: ph}
+  - {s: pH_s, fa: "pH اشباع", u: "-", k: d, from: [FRM-05-010]}
+  res: {s: LSI, fa: "شاخص لانژلیه", u: "-"}
+  valid: "مثبت یعنی تمایل به رسوب کلسیم کربنات و منفی یعنی تمایل به خوردگی. فقط تمایل ترمودینامیکی را می‌گوید، نه نرخ رسوب یا خوردگی."
+  err: "همراه شاخص ریزنار و روند تغییرات بررسی شود. اندازه‌گیری pH در محل و فوراً انجام شود."
+  lvl: [equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser, boiler, heat_exchanger]
+- id: FRM-05-012
+  fa: "شاخص ریزنار (RSI)"
+  en: "Ryznar stability index (RSI)"
+  expr: "RSI = 2 * pH_s - pH"
+  vars:
+  - {s: pH_s, fa: "pH اشباع", u: "-", k: d, from: [FRM-05-010]}
+  - {s: pH, fa: "pH آب", u: "-", k: m, p: ph}
+  res: {s: RSI, fa: "شاخص ریزنار", u: "-"}
+  valid: "مقدار کمتر یعنی تمایل بیشتر به رسوب و مقدار بیشتر یعنی تمایل به خوردگی. تفسیر بازه‌ها از مرجع معتبر گرفته شود."
+  err: "مثل LSI، شاخص تمایل است و برای تصمیم‌گیری تنها کافی نیست."
+  lvl: [equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser, boiler, heat_exchanger]
+- id: FRM-05-013
+  fa: "کلرخواهی آب"
+  en: "Chlorine demand"
+  expr: "Cl_demand = D - R"
+  vars:
+  - {s: D, fa: "دوز کلر تزریق‌شده", u: "mg/L", k: c}
+  - {s: R, fa: "کلر باقی‌مانده پس از زمان تماس", u: "mg/L", k: m, p: residual_chlorine}
+  res: {s: Cl_demand, fa: "کلرخواهی", u: "mg/L"}
+  valid: "زمان تماس و دما ثابت و مشخص باشد. R در نقطه‌ی نمونه‌برداری استاندارد اندازه‌گیری شود."
+  err: "افزایش ناگهانی کلرخواهی نشانه‌ی ورود آلودگی آلی یا آمونیاک است."
+  lvl: [process, equipment]
+- id: FRM-05-014
+  fa: "کاهش لگاریتمی میکروب (ضدعفونی)"
+  en: "Log reduction of microorganisms (disinfection)"
+  expr: "LRV = log10(N_in / N_out)"
+  vars:
+  - {s: N_in, fa: "تعداد کلیفرم قبل از ضدعفونی", u: "MPN/100mL", k: m, p: total_coliform}
+  - {s: N_out, fa: "تعداد کلیفرم بعد از ضدعفونی", u: "MPN/100mL", k: m, p: total_coliform}
+  res: {s: LRV, fa: "کاهش لگاریتمی", u: "log"}
+  valid: "N_out بزرگ‌تر از صفر. اگر صفر یا زیر حد تشخیص بود، با حد تشخیص جایگزین و محافظه‌کارانه گزارش شود."
+  err: "نمونه‌برداری ضدعفونی‌شده با خنثی‌سازی کلر انجام شود وگرنه خروجی کمتر از واقع به نظر می‌رسد."
+  lvl: [process, equipment]

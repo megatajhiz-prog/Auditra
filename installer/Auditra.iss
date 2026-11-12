@@ -1,5 +1,5 @@
 ; Inno Setup script for the Auditra Windows installer (built on GitHub by .github/workflows/build-installer.yml)
-#define AppVer "0.2.1"
+#define AppVer "0.3.0"
 [Setup]
 AppId={{8F3A6C1E-5B7D-4E2A-9C41-2D6B7A90E5F3}
 AppName=Auditra

@@ -1,0 +1,362 @@
+engine: CAL-09
+defaults: {lvl: [site, process, equipment], eq: [ALL], status: draft}
+records:
+- id: FRM-09-001
+  fa: "هزینه‌ی واقعی هر مترمکعب آب"
+  en: "Real cost of one cubic metre of water"
+  expr: "C_water = C_supply + C_pumping + C_treatment + C_distribution + C_disposal"
+  vars:
+  - {s: C_supply, fa: "هزینه‌ی تأمین (خرید یا برداشت)", u: "currency/m3", k: c}
+  - {s: C_pumping, fa: "هزینه‌ی پمپاژ", u: "currency/m3", k: d, from: [FRM-09-002]}
+  - {s: C_treatment, fa: "هزینه‌ی تصفیه", u: "currency/m3", k: d, from: [FRM-09-003]}
+  - {s: C_distribution, fa: "هزینه‌ی توزیع", u: "currency/m3", k: c}
+  - {s: C_disposal, fa: "هزینه‌ی دفع پساب", u: "currency/m3", k: c}
+  res: {s: C_water, fa: "هزینه‌ی واقعی آب", u: "currency/m3"}
+  valid: "همه‌ی اجزا هم‌مبنا و هم‌واحد پول و همان مرز آب (آب تازه یا آب فرآیندی) باشند. سهم هر جزء از دفتر هزینه با منبع مکتوب بیاید."
+  err: "برای تحلیل دقیق‌تر، انرژی، مواد شیمیایی، نیروی انسانی، تعمیرات، استهلاک و هزینه‌ی زیست‌محیطی هم تفکیک شوند (FRM-09-003)."
+  ref: [M1-4.9]
+- id: FRM-09-002
+  fa: "هزینه‌ی پمپاژ به ازای هر مترمکعب"
+  en: "Pumping cost per cubic metre"
+  expr: "C_pumping = E_s * p_el"
+  vars:
+  - {s: E_s, fa: "مصرف ویژه‌ی انرژی پمپاژ", u: "kWh/m3", k: m, p: energy_consumption}
+  - {s: p_el, fa: "قیمت برق", u: "currency/kWh", k: c}
+  res: {s: C_pumping, fa: "هزینه‌ی پمپاژ", u: "currency/m3"}
+  valid: "E_s از FRM-06-003 یا اندازه‌گیری مستقیم بیاید. تعرفه‌ی برق متوسط وزنی ساعات پیک و غیرپیک باشد."
+  err: "انرژی مصرف‌شده برای انتقال و تقویت فشار هر دو لحاظ شوند."
+- id: FRM-09-003
+  fa: "هزینه‌ی تصفیه به ازای هر مترمکعب"
+  en: "Treatment cost per cubic metre"
+  expr: "C_treatment = (K_chem + K_en + K_lab + K_mnt + K_dep) / V_t"
+  vars:
+  - {s: K_chem, fa: "هزینه‌ی مواد شیمیایی", u: "currency", k: c}
+  - {s: K_en, fa: "هزینه‌ی انرژی تصفیه", u: "currency", k: c}
+  - {s: K_lab, fa: "هزینه‌ی نیروی انسانی", u: "currency", k: c}
+  - {s: K_mnt, fa: "هزینه‌ی تعمیرات و قطعات", u: "currency", k: c}
+  - {s: K_dep, fa: "استهلاک تجهیزات تصفیه", u: "currency", k: c}
+  - {s: V_t, fa: "حجم آب تصفیه‌شده در همان بازه", u: "m3", k: m, p: volume}
+  res: {s: C_treatment, fa: "هزینه‌ی تصفیه", u: "currency/m3"}
+  valid: "همه‌ی هزینه‌ها و V_t مربوط به یک بازه و یک واحد تصفیه باشند. V_t بزرگ‌تر از صفر."
+  err: "هزینه‌ی ثابت با حجم کم، هزینه‌ی واحد را بزرگ می‌کند. ظرفیت اسمی و واقعی را جدا ببینید."
+- id: FRM-09-004
+  fa: "صرفه‌جویی مالی سالانه‌ی آب"
+  en: "Annual financial saving from water"
+  expr: "S_fin = V_saved * C_water"
+  vars:
+  - {s: V_saved, fa: "صرفه‌جویی سالانه‌ی آب", u: "m3", k: d, from: [FRM-07-004]}
+  - {s: C_water, fa: "هزینه‌ی واقعی هر مترمکعب آب", u: "currency/m3", k: d, from: [FRM-09-001]}
+  res: {s: S_fin, fa: "صرفه‌جویی مالی سالانه", u: "currency/year"}
+  valid: "V_saved از خط مبنای تعدیل‌شده و اندازه‌گیری واقعی. قیمت آبی که واقعاً کمتر خریده یا تصفیه می‌شود (نه میانگین کل)."
+  err: "قیمت مبنای صرفه‌جویی باید «هزینه‌ی نهایی» همان آب باشد. اگر تأمین ثابت است، صرفه‌جویی مالی کمتر از حجمی است."
+  ref: [M1-9]
+- id: FRM-09-005
+  fa: "صرفه‌جویی خالص سالانه"
+  en: "Annual net savings"
+  expr: "ANS = S_fin - OPEX_add - M_annual"
+  vars:
+  - {s: S_fin, fa: "صرفه‌جویی مالی سالانه", u: "currency/year", k: d, from: [FRM-09-004]}
+  - {s: OPEX_add, fa: "هزینه‌ی بهره‌برداری اضافه‌ی راهکار (انرژی، مواد، نیرو)", u: "currency/year", k: c}
+  - {s: M_annual, fa: "هزینه‌ی نگهداری سالانه", u: "currency/year", k: c}
+  res: {s: ANS, fa: "صرفه‌جویی خالص سالانه", u: "currency/year"}
+  valid: "هزینه‌های اضافه‌ی بهره‌برداری و نگهداری فقط مربوط به همین راهکار باشند."
+  err: "اگر راهکار انرژی یا مواد شیمیایی بیشتر مصرف می‌کند، آن را در OPEX_add لحاظ کنید."
+  ref: [M1-9]
+- id: FRM-09-006
+  fa: "دوره‌ی بازگشت سرمایه (ساده)"
+  en: "Simple payback period"
+  expr: "Payback = CAPEX / ANS"
+  vars:
+  - {s: CAPEX, fa: "سرمایه‌گذاری اولیه", u: "currency", k: c}
+  - {s: ANS, fa: "صرفه‌جویی خالص سالانه", u: "currency/year", k: d, from: [FRM-09-005]}
+  res: {s: Payback, fa: "دوره‌ی بازگشت", u: "year"}
+  valid: "ANS بزرگ‌تر از صفر. ارزش زمانی پول و عمر مفید راهکار را لحاظ نمی‌کند."
+  err: "برای تصمیم‌گیری نهایی همراه NPV و IRR استفاده شود. دوره‌ی بازگشت کمتر از عمر مفید تجهیز باشد."
+  ref: [M1-9]
+- id: FRM-09-007
+  fa: "ارزش فعلی خالص (NPV)"
+  en: "Net present value (NPV)"
+  expr: "NPV = -I0 + sum(CF_t / (1 + r)^t)"
+  vars:
+  - {s: I0, fa: "سرمایه‌گذاری اولیه (سال صفر)", u: "currency", k: c}
+  - {s: CF_t, fa: "جریان نقدی خالص سال t", u: "currency", k: d, from: [FRM-09-005, FRM-09-014]}
+  - {s: r, fa: "نرخ تنزیل", u: "1/year", k: c}
+  - {s: t, fa: "شماره‌ی سال", u: "year", k: c}
+  res: {s: NPV, fa: "ارزش فعلی خالص", u: "currency"}
+  valid: "همه‌ی جریان‌ها اسمی یا همه حقیقی با نرخ تنزیل متناظر. t از ۱ تا n (عمر مفید یا افق تحلیل)."
+  err: "نرخ تنزیل، افق و مفروضات قیمت آب و انرژی ثبت شود. تحلیل حساسیت روی r و قیمت آب انجام شود."
+  ref: [M1-9]
+- id: FRM-09-008
+  fa: "نرخ بازده داخلی (IRR)"
+  en: "Internal rate of return (IRR)"
+  expr: "I0 = sum(CF_t / (1 + IRR)^t)"
+  vars:
+  - {s: I0, fa: "سرمایه‌گذاری اولیه", u: "currency", k: c}
+  - {s: CF_t, fa: "جریان نقدی خالص سال t", u: "currency", k: d, from: [FRM-09-005, FRM-09-014]}
+  - {s: t, fa: "شماره‌ی سال", u: "year", k: c}
+  res: {s: IRR, fa: "نرخ بازده داخلی", u: "1/year"}
+  valid: "رابطه ضمنی است و IRR با روش عددی (ریشه‌یابی) از شرط NPV=۰ به دست می‌آید. جریان نقدی باید حداقل یک تغییر علامت داشته باشد."
+  err: "با چند تغییر علامت ممکن است چند ریشه یا هیچ ریشه نباشد. در آن حالت NPV و دوره‌ی بازگشت ملاک باشد."
+  ref: [M1-9]
+  note: "روش‌شناسی IRR را در فهرست پارامترها آورده ولی رابطه نداده است. این‌جا تعریف استاندارد ثبت شد."
+- id: FRM-09-009
+  fa: "ارزش فعلی صرفه‌جویی‌های سالانه‌ی ثابت"
+  en: "Present value of constant annual savings"
+  expr: "PV = ANS * (1 - (1 + r)^(-n)) / r"
+  vars:
+  - {s: ANS, fa: "صرفه‌جویی خالص سالانه", u: "currency/year", k: d, from: [FRM-09-005]}
+  - {s: r, fa: "نرخ تنزیل", u: "1/year", k: c}
+  - {s: n, fa: "تعداد سال‌ها", u: "year", k: c}
+  res: {s: PV, fa: "ارزش فعلی", u: "currency"}
+  valid: "r بزرگ‌تر از صفر و صرفه‌جویی هر سال ثابت. برای صرفه‌جویی متغیر از جمع‌زنی مستقیم (NPV) استفاده شود."
+  err: "فرض ثابت ماندن قیمت آب و عملکرد راهکار در تمام سال‌هاست و باید ثبت شود."
+- id: FRM-09-010
+  fa: "ضریب بازیابی سرمایه (CRF)"
+  en: "Capital recovery factor (CRF)"
+  expr: "CRF = r * (1 + r)^n / ((1 + r)^n - 1)"
+  vars:
+  - {s: r, fa: "نرخ تنزیل", u: "1/year", k: c}
+  - {s: n, fa: "عمر مفید", u: "year", k: c}
+  res: {s: CRF, fa: "ضریب بازیابی سرمایه", u: "1/year"}
+  valid: "r بزرگ‌تر از صفر. n عمر مفید اقتصادی تجهیز."
+  err: "برای هم‌مبنا کردن سرمایه‌گذاری با هزینه‌ی سالانه به کار می‌رود."
+- id: FRM-09-011
+  fa: "هزینه‌ی هر مترمکعب آب صرفه‌جویی‌شده"
+  en: "Cost of saved water"
+  expr: "C_sw = (CAPEX * CRF + OPEX_a) / V_sa"
+  vars:
+  - {s: CAPEX, fa: "سرمایه‌گذاری اولیه", u: "currency", k: c}
+  - {s: CRF, fa: "ضریب بازیابی سرمایه", u: "1/year", k: d, from: [FRM-09-010]}
+  - {s: OPEX_a, fa: "هزینه‌ی سالانه‌ی بهره‌برداری و نگهداری", u: "currency/year", k: c}
+  - {s: V_sa, fa: "صرفه‌جویی سالانه‌ی آب", u: "m3/year", k: d, from: [FRM-07-004]}
+  res: {s: C_sw, fa: "هزینه‌ی آب صرفه‌جویی‌شده", u: "currency/m3"}
+  valid: "V_sa بزرگ‌تر از صفر. برای مقایسه با هزینه‌ی واقعی آب (FRM-09-001): اگر C_sw کمتر باشد راهکار اقتصادی است."
+  err: "اثر جانبی راهکار (انرژی، مواد، تولید) هم در OPEX_a لحاظ شود."
+- id: FRM-09-012
+  fa: "هزینه‌ی چرخه‌ی عمر (LCC)"
+  en: "Life cycle cost (LCC)"
+  expr: "LCC = CAPEX + sum(OPEX_t / (1 + r)^t)"
+  vars:
+  - {s: CAPEX, fa: "سرمایه‌گذاری اولیه", u: "currency", k: c}
+  - {s: OPEX_t, fa: "هزینه‌ی بهره‌برداری و نگهداری سال t", u: "currency", k: c}
+  - {s: r, fa: "نرخ تنزیل", u: "1/year", k: c}
+  - {s: t, fa: "شماره‌ی سال", u: "year", k: c}
+  res: {s: LCC, fa: "هزینه‌ی چرخه‌ی عمر", u: "currency"}
+  valid: "افق تحلیل برابر عمر مفید. ارزش اسقاط، تعویض قطعات اصلی و هزینه‌ی دفع پایان عمر در صورت وجود لحاظ شود."
+  err: "برای مقایسه‌ی گزینه‌های هم‌خدمت (مثلاً دو فناوری تصفیه) به کار می‌رود. مفروضات تورم و نرخ تنزیل یکسان باشند."
+  ref: [M1-9]
+- id: FRM-09-013
+  fa: "نسبت منفعت به هزینه (BCR)"
+  en: "Benefit-cost ratio (BCR)"
+  expr: "BCR = PV_b / (I0 + PV_c)"
+  vars:
+  - {s: PV_b, fa: "ارزش فعلی منافع (صرفه‌جویی)", u: "currency", k: d, from: [FRM-09-009]}
+  - {s: I0, fa: "سرمایه‌گذاری اولیه", u: "currency", k: c}
+  - {s: PV_c, fa: "ارزش فعلی هزینه‌های بهره‌برداری", u: "currency", k: c}
+  res: {s: BCR, fa: "نسبت منفعت به هزینه", u: "-"}
+  valid: "منافع و هزینه‌ها با یک نرخ تنزیل و افق. بزرگ‌تر از ۱ یعنی منفعت از هزینه بیشتر است."
+  err: "منافع غیرمالی (کاهش ریسک تأمین، اثر زیست‌محیطی) جداگانه گزارش شوند."
+- id: FRM-09-014
+  fa: "جریان نقدی سال t با افزایش سالانه‌ی قیمت"
+  en: "Cash flow in year t with annual price escalation"
+  expr: "CF_t = CF_1 * (1 + g)^(t - 1)"
+  vars:
+  - {s: CF_1, fa: "جریان نقدی خالص سال اول", u: "currency", k: d, from: [FRM-09-005]}
+  - {s: g, fa: "نرخ افزایش سالانه‌ی قیمت آب و انرژی", u: "1/year", k: c}
+  - {s: t, fa: "شماره‌ی سال", u: "year", k: c}
+  res: {s: CF_t, fa: "جریان نقدی سال t", u: "currency"}
+  valid: "نرخ رشد قیمت با مبنای مکتوب. فرض رشد یکنواخت و ثابت بودن حجم صرفه‌جویی."
+  err: "رشد خیلی بالا نتیجه‌ی خوش‌بینانه می‌دهد. حساسیت روی g بررسی شود."
+- id: FRM-09-015
+  fa: "امتیاز وزنی راهکار (رتبه‌بندی چندمعیاره)"
+  en: "Weighted score of a solution (multi-criteria ranking)"
+  expr: "Score = sum(w_k * x_k)"
+  vars:
+  - {s: w_k, fa: "وزن معیار k (جمع وزن‌ها برابر ۱)", u: "-", k: c}
+  - {s: x_k, fa: "امتیاز نرمال‌شده‌ی راهکار در معیار k (۰ تا ۱)", u: "-", k: c}
+  res: {s: Score, fa: "امتیاز راهکار", u: "-"}
+  valid: "معیارها: صرفه‌جویی آب، هزینه‌ی سرمایه‌گذاری، زمان بازگشت، سهولت اجرا، کاهش ریسک تأمین، اثر زیست‌محیطی. وزن‌ها با تأیید ذی‌نفعان و مبنای مکتوب."
+  err: "معیارهای هزینه و ریسک پیش از ترکیب معکوس‌سازی شوند تا «بیشتر بهتر» باشد."
+  ref: [M1-9]
+- id: FRM-09-016
+  fa: "فاصله‌ی راهکار از جواب ایده‌آل یا ضدایده‌آل (TOPSIS)"
+  en: "Distance of a solution from the ideal or anti-ideal (TOPSIS)"
+  expr: "d = sqrt(sum((v_j - v_ref_j)^2))"
+  vars:
+  - {s: v_j, fa: "امتیاز وزن‌دار نرمال‌شده‌ی راهکار در معیار j", u: "-", k: c}
+  - {s: v_ref_j, fa: "امتیاز مرجع (بهترین یا بدترین) معیار j", u: "-", k: c}
+  res: {s: d, fa: "فاصله", u: "-"}
+  valid: "یک بار با مرجع بهترین (d_plus) و یک بار با مرجع بدترین (d_minus) محاسبه می‌شود. ماتریس تصمیم نرمال و وزن‌دار شود."
+  err: "نتیجه به وزن‌ها حساس است. تحلیل حساسیت روی وزن‌ها انجام شود."
+  ref: [M1-9]
+- id: FRM-09-017
+  fa: "ضریب نزدیکی به جواب ایده‌آل (TOPSIS)"
+  en: "TOPSIS closeness coefficient"
+  expr: "CC = d_minus / (d_plus + d_minus)"
+  vars:
+  - {s: d_plus, fa: "فاصله از جواب ایده‌آل", u: "-", k: d, from: [FRM-09-016]}
+  - {s: d_minus, fa: "فاصله از جواب ضدایده‌آل", u: "-", k: d, from: [FRM-09-016]}
+  res: {s: CC, fa: "ضریب نزدیکی", u: "-"}
+  valid: "d_plus و d_minus همزمان صفر نباشند. هرچه CC بزرگ‌تر، راهکار بهتر."
+  err: "رتبه‌بندی فقط ترتیب را می‌گوید و مقدار صرفه‌جویی را نمی‌دهد. با NPV و ریسک اجرایی کنار هم دیده شود."
+  ref: [M1-9]
+- id: FRM-09-018
+  fa: "دامنه‌ی تغییر NPV در تحلیل حساسیت (عرض نمودار تورنادو)"
+  en: "NPV swing in sensitivity analysis (tornado width)"
+  expr: "Swing = abs(NPV_high - NPV_low)"
+  vars:
+  - {s: NPV_high, fa: "NPV با مقدار بالای متغیر (بقیه در مقدار پایه)", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: NPV_low, fa: "NPV با مقدار پایین متغیر (بقیه در مقدار پایه)", u: "currency", k: d, from: [FRM-09-007]}
+  res: {s: Swing, fa: "دامنه‌ی تغییر NPV", u: "currency"}
+  valid: "هر متغیر جداگانه و با بازه‌ی مکتوب (کمینه و بیشینه) تغییر کند. بازه‌ها قابل‌مقایسه و واقع‌بینانه باشند."
+  err: "این روش فقط اثر تک‌متغیره را نشان می‌دهد. اثر هم‌زمان و وابستگی متغیرها در تحلیل مونت‌کارلو (FRM-09-024 تا FRM-09-029) بررسی می‌شود."
+  note: "تحلیل حساسیت و مونت‌کارلو بنا به درخواست صاحب پروژه به ارزیابی اقتصادی اضافه شد."
+- id: FRM-09-019
+  fa: "کشش NPV نسبت به یک متغیر ورودی"
+  en: "Elasticity of NPV with respect to an input"
+  expr: "El = ((NPV_1 - NPV_0) / NPV_0) / ((x_1 - x_0) / x_0)"
+  vars:
+  - {s: NPV_0, fa: "NPV در مقدار پایه", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: NPV_1, fa: "NPV پس از تغییر کوچک متغیر", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: x_0, fa: "مقدار پایه‌ی متغیر", u: "-", k: c}
+  - {s: x_1, fa: "مقدار تغییر‌یافته‌ی متغیر", u: "-", k: c}
+  res: {s: El, fa: "کشش", u: "-"}
+  valid: "NPV_0 و x_0 غیرصفر. تغییر کوچک (مثلاً ده درصد). یعنی درصد تغییر NPV به ازای یک درصد تغییر متغیر."
+  err: "وقتی NPV نزدیک صفر است، کشش بسیار بزرگ می‌شود و گمراه‌کننده است. در آن حالت از دامنه‌ی تغییر (FRM-09-018) استفاده شود."
+- id: FRM-09-020
+  fa: "مقدار سرشکن‌کننده‌ی یک متغیر (NPV برابر صفر)"
+  en: "Break-even value of an input (NPV equals zero)"
+  expr: "x_be = x_0 - NPV_0 / dNPV_dx"
+  vars:
+  - {s: x_0, fa: "مقدار پایه‌ی متغیر", u: "-", k: c}
+  - {s: NPV_0, fa: "NPV در مقدار پایه", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: dNPV_dx, fa: "شیب NPV نسبت به متغیر (تقریب عددی)", u: "currency/unit", k: d}
+  res: {s: x_be, fa: "مقدار سرشکن‌کننده", u: "-"}
+  valid: "تقریب برای رابطه‌ی تقریباً خطی (مثل حجم صرفه‌جویی یا قیمت آب). برای نرخ تنزیل رابطه خطی نیست و باید حل عددی شود."
+  err: "فاصله‌ی مقدار پایه تا مقدار سرشکن‌کننده نشان می‌دهد پروژه چقدر در برابر خطای برآورد تاب دارد."
+- id: FRM-09-021
+  fa: "میانگین توزیع مثلثی"
+  en: "Mean of a triangular distribution"
+  expr: "mu = (a + m + b) / 3"
+  vars:
+  - {s: a, fa: "کمینه", u: "-", k: c}
+  - {s: m, fa: "محتمل‌ترین مقدار", u: "-", k: c}
+  - {s: b, fa: "بیشینه", u: "-", k: c}
+  res: {s: mu, fa: "میانگین", u: "-"}
+  valid: "a ≤ m ≤ b و a < b. بازه و مقدار محتمل‌ترین از نظر کارشناسی یا داده‌ی تاریخی مستند شود."
+  err: "توزیع مثلثی ساده است و دُم‌های بلند ندارد. اگر مقدار بیرون از بازه ممکن است، توزیع دیگری لازم است."
+- id: FRM-09-022
+  fa: "واریانس توزیع مثلثی"
+  en: "Variance of a triangular distribution"
+  expr: "var = (a^2 + m^2 + b^2 - a * m - a * b - m * b) / 18"
+  vars:
+  - {s: a, fa: "کمینه", u: "-", k: c}
+  - {s: m, fa: "محتمل‌ترین مقدار", u: "-", k: c}
+  - {s: b, fa: "بیشینه", u: "-", k: c}
+  res: {s: var, fa: "واریانس", u: "-"}
+  valid: "a ≤ m ≤ b و a < b."
+  err: "انحراف معیار ریشه‌ی دوم این مقدار است."
+- id: FRM-09-023
+  fa: "نمونه‌گیری تصادفی از توزیع مثلثی (تبدیل معکوس)"
+  en: "Random sample from a triangular distribution (inverse transform)"
+  expr: "x_s = a + sqrt(u * (b - a) * (m - a)) if u < Fc else b - sqrt((1 - u) * (b - a) * (b - m)), with Fc = (m - a) / (b - a)"
+  vars:
+  - {s: u, fa: "عدد تصادفی یکنواخت بین ۰ و ۱", u: "-", k: c}
+  - {s: a, fa: "کمینه", u: "-", k: c}
+  - {s: m, fa: "محتمل‌ترین مقدار", u: "-", k: c}
+  - {s: b, fa: "بیشینه", u: "-", k: c}
+  - {s: Fc, fa: "احتمال تجمعی در محتمل‌ترین مقدار", u: "-", k: c}
+  res: {s: x_s, fa: "مقدار نمونه", u: "-"}
+  valid: "مولد عدد تصادفی با بذر مشخص (seed) باشد تا نتیجه تکرارپذیر باشد. a < b."
+  err: "بذر و تعداد تکرار همراه نتیجه ثبت شود."
+- id: FRM-09-024
+  fa: "میانگین NPV در شبیه‌سازی مونت‌کارلو"
+  en: "Mean NPV in Monte Carlo simulation"
+  expr: "NPV_mean = sum(NPV_k) / N"
+  vars:
+  - {s: NPV_k, fa: "NPV تکرار k (با ورودی‌های نمونه‌گیری‌شده)", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: N, fa: "تعداد تکرارها", u: "-", k: c}
+  res: {s: NPV_mean, fa: "میانگین NPV", u: "currency"}
+  valid: "ورودی‌های هر تکرار هم‌زمان نمونه‌گیری شوند. N به‌اندازه‌ی کافی بزرگ باشد (FRM-09-032)."
+  err: "میانگین NPV ممکن است با NPV در مقدار پایه فرق داشته باشد، به‌خصوص با ورودی‌های نامتقارن."
+- id: FRM-09-025
+  fa: "خطای استاندارد میانگین مونت‌کارلو"
+  en: "Standard error of the Monte Carlo mean"
+  expr: "SE = s / sqrt(N)"
+  vars:
+  - {s: s, fa: "انحراف معیار نمونه‌ی NPV", u: "currency", k: d}
+  - {s: N, fa: "تعداد تکرارها", u: "-", k: c}
+  res: {s: SE, fa: "خطای استاندارد", u: "currency"}
+  valid: "تکرارها مستقل باشند."
+  err: "این خطای محاسباتی شبیه‌سازی است، نه عدم قطعیت واقعی پروژه."
+- id: FRM-09-026
+  fa: "احتمال زیان (NPV منفی)"
+  en: "Probability of loss (negative NPV)"
+  expr: "P_loss = count(NPV_k < 0) / N"
+  vars:
+  - {s: NPV_k, fa: "NPV تکرار k", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: N, fa: "تعداد تکرارها", u: "-", k: c}
+  res: {s: P_loss, fa: "احتمال زیان", u: "-"}
+  valid: "ورودی‌ها و بازه‌ها فرض‌های کارشناسی‌اند. احتمال تابع همین فرض‌هاست."
+  err: "احتمال زیان کم، «بی‌ریسک» بودن پروژه نیست. فرض‌های توزیع و همبستگی ورودی‌ها بررسی شود."
+- id: FRM-09-027
+  fa: "صدک تجربی NPV"
+  en: "Empirical percentile of NPV"
+  expr: "P_q = NPV_(ceil(q * N))"
+  vars:
+  - {s: NPV_, fa: "NPV مرتب‌شده به‌صورت صعودی", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: q, fa: "سطح صدک (مثلاً ۰٫۰۵ ، ۰٫۵ ، ۰٫۹۵)", u: "-", k: c}
+  - {s: N, fa: "تعداد تکرارها", u: "-", k: c}
+  res: {s: P_q, fa: "صدک NPV", u: "currency"}
+  valid: "داده مرتب شود. برای N کوچک، صدک‌های دُم (۵ و ۹۵) نااطمینان‌اند."
+  err: "صدک ۵ (بدبینانه) و ۹۵ (خوش‌بینانه) همراه میانه گزارش شود."
+- id: FRM-09-028
+  fa: "ارزش در معرض ریسک NPV (VaR)"
+  en: "NPV value at risk (VaR)"
+  expr: "VaR = max(0, -P_q)"
+  vars:
+  - {s: P_q, fa: "صدک پایین NPV (مثلاً صدک ۵)", u: "currency", k: d, from: [FRM-09-027]}
+  res: {s: VaR, fa: "ارزش در معرض ریسک", u: "currency"}
+  valid: "سطح اطمینان همراه عدد ثبت شود (مثلاً ۹۵ درصد برای صدک ۵)."
+  err: "صفر بودن VaR یعنی در آن سطح اطمینان NPV منفی نمی‌شود، نه اینکه ریسک وجود ندارد."
+- id: FRM-09-029
+  fa: "زیان مورد انتظار دُم (Expected Shortfall)"
+  en: "Expected shortfall of NPV"
+  expr: "ES = sum(NPV_k where NPV_k <= P_q) / count(NPV_k <= P_q)"
+  vars:
+  - {s: NPV_k, fa: "NPV تکرار k", u: "currency", k: d, from: [FRM-09-007]}
+  - {s: P_q, fa: "صدک پایین NPV", u: "currency", k: d, from: [FRM-09-027]}
+  res: {s: ES, fa: "میانگین NPV در بدترین حالت‌ها", u: "currency"}
+  valid: "تعداد تکرارهای دُم برای میانگین‌گیری کافی باشد."
+  err: "از VaR محافظه‌کارانه‌تر است و شدت زیان در بدترین سناریوها را نشان می‌دهد."
+- id: FRM-09-030
+  fa: "همبستگی رتبه‌ای اسپیرمن ورودی با NPV"
+  en: "Spearman rank correlation of an input with NPV"
+  expr: "rho = 1 - 6 * sum(d_i^2) / (N * (N^2 - 1))"
+  vars:
+  - {s: d_i, fa: "اختلاف رتبه‌ی ورودی و رتبه‌ی NPV در تکرار i", u: "-", k: d}
+  - {s: N, fa: "تعداد تکرارها", u: "-", k: c}
+  res: {s: rho, fa: "همبستگی رتبه‌ای", u: "-"}
+  valid: "برای داده‌ی بدون مقدار تکراری. مقدار مطلق بزرگ‌تر یعنی اثر بیشتر روی نتیجه‌ی ریسک."
+  err: "همبستگی علت و معلول را ثابت نمی‌کند و فقط سهم نسبی ورودی‌ها را در نوسان NPV رتبه‌بندی می‌کند."
+- id: FRM-09-031
+  fa: "ضریب تغییرات NPV"
+  en: "Coefficient of variation of NPV"
+  expr: "CV = s / abs(NPV_mean)"
+  vars:
+  - {s: s, fa: "انحراف معیار NPV", u: "currency", k: d}
+  - {s: NPV_mean, fa: "میانگین NPV", u: "currency", k: d, from: [FRM-09-024]}
+  res: {s: CV, fa: "ضریب تغییرات", u: "-"}
+  valid: "NPV_mean دور از صفر. مقایسه‌ی ریسک نسبی راهکارها با مقیاس متفاوت."
+  err: "نزدیک صفر بودن میانگین، ضریب را نامعنی می‌کند."
+- id: FRM-09-032
+  fa: "تعداد تکرار لازم برای دقت مطلوب میانگین"
+  en: "Iterations needed for a target accuracy of the mean"
+  expr: "N_req = (z * s / E_t)^2"
+  vars:
+  - {s: z, fa: "ضریب سطح اطمینان (حدود ۱٫۹۶ برای ۹۵ درصد)", u: "-", k: c}
+  - {s: s, fa: "انحراف معیار NPV (از اجرای آزمایشی)", u: "currency", k: d}
+  - {s: E_t, fa: "خطای مطلوب میانگین", u: "currency", k: c}
+  res: {s: N_req, fa: "تعداد تکرار لازم", u: "-"}
+  valid: "s از یک اجرای آزمایشی بیاید. E_t را ممیز تعیین می‌کند."
+  err: "برای دُم‌ها (صدک ۵) به تکرار بیشتری نیاز است."

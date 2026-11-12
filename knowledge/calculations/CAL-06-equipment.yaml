@@ -1,0 +1,264 @@
+engine: CAL-06
+defaults: {lvl: [equipment], eq: [ALL], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-10"}
+records:
+- id: FRM-06-001
+  fa: "توان هیدرولیکی پمپ"
+  en: "Pump hydraulic power"
+  expr: "P_hyd = rho * g * Q * H / 3600000"
+  vars:
+  - {s: rho, fa: "چگالی آب (حدود ۱۰۰۰)", u: "kg/m3", k: c}
+  - {s: g, fa: "شتاب گرانش (۹٫۸۱)", u: "m/s2", k: c}
+  - {s: Q, fa: "دبی پمپ", u: "m3/h", k: m, p: flow_rate}
+  - {s: H, fa: "هد پمپ", u: "m", k: m, p: head}
+  res: {s: P_hyd, fa: "توان هیدرولیکی", u: "kW"}
+  valid: "دبی بر حسب m3/h است و عدد ۳٬۶۰۰٬۰۰۰ تبدیل واحد به کیلووات را انجام می‌دهد. هد و دبی در یک نقطه‌ی کار هم‌زمان خوانده شوند."
+  err: "اگر چگالی با دما تغییر محسوس دارد (آب داغ)، مقدار واقعی استفاده شود."
+  eq: [pump, pumping_station]
+  ref: [M2-4.6]
+- id: FRM-06-002
+  fa: "راندمان کلی پمپ"
+  en: "Overall pump efficiency"
+  expr: "eta_pump = P_hyd / P_el * 100"
+  vars:
+  - {s: P_hyd, fa: "توان هیدرولیکی", u: "kW", k: d, from: [FRM-06-001]}
+  - {s: P_el, fa: "توان الکتریکی ورودی", u: "kW", k: m, p: electric_power}
+  res: {s: eta_pump, fa: "راندمان پمپ", u: "%"}
+  valid: "P_el بزرگ‌تر از صفر. توان ورودی به موتور یا ورودی شفت مشخص باشد (راندمان مجموعه‌ی موتور-پمپ یا فقط پمپ)."
+  err: "راندمان بالای ۱۰۰ درصد یعنی خطا در دبی، هد یا توان. با منحنی پمپ مقایسه شود."
+  eq: [pump, pumping_station]
+  ref: [M2-4.6]
+- id: FRM-06-003
+  fa: "مصرف ویژه‌ی انرژی انتقال آب"
+  en: "Specific pumping energy"
+  expr: "E_s = P_el / Q"
+  vars:
+  - {s: P_el, fa: "توان الکتریکی", u: "kW", k: m, p: electric_power}
+  - {s: Q, fa: "دبی", u: "m3/h", k: m, p: flow_rate}
+  res: {s: E_s, fa: "انرژی ویژه", u: "kWh/m3"}
+  valid: "حالت پایدار. Q بزرگ‌تر از صفر. هد کاری باید ثابت یا گزارش شود."
+  err: "افزایش بدون تغییر هد نشانه‌ی افت راندمان یا انحراف نقطه‌ی کار است."
+  eq: [pump, pumping_station]
+- id: FRM-06-004
+  fa: "انرژی مصرفی در بازه"
+  en: "Energy consumed over a period"
+  expr: "E = P_el * t"
+  vars:
+  - {s: P_el, fa: "توان الکتریکی متوسط", u: "kW", k: m, p: electric_power}
+  - {s: t, fa: "زمان کارکرد", u: "h", k: m, p: run_time}
+  res: {s: E, fa: "انرژی مصرفی", u: "kWh"}
+  valid: "توان متوسط در بازه‌ی کارکرد. برای بار متغیر از انتگرال‌گیری خوانش‌ها استفاده شود."
+  err: "زمان توقف از t کنار گذاشته شود."
+- id: FRM-06-005
+  fa: "توان الکتریکی موتور سه‌فاز از جریان"
+  en: "Three-phase motor power from current"
+  expr: "P_el = sqrt(3) * U * I * cos_phi / 1000"
+  vars:
+  - {s: U, fa: "ولتاژ خط", u: "V", k: c}
+  - {s: I, fa: "جریان موتور", u: "A", k: m, p: motor_current}
+  - {s: cos_phi, fa: "ضریب توان", u: "-", k: c}
+  res: {s: P_el, fa: "توان الکتریکی", u: "kW"}
+  valid: "بار متعادل سه‌فاز. ضریب توان در بار کم کاهش می‌یابد و ثابت‌گرفتن آن خطا می‌دهد."
+  err: "در صورت امکان توان را مستقیم با توان‌سنج اندازه‌گیری کنید."
+  eq: [pump, pumping_station]
+- id: FRM-06-006
+  fa: "تغییر توان پمپ با دور (قانون تشابه)"
+  en: "Pump power change with speed (affinity law)"
+  expr: "P2 = P1 * (n2 / n1)^3"
+  vars:
+  - {s: P1, fa: "توان در دور اول", u: "kW", k: m, p: electric_power}
+  - {s: n1, fa: "دور اول", u: "rpm", k: c}
+  - {s: n2, fa: "دور دوم", u: "rpm", k: c}
+  res: {s: P2, fa: "توان برآوردی در دور دوم", u: "kW"}
+  valid: "فقط برای شبکه‌ی با افت اصطکاکی غالب و بدون هد استاتیکی بزرگ. با هد استاتیکی بالا، کاهش توان کمتر از این رابطه است."
+  err: "نتیجه برآورد است و برای تصمیم صرفه‌جویی با اندازه‌گیری تأیید شود."
+  eq: [pump, pumping_station]
+- id: FRM-06-007
+  fa: "دور تغلیظ برج از هدایت الکتریکی"
+  en: "Cycles of concentration from conductivity"
+  expr: "COC_ec = EC_circ / EC_makeup"
+  vars:
+  - {s: EC_circ, fa: "هدایت الکتریکی آب در گردش", u: "uS/cm", k: m, p: ec}
+  - {s: EC_makeup, fa: "هدایت الکتریکی آب جبرانی", u: "uS/cm", k: m, p: ec}
+  res: {s: COC_ec, fa: "دور تغلیظ", u: "-"}
+  valid: "EC_makeup بزرگ‌تر از صفر. هر دو با یک دما یا تصحیح‌شده به ۲۵ درجه (FRM-05-004)."
+  err: "افزودن مواد شیمیایی هدایت‌دار، هدایت را بالا می‌برد و COC واقعی را بیش از حد نشان می‌دهد."
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+  ref: [M2-4.6, M1-6.1]
+- id: FRM-06-008
+  fa: "دور تغلیظ برج از کلرید"
+  en: "Cycles of concentration from chloride"
+  expr: "COC_cl = Cl_circ / Cl_makeup"
+  vars:
+  - {s: Cl_circ, fa: "کلرید آب در گردش", u: "mg/L", k: m, p: chloride}
+  - {s: Cl_makeup, fa: "کلرید آب جبرانی", u: "mg/L", k: m, p: chloride}
+  res: {s: COC_cl, fa: "دور تغلیظ", u: "-"}
+  valid: "Cl_makeup بزرگ‌تر از صفر. کلرید تقریباً پایستار است و دقیق‌تر از هدایت وقتی شیمی‌افزودنی زیاد است. کلرزنی با مواد حاوی کلرید را لحاظ کنید."
+  err: "با COC از هدایت (FRM-06-007) مقایسه شود. اختلاف زیاد نشانه‌ی رسوب یا اضافه‌شدن یون است."
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+- id: FRM-06-009
+  fa: "دور تغلیظ از دبی‌ها"
+  en: "Cycles of concentration from flows"
+  expr: "COC_flow = M / (B + D)"
+  vars:
+  - {s: M, fa: "دبی آب جبرانی", u: "m3/h", k: m, p: flow_rate}
+  - {s: B, fa: "دبی بلودان", u: "m3/h", k: m, p: flow_rate}
+  - {s: D, fa: "دبی دریفت", u: "m3/h", k: c}
+  res: {s: COC_flow, fa: "دور تغلیظ", u: "-"}
+  valid: "حالت پایدار و بدون نشتی. B + D بزرگ‌تر از صفر."
+  err: "اختلاف با COC شیمیایی نشانه‌ی نشتی، سرریز یا خطای کنتور دبی است."
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+- id: FRM-06-010
+  fa: "حداکثر دور تغلیظ مجاز بر اساس گونه‌ی محدودکننده"
+  en: "Maximum allowable cycles of concentration"
+  expr: "COC_max = C_limit / C_makeup"
+  vars:
+  - {s: C_limit, fa: "غلظت مجاز گونه‌ی محدودکننده در آب گردش (مثل سیلیس یا سختی)", u: "mg/L", k: c}
+  - {s: C_makeup, fa: "غلظت همان گونه در آب جبرانی", u: "mg/L", k: m, p: silica}
+  res: {s: COC_max, fa: "حداکثر دور تغلیظ", u: "-"}
+  valid: "برای هر گونه‌ی محدودکننده جداگانه حساب شود و کمینه‌ی آن‌ها حد نهایی است. سیلیس فقط نمونه است."
+  err: "حد مجاز را از برنامه‌ی تصفیه‌ی شیمیایی و شاخص‌های رسوب (FRM-05-011) بگیرید."
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, evaporative_condenser]
+- id: FRM-06-011
+  fa: "اپروچ برج خنک‌کن"
+  en: "Cooling tower approach"
+  expr: "A = T_cold - T_wb"
+  vars:
+  - {s: T_cold, fa: "دمای آب سرد خروجی", u: "°C", k: m, p: temperature}
+  - {s: T_wb, fa: "دمای حباب تر هوای محیط", u: "°C", k: m, p: wet_bulb_temperature}
+  res: {s: A, fa: "اپروچ", u: "K"}
+  valid: "دماها هم‌زمان خوانده شوند. حباب تر در ورودی هوای برج اندازه‌گیری شود."
+  err: "اپروچ منفی نشان‌دهنده‌ی خطای سنسور یا بازچرخانی هوا است."
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower]
+- id: FRM-06-012
+  fa: "اثربخشی برج خنک‌کن"
+  en: "Cooling tower effectiveness"
+  expr: "eff = dT / (dT + A) * 100"
+  vars:
+  - {s: dT, fa: "دامنه‌ی دما", u: "K", k: d, from: [FRM-02-009]}
+  - {s: A, fa: "اپروچ", u: "K", k: d, from: [FRM-06-011]}
+  res: {s: eff, fa: "اثربخشی", u: "%"}
+  valid: "مقدار با دبی هوا و بار تغییر می‌کند. مقایسه فقط در شرایط مشابه."
+  err: "کاهش اثربخشی با رسوب پر، دریفت‌گیر معیوب یا فن ضعیف همراه است."
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower]
+- id: FRM-06-013
+  fa: "برآورد دریفت برج از کسر دریفت"
+  en: "Drift estimate from drift fraction"
+  expr: "D = Q_c * f_d"
+  vars:
+  - {s: Q_c, fa: "دبی آب گردشی", u: "m3/h", k: m, p: flow_rate}
+  - {s: f_d, fa: "کسر دریفت (کسری از دبی گردشی از مشخصات طراحی)", u: "-", k: c}
+  res: {s: D, fa: "دبی دریفت", u: "m3/h"}
+  valid: "کسر دریفت باید از مشخصات سازنده یا آزمون باشد و با خرابی دریفت‌گیر تغییر می‌کند."
+  err: "عدد برآوردی است و با برچسب مشخص گزارش شود."
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, drift_eliminator]
+- id: FRM-06-014
+  fa: "بازیابی (Recovery) اسمز معکوس"
+  en: "RO recovery"
+  expr: "Rec = Q_p / Q_f * 100"
+  vars:
+  - {s: Q_p, fa: "دبی آب تولیدی (پرمیت)", u: "m3/h", k: m, p: flow_rate}
+  - {s: Q_f, fa: "دبی خوراک", u: "m3/h", k: m, p: flow_rate}
+  res: {s: Rec, fa: "بازیابی", u: "%"}
+  valid: "Q_f بزرگ‌تر از صفر. حالت پایدار. بازیابی هر مرحله جداگانه گزارش شود."
+  err: "افزایش بازیابی بدون بررسی رسوب‌گذاری و حد اشباع املاح ممنوع است."
+  eq: [reverse_osmosis, nanofiltration]
+  ref: [M2-4.6, M1-6.3]
+- id: FRM-06-015
+  fa: "دفع نمک ظاهری غشا"
+  en: "Apparent salt rejection"
+  expr: "Rej = (1 - C_p / C_f) * 100"
+  vars:
+  - {s: C_p, fa: "هدایت یا شوری پرمیت", u: "uS/cm", k: m, p: ec}
+  - {s: C_f, fa: "هدایت یا شوری خوراک", u: "uS/cm", k: m, p: ec}
+  res: {s: Rej, fa: "دفع نمک ظاهری", u: "%"}
+  valid: "C_f بزرگ‌تر از صفر. هر دو با یک روش و دما اندازه‌گیری شوند. دفع «ظاهری» غلظت خوراک را به‌جای غلظت سطح غشا می‌گیرد."
+  err: "افت دفع نسبت به مقدار اولیه نشانه‌ی آسیب یا فرسودگی غشا است."
+  eq: [reverse_osmosis, nanofiltration]
+- id: FRM-06-016
+  fa: "ضریب تغلیظ کنسانتره‌ی RO"
+  en: "RO concentrate concentration factor"
+  expr: "CF = 1 / (1 - Rec / 100)"
+  vars:
+  - {s: Rec, fa: "بازیابی", u: "%", k: d, from: [FRM-06-014]}
+  res: {s: CF, fa: "ضریب تغلیظ", u: "-"}
+  valid: "با فرض دفع کامل نمک. دفع واقعی کمتر از ۱۰۰٪ ضریب را کمی کاهش می‌دهد. Rec کمتر از ۱۰۰."
+  err: "ضریب تغلیظ با حد اشباع املاح (سیلیس، سولفات کلسیم و غیره) سنجیده شود."
+  eq: [reverse_osmosis, nanofiltration]
+- id: FRM-06-017
+  fa: "مصرف ویژه‌ی انرژی غشا"
+  en: "Membrane specific energy consumption"
+  expr: "SEC = P_el / Q_p"
+  vars:
+  - {s: P_el, fa: "توان الکتریکی پمپ‌ها و تجهیزات سامانه", u: "kW", k: m, p: electric_power}
+  - {s: Q_p, fa: "دبی آب تولیدی", u: "m3/h", k: m, p: flow_rate}
+  res: {s: SEC, fa: "انرژی ویژه", u: "kWh/m3"}
+  valid: "حالت پایدار. مرز توان (فقط پمپ فشار قوی یا کل سامانه) مشخص باشد."
+  err: "مقایسه‌ی دو مجتمع فقط با مرز توان یکسان معتبر است."
+  eq: [reverse_osmosis, nanofiltration, ultrafiltration, microfiltration, electrodialysis, thermal_desalination]
+- id: FRM-06-018
+  fa: "افزایش اختلاف فشار غشا یا فیلتر (شاخص گرفتگی)"
+  en: "Differential pressure rise (fouling indicator)"
+  expr: "dP_rise = (dP - dP_0) / dP_0 * 100"
+  vars:
+  - {s: dP, fa: "اختلاف فشار فعلی", u: "bar", k: m, p: diff_pressure}
+  - {s: dP_0, fa: "اختلاف فشار مرجع (تمیز) در همان دبی", u: "bar", k: c}
+  res: {s: dP_rise, fa: "افزایش اختلاف فشار", u: "%"}
+  valid: "مقایسه در دبی و دمای یکسان یا پس از تصحیح. dP_0 بزرگ‌تر از صفر."
+  err: "مبنای تصمیم شست‌وشو را از دستورالعمل سازنده بگیرید."
+  eq: [reverse_osmosis, nanofiltration, ultrafiltration, microfiltration, media_filter, cartridge_filter, tertiary_filter, carbon_filter, heat_exchanger]
+- id: FRM-06-019
+  fa: "دبی بلودان بویلر از غلظت املاح"
+  en: "Boiler blowdown flow from dissolved solids"
+  expr: "B_b = m_s * C_fw / (C_b - C_fw)"
+  vars:
+  - {s: m_s, fa: "بخار تولیدی", u: "t/h", k: m, p: steam_flow}
+  - {s: C_fw, fa: "TDS آب تغذیه", u: "mg/L", k: m, p: tds}
+  - {s: C_b, fa: "TDS مجاز آب داخل بویلر", u: "mg/L", k: m, p: tds}
+  res: {s: B_b, fa: "دبی بلودان", u: "t/h"}
+  valid: "بدون انتقال املاح با بخار (carryover). C_b بزرگ‌تر از C_fw. برای آب با چگالی تقریباً ۱ هر تن برابر یک مترمکعب است."
+  err: "با کنتور بلودان مقایسه شود. بلودان بیش از این مقدار هدررفت آب و گرما است."
+  eq: [boiler, blowdown_system]
+- id: FRM-06-020
+  fa: "زمان ماند هیدرولیکی"
+  en: "Hydraulic retention time"
+  expr: "HRT = V / Q"
+  vars:
+  - {s: V, fa: "حجم مفید واحد", u: "m3", k: m, p: volume}
+  - {s: Q, fa: "دبی ورودی", u: "m3/h", k: m, p: flow_rate}
+  res: {s: HRT, fa: "زمان ماند", u: "h"}
+  valid: "Q بزرگ‌تر از صفر. حجم مفید بدون ناحیه‌ی مرده."
+  err: "کاهش HRT نسبت به طراحی ریسک افت کیفیت خروجی است."
+  eq: [equalization, activated_sludge, mbr, mbbr, uasb, primary_clarifier, secondary_clarifier]
+- id: FRM-06-021
+  fa: "بار هیدرولیکی سطحی فیلتر"
+  en: "Filter hydraulic loading rate"
+  expr: "HLR = Q / A"
+  vars:
+  - {s: Q, fa: "دبی عبوری", u: "m3/h", k: m, p: flow_rate}
+  - {s: A, fa: "سطح مقطع فیلتر", u: "m2", k: c}
+  res: {s: HLR, fa: "بار هیدرولیکی", u: "m/h"}
+  valid: "A مجموع سطح فیلترهای در سرویس. فیلتر در حال شست‌وشو محاسبه نشود."
+  err: "بالاتر از مقدار طراحی، کیفیت و طول سیکل را کم می‌کند."
+  eq: [media_filter, tertiary_filter, carbon_filter]
+- id: FRM-06-022
+  fa: "سهم آب شست‌وشوی معکوس از آب فیلتر‌شده"
+  en: "Backwash water fraction"
+  expr: "BW = V_bw / V_filtered * 100"
+  vars:
+  - {s: V_bw, fa: "حجم آب شست‌وشوی معکوس", u: "m3", k: m, p: volume}
+  - {s: V_filtered, fa: "حجم آب فیلتر‌شده‌ی تولیدی", u: "m3", k: m, p: volume}
+  res: {s: BW, fa: "سهم شست‌وشو", u: "%"}
+  valid: "V_filtered بزرگ‌تر از صفر. حجم شست‌وشو شامل آبکشی نهایی (فلاش) باشد."
+  err: "شست‌وشوی زیاد یا بیش از نیاز، مصرف آب داخلی را بالا می‌برد. با افزایش اختلاف فشار (FRM-06-018) تنظیم شود."
+  eq: [media_filter, tertiary_filter, carbon_filter, ultrafiltration, microfiltration, side_stream_filter]
+- id: FRM-06-023
+  fa: "دوز مواد شیمیایی"
+  en: "Chemical dose"
+  expr: "dose = m_chem * 1000 / Q"
+  vars:
+  - {s: m_chem, fa: "مصرف ماده‌ی شیمیایی", u: "kg/h", k: m, p: chemical_consumption}
+  - {s: Q, fa: "دبی آب تیمارشده", u: "m3/h", k: m, p: flow_rate}
+  res: {s: dose, fa: "دوز", u: "mg/L"}
+  valid: "Q بزرگ‌تر از صفر. غلظت ماده‌ی تجاری با ماده‌ی فعال یکی گرفته نشود."
+  err: "تغییر دوز بدون تغییر کیفیت آب نشانه‌ی خطای پمپ دوزینگ یا مخزن شیمیایی است."
+  eq: [chemical_dosing, regeneration_system, coagulation, disinfection]

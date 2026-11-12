@@ -1,0 +1,180 @@
+engine: CAL-04
+defaults: {lvl: [site, process, equipment], eq: [ALL], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-09"}
+records:
+- id: FRM-04-001
+  fa: "آب حسابرسی‌نشده"
+  en: "Unaccounted water"
+  expr: "W_unacc = W_input - W_accounted"
+  vars:
+  - {s: W_input, fa: "کل آب ورودی گره", u: "m3", k: m, p: volume}
+  - {s: W_accounted, fa: "جمع مصارف و خروجی‌های شناخته‌شده و اندازه‌گیری‌شده", u: "m3", k: d}
+  res: {s: W_unacc, fa: "آب حسابرسی‌نشده", u: "m3"}
+  valid: "مرز و بازه برای ورودی و مصارف یکسان باشد. تغییر موجودی مخازن در W_accounted لحاظ شود."
+  err: "این عدد نشتی نیست. مجموع نشتی واقعی، خطای اندازه‌گیری، خطای برآورد، اختلاف زمان ثبت و جریان‌های شناسایی‌نشده است."
+  ref: [M1-4.2]
+- id: FRM-04-002
+  fa: "درصد آب حسابرسی‌نشده نسبت به ورودی (R_balance)"
+  en: "Unaccounted water as a percentage of input (R_balance)"
+  expr: "R_balance = W_unacc / W_input * 100"
+  vars:
+  - {s: W_unacc, fa: "آب حسابرسی‌نشده", u: "m3", k: d, from: [FRM-04-001]}
+  - {s: W_input, fa: "کل آب ورودی گره", u: "m3", k: m, p: volume}
+  res: {s: R_balance, fa: "درصد آب حسابرسی‌نشده", u: "%"}
+  valid: "W_input بزرگ‌تر از صفر."
+  err: "با عدم قطعیت اندازه‌گیری (FRM-01-009) تفسیر شود. درصد بالا الزاماً نشتی نیست."
+  ref: [M1-4.2]
+- id: FRM-04-003
+  fa: "پرچم نیاز به بررسی (آستانه‌ی غربالگری)"
+  en: "Review-needed flag (screening threshold)"
+  expr: "flag = R_balance > R_thr"
+  vars:
+  - {s: R_balance, fa: "درصد آب حسابرسی‌نشده", u: "%", k: d, from: [FRM-04-002]}
+  - {s: R_thr, fa: "آستانه‌ی غربالگری (طبق EPA و DOE حدود ۱۰ درصد)", u: "%", k: c}
+  res: {s: flag, fa: "نیاز به بررسی بیشتر (درست/نادرست)", u: "-"}
+  valid: "آستانه فقط برای غربالگری است و حد مجاز عمومی همه‌ی صنایع نیست. برای هر مجتمع بر اساس عدم قطعیت تعیین شود."
+  err: "پذیرش واقعی با شاخص Z_R انجام شود، نه آستانه‌ی ثابت."
+  ref: [M1-4.2]
+- id: FRM-04-004
+  fa: "دبی پایه در زمان توقف تولید"
+  en: "Base flow during production stop"
+  expr: "Q_base = sum(Q_i) / n, for r_i = 0"
+  vars:
+  - {s: Q_i, fa: "دبی در گام i", u: "m3/h", k: m, p: flow_rate}
+  - {s: r_i, fa: "نرخ تولید در گام i", u: "t/h", k: m, p: production_rate}
+  - {s: n, fa: "تعداد گام‌های بدون تولید", u: "-", k: c}
+  res: {s: Q_base, fa: "دبی پایه", u: "m3/h"}
+  valid: "فقط گام‌های توقف کامل تولید. مصارف خدماتی شبانه (آبیاری، بهداشتی، گردش آب) باید شناخته و جدا شود."
+  err: "مصرف پایه‌ی بالا نشانه‌ی مصرف خدماتی، گردش آب، نشتی یا خطای کنتور است و باید میدانی بررسی شود."
+  note: "روش‌شناسی (بخش ۴٫۳) تحلیل جریان پایه در توقف تولید را به‌عنوان روش دوم تشخیص اتلاف معرفی می‌کند ولی رابطه‌ای نداده است."
+- id: FRM-04-005
+  fa: "کمینه‌ی دبی متوسط‌گیری‌شده (برای تشخیص جریان پایه)"
+  en: "Minimum of the moving-average flow"
+  expr: "Q_min = min(Q_ma)"
+  vars:
+  - {s: Q_ma, fa: "دبی متوسط متحرک در پنجره‌های پشت‌سرهم", u: "m3/h", k: m, p: flow_rate}
+  res: {s: Q_min, fa: "کمینه‌ی دبی", u: "m3/h"}
+  valid: "طول پنجره‌ی متوسط‌گیری ثبت شود. داده‌ی گمشده خارج یا برچسب‌گذاری شود."
+  err: "نوسان کنتور در دبی‌های بسیار کم (زیر رنج دقت) نتیجه را خراب می‌کند."
+- id: FRM-04-006
+  fa: "سهم جریان پایه از مصرف متوسط"
+  en: "Base-flow share of average consumption"
+  expr: "BF = Q_base / Q_avg * 100"
+  vars:
+  - {s: Q_base, fa: "دبی پایه", u: "m3/h", k: d, from: [FRM-04-004]}
+  - {s: Q_avg, fa: "دبی متوسط در بازه‌ی کارکرد", u: "m3/h", k: d, from: [FRM-02-005]}
+  res: {s: BF, fa: "سهم جریان پایه", u: "%"}
+  valid: "Q_avg بزرگ‌تر از صفر. هر دو در یک بازه‌ی نماینده محاسبه شوند."
+  err: "برای فرآیندهایی که ذاتاً پیوسته‌اند (بدون توقف)، این شاخص تعریف‌پذیر نیست."
+- id: FRM-04-007
+  fa: "برآورد نشتی از دبی پایه"
+  en: "Leakage estimate from base flow"
+  expr: "Q_leak = Q_base - Q_service"
+  vars:
+  - {s: Q_base, fa: "دبی پایه", u: "m3/h", k: d, from: [FRM-04-004]}
+  - {s: Q_service, fa: "مصرف خدماتی شناخته‌شده در زمان توقف", u: "m3/h", k: c}
+  res: {s: Q_leak, fa: "دبی نشتی برآوردی", u: "m3/h"}
+  valid: "Q_service باید اندازه‌گیری یا مستند شده باشد. مقدار منفی نشانه‌ی خطای برآورد یا کنتور است."
+  err: "برآورد را با بازرسی میدانی تأیید کنید و تا آن زمان آن را «برآوردی» برچسب بزنید."
+- id: FRM-04-008
+  fa: "تغییر دبی نشتی با فشار (رابطه‌ی توانی)"
+  en: "Leakage change with pressure (power law)"
+  expr: "Q_L2 = Q_L1 * (P2 / P1)^N1"
+  vars:
+  - {s: Q_L1, fa: "دبی نشتی در فشار اول", u: "m3/h", k: d, from: [FRM-04-007]}
+  - {s: P1, fa: "فشار اول", u: "bar", k: m, p: pressure}
+  - {s: P2, fa: "فشار دوم", u: "bar", k: m, p: pressure}
+  - {s: N1, fa: "توان نشتی (وابسته به نوع شکاف و جنس لوله)", u: "-", k: c}
+  res: {s: Q_L2, fa: "دبی نشتی در فشار دوم", u: "m3/h"}
+  valid: "برای نشتی شبکه‌ی لوله‌کشی در حالت پایدار. فشارها مطلق یا هر دو نسبی یکسان باشند. N1 باید از آزمون یا مرجع معتبر گرفته شود."
+  err: "اگر فشار یا N1 نامطمئن است، نتیجه فقط برای مقایسه‌ی روند و اولویت‌بندی استفاده شود."
+  lvl: [equipment]
+- id: FRM-04-009
+  fa: "امتیاز استاندارد (Z) برای تشخیص مصرف غیرعادی"
+  en: "Standard score (Z) for abnormal consumption"
+  expr: "Z = (X - mu) / sigma"
+  vars:
+  - {s: X, fa: "مقدار پایش‌شده (دبی، مصرف یا پارامتر دیگر)", u: "m3/h", k: m, p: flow_rate}
+  - {s: mu, fa: "میانگین تاریخی", u: "m3/h", k: d, from: [FRM-04-010]}
+  - {s: sigma, fa: "انحراف معیار تاریخی", u: "m3/h", k: d, from: [FRM-04-011]}
+  res: {s: Z, fa: "امتیاز استاندارد", u: "-"}
+  valid: "sigma بزرگ‌تر از صفر. داده‌ی تاریخی هم‌شرایط (همان حالت کارکرد و فصل) باشد."
+  err: "تشخیص نشتی نباید صرفاً بر یک آستانه‌ی آماری باشد؛ شرایط تولید، وضعیت مخازن، فشار و کنتورهای دیگر هم بررسی شود."
+  ref: [M1-5.3]
+- id: FRM-04-010
+  fa: "میانگین تاریخی مقدار پایش‌شده"
+  en: "Historical mean of the monitored value"
+  expr: "mu = sum(X_h) / n"
+  vars:
+  - {s: X_h, fa: "مقادیر تاریخی هم‌شرایط", u: "m3/h", k: m, p: flow_rate}
+  - {s: n, fa: "تعداد مقادیر", u: "-", k: c}
+  res: {s: mu, fa: "میانگین تاریخی", u: "m3/h"}
+  valid: "n به‌اندازه‌ی کافی بزرگ (حداقل چند ده مقدار). داده‌ی معیوب یا توقف از نمونه خارج شود."
+  err: "ناهنجاری‌های قبلی نمونه را آلوده می‌کنند. قبل از محاسبه پاک‌سازی شود."
+- id: FRM-04-011
+  fa: "انحراف معیار تاریخی مقدار پایش‌شده"
+  en: "Historical standard deviation"
+  expr: "sigma = sqrt(sum((X_h - mu)^2) / (n - 1))"
+  vars:
+  - {s: X_h, fa: "مقادیر تاریخی هم‌شرایط", u: "m3/h", k: m, p: flow_rate}
+  - {s: mu, fa: "میانگین تاریخی", u: "m3/h", k: d, from: [FRM-04-010]}
+  - {s: n, fa: "تعداد مقادیر", u: "-", k: c}
+  res: {s: sigma, fa: "انحراف معیار تاریخی", u: "m3/h"}
+  valid: "n بزرگ‌تر از ۱. توزیع تقریباً متقارن فرض شده است."
+  err: "برای داده‌های بسیار چوله، از روش‌های مقاوم مثل میانه و MAD یا Isolation Forest استفاده شود."
+- id: FRM-04-012
+  fa: "پرچم مصرف غیرعادی"
+  en: "Abnormal consumption flag"
+  expr: "alert = abs(Z) > Z_lim"
+  vars:
+  - {s: Z, fa: "امتیاز استاندارد", u: "-", k: d, from: [FRM-04-009]}
+  - {s: Z_lim, fa: "حد امتیاز برای هشدار", u: "-", k: c}
+  res: {s: alert, fa: "هشدار مصرف غیرعادی (درست/نادرست)", u: "-"}
+  valid: "Z_lim محدوده‌ی تعیین‌شده توسط ممیز است. مقدار ثابت برای همه‌ی صنایع وجود ندارد."
+  err: "هشدار نیازمند تأیید با داده‌های تولید، سطح مخازن و فشار است."
+  ref: [M1-5.3]
+- id: FRM-04-013
+  fa: "باقیمانده‌ی استانداردشده‌ی مصرف نسبت به خط مبنا"
+  en: "Standardized residual against the baseline"
+  expr: "r = (W_actual - W_expected) / s_res"
+  vars:
+  - {s: W_actual, fa: "مصرف واقعی دوره", u: "m3", k: m, p: volume}
+  - {s: W_expected, fa: "مصرف مورد انتظار از مدل خط مبنا", u: "m3", k: d}
+  - {s: s_res, fa: "انحراف معیار باقیمانده‌های مدل", u: "m3", k: c}
+  res: {s: r, fa: "باقیمانده‌ی استانداردشده", u: "-"}
+  valid: "مدل خط مبنا (CAL-07) اعتبارسنجی شده و s_res از داده‌ی دوره‌ی کالیبراسیون باشد."
+  err: "افزایش مصرف را بدون تعدیل با تولید و دما اتلاف ندانید."
+- id: FRM-04-014
+  fa: "اختلاف تطبیق کنتور بالادست و مجموع کنتورهای پایین‌دست"
+  en: "Upstream meter versus sum of downstream meters"
+  expr: "D = (Q_up - sum(Q_down)) / Q_up * 100"
+  vars:
+  - {s: Q_up, fa: "دبی کنتور بالادست", u: "m3/h", k: m, p: flow_rate}
+  - {s: Q_down, fa: "دبی هر کنتور پایین‌دست", u: "m3/h", k: m, p: flow_rate}
+  res: {s: D, fa: "اختلاف تطبیق", u: "%"}
+  valid: "Q_up بزرگ‌تر از صفر. همه‌ی انشعاب‌های بین کنتورها اندازه‌گیری شده یا مشخص باشند."
+  err: "اختلاف را با عدم قطعیت کنتورها بسنجید. اختلاف پایدار نشانه‌ی نشتی یا خطای یکی از کنتورهاست."
+  lvl: [site, process]
+- id: FRM-04-015
+  fa: "نشتی مخزن از افت سطح بدون جریان ورودی و خروجی"
+  en: "Tank loss from level drop with no inflow or outflow"
+  expr: "Q_tank_loss = A * (h_start - h_end) / dt"
+  vars:
+  - {s: A, fa: "سطح مقطع مخزن", u: "m2", k: c}
+  - {s: h_start, fa: "سطح ابتدای آزمون", u: "m", k: m, p: level}
+  - {s: h_end, fa: "سطح انتهای آزمون", u: "m", k: m, p: level}
+  - {s: dt, fa: "طول آزمون", u: "h", k: c}
+  res: {s: Q_tank_loss, fa: "دبی افت مخزن", u: "m3/h"}
+  valid: "ورودی و خروجی مخزن در طول آزمون بسته و بدون تغییر دما و بارش باشد. تبخیر مخزن‌های باز را لحاظ کنید."
+  err: "افت ناشی از تبخیر و تغییر دمای آب را از نشتی جدا کنید."
+  lvl: [equipment]
+  eq: [storage_tank, raw_water_reservoir, feedwater_tank, firewater_tank, irrigation_storage]
+- id: FRM-04-016
+  fa: "قاعده‌ی تداوم هشدار (کاهش هشدار کاذب)"
+  en: "Alert persistence rule"
+  expr: "persist = sum(alert_i) >= m_min"
+  vars:
+  - {s: alert_i, fa: "هشدار دوره‌ی i (۱ یا ۰) در n دوره‌ی اخیر", u: "-", k: d, from: [FRM-04-012]}
+  - {s: m_min, fa: "حداقل دفعات هشدار برای نتیجه‌گیری", u: "-", k: c}
+  res: {s: persist, fa: "هشدار پایدار (درست/نادرست)", u: "-"}
+  valid: "n و m_min را ممیز با توجه به نویز داده تعیین می‌کند."
+  err: "هشدار پایدار هم فقط ارجاع به بازرسی است، اثبات نشتی نیست."

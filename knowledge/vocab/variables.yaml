@@ -1,0 +1,204 @@
+# Variables used by formulas and indicators. unit uses plain ASCII (uS/cm, m3). param links a variable to a measurable parameter (parameters.yaml).
+- {id: v_in, sym: V_in, fa: حجم کل آب ورودی, en: Total inflow volume, unit: m3}
+- {id: v_out, sym: V_out, fa: حجم کل آب خروجی, en: Total outflow volume, unit: m3}
+- {id: ds, sym: ΔS, fa: تغییر موجودی ذخیره (مخازن), en: Storage change, unit: m3}
+- {id: s_start, sym: S_start, fa: موجودی ابتدای دوره, en: Storage at period start, unit: m3, param: level}
+- {id: s_end, sym: S_end, fa: موجودی انتهای دوره, en: Storage at period end, unit: m3, param: level}
+- {id: r_v, sym: R, fa: باقیمانده موازنه, en: Balance residual, unit: m3}
+- {id: v_acc, sym: V_acc, fa: حجم حسابرسی‌شده (ثبت‌شده در مصارف و خروجی‌ها), en: Accounted volume, unit: m3}
+- {id: w_unacc, sym: W_unacc, fa: آب حسابرسی‌نشده, en: Unaccounted water, unit: m3}
+- {id: v_fresh, sym: V_fresh, fa: برداشت آب تازه, en: Freshwater withdrawal, unit: m3}
+- {id: v_alt, sym: V_alt, fa: آب منابع جایگزین (پساب بازیافتی، باران و غیره), en: Alternative-source water, unit: m3}
+- {id: v_reuse, sym: V_reuse, fa: آب استفاده‌مجدد و بازیافتی مصرف‌شده, en: Reused or recycled water used, unit: m3}
+- {id: v_reusable, sym: V_reusable, fa: جریان خروجی قابل استفاده‌ی مجدد, en: Reusable outflow, unit: m3}
+- {id: v_total, sym: V_total, fa: کل آب مصرفی, en: Total water use, unit: m3}
+- {id: v_cons, sym: V_cons, fa: مصرف خالص آب, en: Net water consumption, unit: m3}
+- {id: v_disch, sym: V_disch, fa: آب تخلیه‌شده از مجتمع, en: Water discharged from the site, unit: m3}
+- {id: v_ww, sym: V_ww, fa: پساب تولیدی, en: Wastewater generated, unit: m3}
+- {id: v_leak, sym: V_leak, fa: نشتی و سرریز ناخواسته, en: Leakage, unit: m3}
+- {id: v_evap, sym: V_evap, fa: تبخیر, en: Evaporation, unit: m3}
+- {id: v_over, sym: V_over, fa: سرریز, en: Overflow, unit: m3}
+- {id: v_ben, sym: V_ben, fa: مصرف مفید آب, en: Beneficial use, unit: m3}
+- {id: v_embed, sym: V_prod, fa: آب موجود در محصول, en: Water embedded in product, unit: m3}
+- {id: v_slw, sym: V_sl, fa: رطوبت همراه لجن و جامدات, en: Moisture leaving with sludge, unit: m3}
+- {id: v_permit, sym: V_permit, fa: حجم مجاز برداشت در دوره, en: Permitted withdrawal in period, unit: m3}
+- {id: v_nat, sym: V_nat, fa: برداشت از منابع طبیعی, en: Withdrawal from natural sources, unit: m3}
+- {id: v_ind, sym: V_ind, fa: آب غیرمستقیم (زنجیره‌ی تأمین), en: Indirect water, unit: m3}
+- {id: v_san, sym: V_san, fa: مصرف آب بهداشتی, en: Sanitary water use, unit: m3}
+- {id: v_day, sym: V_day, fa: مصرف روزانه, en: Daily consumption, unit: m3/day}
+- {id: v_period, sym: V, fa: حجم در یک بازه, en: Volume over an interval, unit: m3}
+- {id: v_dayi, sym: 'V_day,i', fa: حجم روز i, en: Volume of day i, unit: m3}
+- {id: v_mon, sym: V_month, fa: حجم ماه, en: Monthly volume, unit: m3}
+- {id: v_ann, sym: V_annual, fa: حجم سالانه, en: Annual volume, unit: m3/yr}
+- {id: v_mu, sym: M, fa: آب جبرانی, en: Makeup water, unit: m3}
+- {id: v_bd, sym: B, fa: بلودان, en: Blowdown, unit: m3}
+- {id: v_drift, sym: D, fa: دریفت, en: Drift, unit: m3}
+- {id: v_circ, sym: V_circ, fa: حجم آب گردشی, en: Circulating water volume, unit: m3}
+- {id: v_reuse_ww, sym: V_rw, fa: پساب بازیافت‌شده, en: Reclaimed wastewater volume, unit: m3}
+- {id: v_tank, sym: V_tank, fa: حجم مخزن, en: Tank volume, unit: m3}
+- {id: v_react, sym: V_r, fa: حجم راکتور, en: Reactor volume, unit: m3}
+- {id: v_dist, sym: V_d, fa: آب مقطر تولیدی, en: Distillate produced, unit: m3}
+- {id: v_feedd, sym: V_f, fa: خوراک آب‌شیرین‌کن, en: Desalination feed volume, unit: m3}
+- {id: v_cr, sym: V_cr, fa: کندانس برگشتی, en: Condensate returned, unit: m3}
+- {id: v_cp, sym: V_cp, fa: پتانسیل کندانس, en: Condensate potential, unit: m3}
+- {id: v_steam, sym: V_steam, fa: بخار تولیدی, en: Steam produced, unit: t, param: steam_flow}
+- {id: v_fw, sym: FW, fa: آب تغذیه‌ی بویلر, en: Boiler feedwater, unit: t}
+- {id: v_steam_use, sym: S_use, fa: بخار مصرفی ثبت‌شده, en: Metered steam use, unit: t, param: steam_flow}
+- {id: v_sloss, sym: V_loss, fa: تلفات شبکه‌ی بخار, en: Steam network loss, unit: t}
+- {id: v_steam_h, sym: m_s, fa: بخار گرمایشی, en: Heating steam, unit: t, param: steam_flow}
+- {id: v_treat, sym: V_t, fa: حجم آب تصفیه‌شده, en: Treated water volume, unit: m3}
+- {id: p_prod, sym: P, fa: تولید, en: Production, unit: product unit, param: production_rate}
+- {id: va, sym: VA, fa: ارزش افزوده, en: Value added, unit: currency}
+- {id: swc, sym: SWC, fa: مصرف ویژه‌ی آب, en: Specific water consumption, unit: m3/product unit}
+- {id: t_days, sym: T, fa: تعداد روز دوره, en: Days in period, unit: day}
+- {id: t_op, sym: H, fa: ساعات کارکرد, en: Operating hours, unit: h, param: run_time}
+- {id: n_people, sym: N_p, fa: تعداد افراد, en: Number of people, unit: person}
+- {id: f_fresh_pct, sym: f_fresh, fa: وابستگی به آب تازه, en: Freshwater dependency, unit: '%'}
+- {id: q, sym: Q, fa: دبی, en: Flow rate, unit: m3/h, param: flow_rate}
+- {id: q_in_sum, sym: ΣQ_in, fa: مجموع دبی ورودی, en: Sum of inflows, unit: m3/h, param: flow_rate}
+- {id: q_out_sum, sym: ΣQ_out, fa: مجموع دبی خروجی, en: Sum of outflows, unit: m3/h, param: flow_rate}
+- {id: dv_dt, sym: ΔV/Δt, fa: آهنگ تغییر موجودی, en: Rate of storage change, unit: m3/h}
+- {id: q_f, sym: Q_f, fa: دبی خوراک, en: Feed flow, unit: m3/h, param: flow_rate}
+- {id: q_p, sym: Q_p, fa: دبی پرمیت, en: Permeate flow, unit: m3/h, param: flow_rate}
+- {id: q_c, sym: Q_c, fa: دبی کنسانتره, en: Concentrate flow, unit: m3/h, param: flow_rate}
+- {id: q_mnf, sym: Q_MNF, fa: حداقل دبی شبانه, en: Minimum night flow, unit: m3/h, param: flow_rate}
+- {id: q_legit, sym: Q_legit, fa: مصرف مجاز شبانه, en: Legitimate night use, unit: m3/h}
+- {id: q_idle, sym: Q_base, fa: دبی پایه در توقف تولید, en: Base flow during shutdown, unit: m3/h, param: flow_rate}
+- {id: q_leak, sym: Q_leak, fa: دبی نشتی, en: Leak flow, unit: m3/h}
+- {id: q_i, sym: Q_i, fa: دبی در گام i, en: Flow at step i, unit: m3/h, param: flow_rate}
+- {id: q_bep, sym: Q_BEP, fa: دبی در نقطه‌ی بهترین راندمان, en: Flow at best efficiency point, unit: m3/h}
+- {id: q_tank, sym: Q_o, fa: دبی خروجی مخزن, en: Tank outflow, unit: m3/h, param: flow_rate}
+- {id: q_day, sym: Q_d, fa: دبی روزانه, en: Daily flow, unit: m3/day}
+- {id: dt_h, sym: Δt, fa: گام زمانی, en: Time step, unit: h}
+- {id: h_head, sym: H, fa: هد پمپ, en: Pump head, unit: m, param: head}
+- {id: dp, sym: ΔP, fa: اختلاف فشار, en: Differential pressure, unit: bar, param: diff_pressure}
+- {id: dp0, sym: ΔP_0, fa: اختلاف فشار مرجع (تمیز), en: Reference differential pressure, unit: bar, param: diff_pressure}
+- {id: p_f, sym: P_f, fa: فشار خوراک, en: Feed pressure, unit: bar, param: pressure}
+- {id: p_p, sym: P_p, fa: فشار پرمیت, en: Permeate pressure, unit: bar, param: pressure}
+- {id: pi_avg, sym: Δπ, fa: اختلاف فشار اسمزی, en: Osmotic pressure difference, unit: bar}
+- {id: rho, sym: ρ, fa: چگالی آب, en: Water density, unit: kg/m3}
+- {id: g, sym: g, fa: شتاب گرانش, en: Gravity, unit: m/s2}
+- {id: p_el, sym: P_el, fa: توان الکتریکی مصرفی, en: Electric power, unit: kW, param: electric_power}
+- {id: p_hyd, sym: P_hyd, fa: توان هیدرولیکی, en: Hydraulic power, unit: kW}
+- {id: eta, sym: η, fa: راندمان, en: Efficiency, unit: '%'}
+- {id: cd, sym: C_d, fa: ضریب تخلیه, en: Discharge coefficient, unit: '-'}
+- {id: area_o, sym: A_o, fa: سطح روزنه‌ی نشتی, en: Leak orifice area, unit: m2}
+- {id: vel, sym: v, fa: سرعت جریان, en: Flow velocity, unit: m/s, param: velocity}
+- {id: d_pipe, sym: D, fa: قطر لوله, en: Pipe diameter, unit: m}
+- {id: l_pipe, sym: L, fa: طول لوله, en: Pipe length, unit: m}
+- {id: f_dw, sym: f, fa: ضریب اصطکاک دارسی, en: Darcy friction factor, unit: '-'}
+- {id: hf, sym: h_f, fa: افت هد اصطکاکی, en: Friction head loss, unit: m}
+- {id: e_spec, sym: SEC, fa: مصرف ویژه‌ی انرژی, en: Specific energy consumption, unit: kWh/m3, param: energy_consumption}
+- {id: q_heat, sym: Q_h, fa: انرژی حرارتی مصرفی, en: Heat input, unit: kJ}
+- {id: dt_k, sym: ΔT, fa: اختلاف دما, en: Temperature difference, unit: K}
+- {id: cp, sym: c_p, fa: گرمای ویژه‌ی آب, en: Specific heat of water, unit: kJ/kg.K}
+- {id: hfg, sym: h_fg, fa: گرمای نهان تبخیر, en: Latent heat of vaporization, unit: kJ/kg}
+- {id: f_evap, sym: f_e, fa: سهم دفع حرارت از راه تبخیر, en: Evaporative fraction of heat rejection, unit: '-'}
+- {id: t_hot, sym: T_hot, fa: دمای آب گرم ورودی به برج, en: Hot water temperature, unit: °C, param: temperature}
+- {id: t_cold, sym: T_cold, fa: دمای آب سرد خروجی از برج, en: Cold water temperature, unit: °C, param: temperature}
+- {id: t_wb, sym: T_wb, fa: دمای حباب تر, en: Wet-bulb temperature, unit: °C, param: wet_bulb_temperature}
+- {id: h_f1, sym: h_1, fa: آنتالپی مایع در فشار بالا, en: Liquid enthalpy at high pressure, unit: kJ/kg}
+- {id: h_f2, sym: h_2, fa: آنتالپی مایع در فشار پایین, en: Liquid enthalpy at low pressure, unit: kJ/kg}
+- {id: m_bd, sym: m_bd, fa: دبی جرمی بلودان, en: Blowdown mass flow, unit: kg/h}
+- {id: t_bd, sym: T_bd, fa: دمای بلودان, en: Blowdown temperature, unit: °C, param: temperature}
+- {id: t_out, sym: T_out, fa: دمای خروجی مبدل بازیاب, en: Heat recovery outlet temperature, unit: °C, param: temperature}
+- {id: q_th, sym: Q_th, fa: بار حرارتی دفع‌شده, en: Rejected heat load, unit: MWh}
+- {id: ec_cw, sym: EC_cw, fa: هدایت آب گردشی, en: Circulating water conductivity, unit: uS/cm, param: ec}
+- {id: ec_mu, sym: EC_mu, fa: هدایت آب جبرانی, en: Makeup water conductivity, unit: uS/cm, param: ec}
+- {id: ec_bd, sym: EC_bd, fa: هدایت بلودان, en: Blowdown conductivity, unit: uS/cm, param: ec}
+- {id: ec_fw, sym: EC_fw, fa: هدایت آب تغذیه, en: Feedwater conductivity, unit: uS/cm, param: ec}
+- {id: coc, sym: COC, fa: سیکل تغلیظ, en: Cycles of concentration, unit: '-'}
+- {id: c_in, sym: C_in, fa: غلظت ورودی, en: Inlet concentration, unit: mg/L}
+- {id: c_out, sym: C_out, fa: غلظت خروجی, en: Outlet concentration, unit: mg/L}
+- {id: c_f, sym: C_f, fa: غلظت خوراک, en: Feed concentration, unit: mg/L}
+- {id: c_p, sym: C_p, fa: غلظت محصول (پرمیت یا مقطر), en: Product concentration, unit: mg/L}
+- {id: c_c, sym: C_c, fa: غلظت کنسانتره, en: Concentrate concentration, unit: mg/L}
+- {id: c_brine, sym: C_b, fa: غلظت شورابه, en: Brine concentration, unit: mg/L}
+- {id: c_i, sym: C_i, fa: غلظت جریان i, en: Concentration of stream i, unit: mg/L}
+- {id: f_i, sym: F_i, fa: دبی جریان i, en: Flow of stream i, unit: m3/h, param: flow_rate}
+- {id: c_mix, sym: C_mix, fa: غلظت مخلوط, en: Mixed concentration, unit: mg/L}
+- {id: c_max, sym: C_max, fa: حداکثر غلظت مجاز, en: Maximum allowed concentration, unit: mg/L}
+- {id: c_meas, sym: C, fa: غلظت اندازه‌گیری‌شده, en: Measured concentration, unit: mg/L}
+- {id: ph, sym: pH, fa: pH آب, en: Water pH, unit: '-', param: ph}
+- {id: ph_s, sym: pH_s, fa: pH اشباع, en: Saturation pH, unit: '-'}
+- {id: tds, sym: TDS, fa: کل مواد محلول, en: Total dissolved solids, unit: mg/L, param: tds}
+- {id: ec, sym: EC, fa: هدایت الکتریکی, en: Electrical conductivity, unit: uS/cm, param: ec}
+- {id: k_tds, sym: k, fa: ضریب تبدیل هدایت به TDS, en: TDS/EC factor, unit: '-'}
+- {id: n_out, sym: n_out, fa: تعداد نمونه‌ی خارج از محدوده, en: Samples out of range, unit: count}
+- {id: n_ok, sym: n_ok, fa: تعداد نمونه‌ی منطبق, en: Compliant samples, unit: count}
+- {id: n_total, sym: n, fa: تعداد کل نمونه‌ها, en: Total samples, unit: count}
+- {id: x_val, sym: x, fa: مقدار مشاهده‌شده, en: Observed value, unit: '-'}
+- {id: mu, sym: μ, fa: میانگین, en: Mean, unit: '-'}
+- {id: sigma, sym: σ, fa: انحراف معیار, en: Standard deviation, unit: '-'}
+- {id: k_win, sym: k, fa: طول پنجره‌ی میانگین متحرک, en: Moving-average window, unit: count}
+- {id: u_i, sym: u_i, fa: عدم قطعیت جریان i, en: Uncertainty of stream i, unit: m3}
+- {id: u_r, sym: u_R, fa: عدم قطعیت ترکیبی باقیمانده, en: Combined residual uncertainty, unit: m3}
+- {id: z_r, sym: Z_R, fa: شاخص معناداری باقیمانده, en: Residual significance index, unit: '-'}
+- {id: w_act, sym: W_act, fa: مصرف واقعی آب, en: Actual water use, unit: m3}
+- {id: w_base, sym: W_base, fa: مصرف مبنای تعدیل‌شده, en: Adjusted baseline use, unit: m3}
+- {id: b0, sym: β0, fa: ضریب ثابت مدل, en: Model intercept, unit: m3}
+- {id: b1, sym: β1, fa: ضریب تولید, en: Production coefficient, unit: '-'}
+- {id: b2, sym: β2, fa: ضریب دمای محیط, en: Ambient temperature coefficient, unit: '-'}
+- {id: b3, sym: β3, fa: ضریب ساعات کارکرد, en: Operating hours coefficient, unit: '-'}
+- {id: b_j, sym: β_j, fa: ضریب محصول j, en: Coefficient of product j, unit: '-'}
+- {id: p_j, sym: P_j, fa: تولید محصول j, en: Production of product j, unit: product unit, param: production_rate}
+- {id: t_amb, sym: T_amb, fa: دمای محیط, en: Ambient temperature, unit: °C, param: temperature}
+- {id: sse, sym: SSE, fa: مجموع مربعات خطا, en: Sum of squared errors, unit: '-'}
+- {id: sst, sym: SST, fa: مجموع مربعات کل, en: Total sum of squares, unit: '-'}
+- {id: n_obs, sym: n, fa: تعداد مشاهدات, en: Number of observations, unit: count}
+- {id: p_par, sym: p, fa: تعداد پارامترهای مدل, en: Number of model parameters, unit: count}
+- {id: w_mean, sym: W̄, fa: میانگین مصرف, en: Mean consumption, unit: m3}
+- {id: sav, sym: Saving, fa: صرفه‌جویی آب, en: Water saving, unit: m3}
+- {id: sav_pct, sym: Saving%, fa: درصد صرفه‌جویی, en: Saving percent, unit: '%'}
+- {id: c_sup, sym: C_sup, fa: هزینه‌ی تأمین آب, en: Supply cost, unit: currency/m3}
+- {id: c_pump, sym: C_pump, fa: هزینه‌ی پمپاژ, en: Pumping cost, unit: currency/m3}
+- {id: c_trt, sym: C_trt, fa: هزینه‌ی تصفیه, en: Treatment cost, unit: currency/m3}
+- {id: c_dist, sym: C_dist, fa: هزینه‌ی توزیع, en: Distribution cost, unit: currency/m3}
+- {id: c_disp, sym: C_disp, fa: هزینه‌ی دفع پساب, en: Disposal cost, unit: currency/m3}
+- {id: c_w, sym: C_water, fa: هزینه‌ی واقعی آب, en: True cost of water, unit: currency/m3}
+- {id: capex, sym: CAPEX, fa: هزینه‌ی سرمایه‌گذاری, en: Capital cost, unit: currency}
+- {id: opex, sym: OPEX, fa: هزینه‌ی عملیاتی سالانه, en: Annual operating cost, unit: currency/yr}
+- {id: d_opex, sym: ΔOPEX, fa: تغییر هزینه‌ی عملیاتی سالانه, en: Change in annual OPEX, unit: currency/yr}
+- {id: sav_c, sym: S_c, fa: صرفه‌جویی مالی سالانه, en: Annual financial saving, unit: currency/yr}
+- {id: r_disc, sym: r, fa: نرخ تنزیل, en: Discount rate, unit: '-'}
+- {id: n_yr, sym: n, fa: عمر اقتصادی, en: Economic life, unit: yr}
+- {id: cf_t, sym: CF_t, fa: جریان نقد سال t, en: Cash flow in year t, unit: currency}
+- {id: t_yr, sym: t, fa: سال t, en: Year index, unit: yr}
+- {id: pb, sym: PB, fa: دوره‌ی بازگشت سرمایه, en: Payback period, unit: yr}
+- {id: crf, sym: CRF, fa: ضریب بازیافت سرمایه, en: Capital recovery factor, unit: '-'}
+- {id: e_price, sym: p_e, fa: قیمت انرژی, en: Energy price, unit: currency/kWh}
+- {id: pv_b, sym: PV_B, fa: ارزش فعلی منافع, en: PV of benefits, unit: currency}
+- {id: pv_c, sym: PV_C, fa: ارزش فعلی هزینه‌ها, en: PV of costs, unit: currency}
+- {id: c_sup_tot, sym: Cost_s, fa: هزینه‌ی کل تأمین, en: Total supply cost, unit: currency}
+- {id: c_treat_tot, sym: Cost_t, fa: هزینه‌ی کل تصفیه, en: Total treatment cost, unit: currency}
+- {id: c_disp_tot, sym: Cost_d, fa: هزینه‌ی کل دفع, en: Total disposal cost, unit: currency}
+- {id: c_prod, sym: C_prod, fa: هزینه‌ی آب به ازای محصول, en: Water cost per product, unit: currency/product unit}
+- {id: f_base, sym: F_base, fa: مصرف آب تازه‌ی پایه, en: Baseline freshwater, unit: m3/h, param: flow_rate}
+- {id: f_opt, sym: F_opt, fa: مصرف آب تازه‌ی بهینه, en: Optimized freshwater, unit: m3/h, param: flow_rate}
+- {id: cost_i, sym: C_i, fa: قیمت منبع i, en: Cost of source i, unit: currency/m3}
+- {id: x_ij, sym: X_ij, fa: دبی از منبع i به مصرف‌کننده‌ی j, en: Flow from source i to user j, unit: m3/h, param: flow_rate}
+- {id: s_i, sym: S_i, fa: ظرفیت منبع i, en: Capacity of source i, unit: m3/h}
+- {id: d_j, sym: D_j, fa: تقاضای مصرف‌کننده‌ی j, en: Demand of user j, unit: m3/h}
+- {id: a_m, sym: A, fa: سطح غشا, en: Membrane area, unit: m2}
+- {id: j_flux, sym: J, fa: شار غشا, en: Membrane flux, unit: L/m2.h}
+- {id: ndp, sym: NDP, fa: فشار محرک خالص, en: Net driving pressure, unit: bar}
+- {id: ndp_ref, sym: NDP_ref, fa: فشار محرک مرجع, en: Reference NDP, unit: bar}
+- {id: tcf, sym: TCF, fa: ضریب تصحیح دما, en: Temperature correction factor, unit: '-'}
+- {id: tcf_ref, sym: TCF_ref, fa: ضریب تصحیح دمای مرجع, en: Reference TCF, unit: '-'}
+- {id: rec, sym: Rec, fa: بازیابی (کسر), en: Recovery (fraction), unit: '-'}
+- {id: sr, sym: SR, fa: دفع نمک (کسر), en: Salt rejection (fraction), unit: '-'}
+- {id: q_pn, sym: 'Q_p,norm', fa: دبی پرمیت نرمال‌شده, en: Normalized permeate flow, unit: m3/h}
+- {id: x_mlvss, sym: X, fa: غلظت MLVSS, en: MLVSS concentration, unit: mg/L}
+- {id: v30, sym: V_30, fa: حجم لجن ته‌نشین‌شده پس از ۳۰ دقیقه, en: Settled sludge volume after 30 min, unit: mL/L}
+- {id: mlss, sym: MLSS, fa: غلظت MLSS, en: MLSS concentration, unit: mg/L}
+- {id: m_sl, sym: ΔX, fa: تولید لجن خالص, en: Net sludge production, unit: kg/day}
+- {id: m_wet, sym: M_wet, fa: جرم کیک مرطوب, en: Wet cake mass, unit: t}
+- {id: m_dry, sym: M_dry, fa: جرم جامد خشک, en: Dry solids mass, unit: t}
+- {id: tau, sym: τ, fa: زمان ماند, en: Retention time, unit: h}
+- {id: hrt, sym: HRT, fa: زمان ماند هیدرولیکی, en: Hydraulic retention time, unit: h}
+- {id: olr, sym: OLR, fa: بار آلی حجمی, en: Organic loading rate, unit: kg/m3.day}
+- {id: fm, sym: F/M, fa: نسبت غذا به میکروارگانیسم, en: Food-to-microorganism ratio, unit: 1/day}
+- {id: y_obs, sym: Y_obs, fa: ضریب تولید لجن مشاهده‌شده, en: Observed sludge yield, unit: kg/kg}
+- {id: svi, sym: SVI, fa: شاخص حجمی لجن, en: Sludge volume index, unit: mL/g}
+- {id: load, sym: L, fa: بار آلودگی, en: Pollutant load, unit: kg/day}
+- {id: bws, sym: BWS, fa: شاخص تنش آبی حوضه (داده‌ی خارجی), en: Basin water stress index (external), unit: '-'}

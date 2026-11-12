@@ -1,0 +1,11 @@
+- {id: BAL, en: Water balance and accounting, fa: موازنه و حسابداری آب}
+- {id: SPC, en: Specific consumption and efficiency, fa: مصرف ویژه و بهره‌وری}
+- {id: BSL, en: Baseline and savings, fa: خط مبنا و صرفه‌جویی}
+- {id: ECO, en: Economics, fa: اقتصادی}
+- {id: CLG, en: Cooling systems, fa: سیستم‌های خنک‌کاری}
+- {id: STM, en: Steam and boiler, fa: بخار و بویلر}
+- {id: MEM, en: Membrane and desalination, fa: غشایی و آب‌شیرین‌کن}
+- {id: PMP, en: Pumping and distribution, fa: پمپاژ و توزیع}
+- {id: WWT, en: Wastewater treatment, fa: تصفیه‌ی پساب}
+- {id: QLT, en: Quality and statistics, fa: کیفیت و آمار}
+- {id: NET, en: Water network and pinch, fa: شبکه‌ی آب و پینچ}

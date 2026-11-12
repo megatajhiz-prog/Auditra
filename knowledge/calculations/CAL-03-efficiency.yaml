@@ -1,0 +1,157 @@
+engine: CAL-03
+defaults: {lvl: [site, process], eq: [ALL], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-09"}
+records:
+- id: FRM-03-001
+  fa: "درصد استفاده‌ی مجدد از آب (بازیافت)"
+  en: "Water reuse rate"
+  expr: "R_water = W_reused / W_total_use * 100"
+  vars:
+  - {s: W_reused, fa: "آب بازیافتی یا استفاده‌ی مجدد‌شده", u: "m3", k: m, p: volume}
+  - {s: W_total_use, fa: "کل آب مصرفی (آب تازه و بازیافتی)", u: "m3", k: d, from: [FRM-03-008]}
+  res: {s: R_water, fa: "درصد استفاده‌ی مجدد", u: "%"}
+  valid: "تعریف «استفاده‌ی مجدد» و مرز کل مصرف از ابتدا ثابت شود. مقدار بازیافتی دوباره در کل مصرف شمرده نشود."
+  err: "بالا بودن این شاخص بدون کیفیت مناسب آب بازیافتی به‌تنهایی نشانه‌ی عملکرد خوب نیست."
+  ref: [M1-4.4]
+- id: FRM-03-002
+  fa: "شدت برداشت آب تازه (به ازای واحد تولید)"
+  en: "Fresh-water withdrawal intensity (FWI)"
+  expr: "FWI = W_fw / P"
+  vars:
+  - {s: W_fw, fa: "آب تازه‌ی برداشت‌شده", u: "m3", k: m, p: volume}
+  - {s: P, fa: "مقدار تولید همان بازه", u: "t", k: d, from: [FRM-02-006]}
+  res: {s: FWI, fa: "شدت برداشت آب تازه", u: "m3/t"}
+  valid: "P بزرگ‌تر از صفر. مرز تولید و مرز برداشت یکسان باشد."
+  err: "در دوره‌های توقف یا تولید کم، مصرف ثابت خدماتی عدد را بزرگ می‌کند."
+  ref: [M1-4.5]
+- id: FRM-03-003
+  fa: "شدت تولید پساب (به ازای واحد تولید)"
+  en: "Wastewater generation intensity (WWI)"
+  expr: "WWI = W_ww / P"
+  vars:
+  - {s: W_ww, fa: "پساب تولیدشده", u: "m3", k: m, p: volume}
+  - {s: P, fa: "مقدار تولید همان بازه", u: "t", k: d, from: [FRM-02-006]}
+  res: {s: WWI, fa: "شدت تولید پساب", u: "m3/t"}
+  valid: "P بزرگ‌تر از صفر. پساب خام و تصفیه‌شده با هم اشتباه نشود."
+  err: "با موازنه‌ی مجتمع (FRM-01-012) سازگار باشد."
+  ref: [M1-4.6]
+- id: FRM-03-004
+  fa: "راندمان مصرف آب (نسبت مصرف مفید به ورودی)"
+  en: "Water use efficiency"
+  expr: "eta_w = W_beneficial / W_input * 100"
+  vars:
+  - {s: W_beneficial, fa: "آب مصرف‌شده‌ی مفید (جمع مصرف مفید گره‌ها)", u: "m3", k: d, from: [FRM-03-014]}
+  - {s: W_input, fa: "کل آب ورودی", u: "m3", k: d, from: [FRM-02-001]}
+  res: {s: eta_w, fa: "راندمان مصرف آب", u: "%"}
+  valid: "مصرف مفید از جمع مصرف مفید گره‌ها (FRM-03-013 و FRM-03-014) می‌آید. تعریف و مبنای مقدار لازم هر گره مکتوب و در طول زمان ثابت بماند."
+  err: "مصرف مفید همیشه برآوردی است و باید با برچسب «برآوردی» گزارش شود. مجتمع‌های با تعریف متفاوت با هم مقایسه نشوند."
+  ref: [M1-4.7]
+- id: FRM-03-005
+  fa: "نسبت بازچرخانی داخلی"
+  en: "Internal recirculation ratio"
+  expr: "R_rec = V_recycle_internal / V_total_in * 100"
+  vars:
+  - {s: V_recycle_internal, fa: "حجم بازچرخانی داخلی", u: "m3", k: m, p: volume}
+  - {s: V_total_in, fa: "مجموع ورودی به واحد یا مجتمع (شامل بازگشتی)", u: "m3", k: m, p: volume}
+  res: {s: R_rec, fa: "نسبت بازچرخانی", u: "%"}
+  valid: "بازچرخانی فقط آبی است که از خروجی یک نقطه به ورودی نقطه‌ی دیگر در همان مرز برمی‌گردد."
+  err: "این شاخص با درصد استفاده‌ی مجدد (FRM-03-001) یکی نیست و مرز تعریف هر دو جدا ثبت شود."
+- id: FRM-03-006
+  fa: "نسبت استفاده از پساب تصفیه‌شده"
+  en: "Treated effluent reuse ratio"
+  expr: "R_te = V_reclaimed_used / V_treated * 100"
+  vars:
+  - {s: V_reclaimed_used, fa: "حجم پساب تصفیه‌شده‌ی مصرف‌شده", u: "m3", k: m, p: volume}
+  - {s: V_treated, fa: "کل پساب تصفیه‌شده‌ی تولیدی", u: "m3", k: m, p: volume}
+  res: {s: R_te, fa: "نسبت استفاده", u: "%"}
+  valid: "V_treated بزرگ‌تر از صفر. مصرف فقط در کاربردهای مجاز با کیفیت سازگار شمرده شود."
+  err: "مقدار تخلیه‌شده به محیط و ذخیره‌شده جدا ثبت شود تا جمع با تولید بخواند."
+  lvl: [site, process, equipment]
+- id: FRM-03-007
+  fa: "بهره‌وری آب (تولید به ازای واحد آب)"
+  en: "Water productivity"
+  expr: "WP = P / V"
+  vars:
+  - {s: P, fa: "مقدار تولید", u: "t", k: d, from: [FRM-02-006]}
+  - {s: V, fa: "حجم آب مصرفی همان بازه", u: "m3", k: m, p: volume}
+  res: {s: WP, fa: "بهره‌وری آب", u: "t/m3"}
+  valid: "V بزرگ‌تر از صفر. معکوس مصرف ویژه (FRM-02-007) است و هر دو یک مرز مصرف داشته باشند."
+  err: "فقط برای مقایسه‌ی دوره‌ها و صنایع هم‌نوع به‌کار رود."
+- id: FRM-03-008
+  fa: "کل آب مصرفی (آب تازه، بازیافتی و بازچرخانی)"
+  en: "Total water use"
+  expr: "W_total_use = W_fw + W_reclaimed + W_recycle"
+  vars:
+  - {s: W_fw, fa: "آب تازه", u: "m3", k: m, p: volume}
+  - {s: W_reclaimed, fa: "آب بازیافتی از پساب", u: "m3", k: m, p: volume}
+  - {s: W_recycle, fa: "آب بازچرخانی‌شده", u: "m3", k: m, p: volume}
+  res: {s: W_total_use, fa: "کل آب مصرفی", u: "m3"}
+  valid: "هر حجم دقیقاً در یکی از سه دسته بیاید تا دوبار شمرده نشود."
+  err: "جمع باید با مجموع آب ورودی به مصرف‌کننده‌ها (از موازنه‌ی واحدها) مطابقت داشته باشد."
+- id: FRM-03-009
+  fa: "نسبت بازیافت بلودان"
+  en: "Blowdown recovery ratio"
+  expr: "BR = V_bd_recovered / V_bd * 100"
+  vars:
+  - {s: V_bd_recovered, fa: "حجم بلودان بازیافت‌شده", u: "m3", k: m, p: volume}
+  - {s: V_bd, fa: "کل بلودان تولیدی", u: "m3", k: m, p: volume}
+  res: {s: BR, fa: "نسبت بازیافت بلودان", u: "%"}
+  valid: "بازیافت فقط در مصرف سازگار با شوری و کیفیت بلودان."
+  err: "بلودان تخلیه‌شده و بازیافت‌شده با هم برابر کل بلودان باشند."
+  lvl: [process, equipment]
+  eq: [cooling_tower, closed_circuit_tower, hybrid_tower, boiler, blowdown_system, blowdown_recovery]
+- id: FRM-03-010
+  fa: "سهم آب غیرمتعارف از کل ورودی"
+  en: "Share of non-conventional water in total input"
+  expr: "NCW = (V_reclaimed + V_rain) / V_total_in * 100"
+  vars:
+  - {s: V_reclaimed, fa: "آب بازیافتی از پساب", u: "m3", k: m, p: volume}
+  - {s: V_rain, fa: "آب باران", u: "m3", k: m, p: volume}
+  - {s: V_total_in, fa: "کل ورودی", u: "m3", k: m, p: volume}
+  res: {s: NCW, fa: "سهم آب غیرمتعارف", u: "%"}
+  valid: "تعریف «غیرمتعارف» مثل پساب، باران و آب شور مصرفی مکتوب باشد."
+  err: "کیفیت و کاربرد مجاز هر منبع با قواعد کاربرد مجاز بانک جریان‌ها سازگار باشد."
+  lvl: [site]
+- id: FRM-03-011
+  fa: "سهم تخلیه از آب ورودی"
+  en: "Discharge fraction of intake"
+  expr: "DF = V_discharge / V_gross * 100"
+  vars:
+  - {s: V_discharge, fa: "پساب تخلیه‌شده از مجتمع", u: "m3", k: m, p: volume}
+  - {s: V_gross, fa: "کل ورودی ناخالص", u: "m3", k: d, from: [FRM-02-001]}
+  res: {s: DF, fa: "سهم تخلیه", u: "%"}
+  valid: "V_gross بزرگ‌تر از صفر. بازه‌ی هر دو یکسان."
+  err: "مکمل سهم مصرف خالص (FRM-03-012) نیست مگر تغییر موجودی صفر باشد."
+  lvl: [site]
+- id: FRM-03-012
+  fa: "سهم مصرف خالص از آب ورودی"
+  en: "Consumptive fraction of intake"
+  expr: "CF = V_net / V_gross * 100"
+  vars:
+  - {s: V_net, fa: "مصرف خالص", u: "m3", k: d, from: [FRM-02-002]}
+  - {s: V_gross, fa: "کل ورودی ناخالص", u: "m3", k: d, from: [FRM-02-001]}
+  res: {s: CF, fa: "سهم مصرف خالص", u: "%"}
+  valid: "V_gross بزرگ‌تر از صفر."
+  err: "برای صنایع با تبخیر زیاد (برج، تبخیر) عدد بالا طبیعی است. با نوع صنعت تفسیر شود."
+  lvl: [site]
+- id: FRM-03-013
+  fa: "مصرف مفید یک گره (کمینه‌ی مصرف واقعی و مقدار لازم)"
+  en: "Beneficial use of a node (minimum of actual and required)"
+  expr: "W_ben = min(W_actual, W_required)"
+  vars:
+  - {s: W_actual, fa: "مصرف واقعی گره در بازه", u: "m3", k: m, p: volume}
+  - {s: W_required, fa: "مقدار لازم گره بر اساس معیار ثبت‌شده", u: "m3", k: c}
+  res: {s: W_ben, fa: "مصرف مفید گره", u: "m3"}
+  valid: "مقدار لازم باید از یک مبنای مکتوب باشد: طراحی، مصرف ویژه‌ی استاندارد ضرب در تولید، موازنه‌ی فرآیند (مثل رطوبت محصول)، بلودان در دور تغلیظ قابل‌دستیابی، یا بهترین عملکرد ثبت‌شده‌ی خود مجتمع."
+  err: "این رابطه راندمان را هرگز بیشتر از ۱۰۰ درصد نمی‌کند. مبنای هر مقدار لازم در سامانه ثبت و با برچسب «برآوردی» گزارش شود. تفاوت مبناها بین مجتمع‌ها را در مقایسه لحاظ کنید."
+  lvl: [process, equipment]
+- id: FRM-03-014
+  fa: "جمع مصرف مفید گره‌ها"
+  en: "Total beneficial use of nodes"
+  expr: "W_beneficial = sum(W_ben)"
+  vars:
+  - {s: W_ben, fa: "مصرف مفید هر گره", u: "m3", k: d, from: [FRM-03-013]}
+  res: {s: W_beneficial, fa: "مصرف مفید کل", u: "m3"}
+  valid: "گره‌ها هم‌سطح باشند و هیچ آبی در دو گره شمرده نشود. مصرف بدون برآورد مقدار لازم، غیرمفید یا بدون ارزیابی علامت بخورد، نه مفید."
+  err: "گره بدون «دسته‌ی مصرف» یا «مبنای مقدار لازم» وارد جمع نشود و در گزارش به‌عنوان پوشش ناقص نشان داده شود."
+  lvl: [site, process]
+

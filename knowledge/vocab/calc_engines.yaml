@@ -1,0 +1,11 @@
+# The 10 calculation engines (Methodology.doc, part 2, section 4.1).
+- {id: CAL-01, en: "Water Balance Engine", fa: "موتور موازنه‌ی آب"}
+- {id: CAL-02, en: "Consumption Engine", fa: "موتور محاسبه‌ی مصرف"}
+- {id: CAL-03, en: "Efficiency Engine", fa: "موتور محاسبه‌ی بهره‌وری"}
+- {id: CAL-04, en: "Loss Detection Engine", fa: "موتور تشخیص اتلاف"}
+- {id: CAL-05, en: "Water Quality Engine", fa: "موتور تحلیل کیفیت"}
+- {id: CAL-06, en: "Equipment Engine", fa: "موتور تحلیل عملکرد تجهیزات"}
+- {id: CAL-07, en: "Baseline Engine", fa: "موتور محاسبه‌ی خط مبنا"}
+- {id: CAL-08, en: "Optimization Engine", fa: "موتور بهینه‌سازی شبکه"}
+- {id: CAL-09, en: "Economic Engine", fa: "موتور ارزیابی اقتصادی"}
+- {id: CAL-10, en: "Verification Engine", fa: "موتور صحه‌گذاری صرفه‌جویی"}

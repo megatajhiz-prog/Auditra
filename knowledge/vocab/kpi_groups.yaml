@@ -1,9 +1,7 @@
-# KPI groups (Methodology.doc part 1 section 7 defines six groups; EQ and DQ are added for equipment and data-quality indicators, pending review).
-- {id: CON, en: "Consumption", fa: "مصرف", origin: methodology}
-- {id: PRD, en: "Productivity", fa: "بهره‌وری", origin: methodology}
-- {id: LOS, en: "Losses", fa: "اتلاف", origin: methodology}
-- {id: QUA, en: "Quality", fa: "کیفیت", origin: methodology}
-- {id: ECO, en: "Economic", fa: "اقتصادی", origin: methodology}
-- {id: ENV, en: "Environmental and risk", fa: "زیست‌محیطی و ریسک", origin: methodology}
-- {id: EQP, en: "Equipment performance", fa: "عملکرد تجهیزات", origin: added_pending_review}
-- {id: DQL, en: "Data quality", fa: "کیفیت داده", origin: added_pending_review}
+- {id: CON, en: Consumption, fa: مصرف}
+- {id: PRD, en: Productivity, fa: بهره‌وری}
+- {id: LSS, en: Losses, fa: اتلاف}
+- {id: QLT, en: Quality, fa: کیفیت}
+- {id: ECO, en: Economic, fa: اقتصادی}
+- {id: ENV, en: Environmental and risk, fa: زیست‌محیطی و ریسک}
+- {id: EQP, en: Equipment performance, fa: عملکرد تجهیز}
