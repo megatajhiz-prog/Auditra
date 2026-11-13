@@ -1,0 +1,85 @@
+group: QLT
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-QLT-001
+  fa: راندمان حذف آلاینده
+  en: Pollutant removal efficiency
+  def: راندمان حذف آلاینده در تصفیه.
+  frm: [FRM-05-001]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [process, equipment]
+  dir: higher
+  ref: [M2-4.6]
+- id: KPI-QLT-002
+  fa: نسبت انطباق با حد مجاز
+  en: Compliance ratio against a limit
+  def: نسبت مقدار اندازه‌گیری‌شده به حد مجاز. کمتر یا مساوی ۱ یعنی منطبق.
+  frm: [FRM-05-006]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: lower
+- id: KPI-QLT-003
+  fa: پرچم تخطی از حد مجاز
+  en: Limit exceedance flag
+  def: تخطی از حد مجاز یک پارامتر کیفی.
+  frm: [FRM-05-007]
+  unit: '-'
+  per: [daily, monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+- id: KPI-QLT-004
+  fa: تناسب کیفیت جریان با کاربرد مجاز
+  en: Suitability of a stream for its permitted use
+  def: تناسب همه‌ی پارامترهای کیفی جریان با کاربرد مجاز.
+  frm: [FRM-05-008]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+- id: KPI-QLT-005
+  fa: نسبت قابلیت تجزیه‌ی زیستی (BOD5 به COD)
+  en: Biodegradability ratio (BOD5 to COD)
+  def: نسبت BOD5 به COD برای ارزیابی تجزیه‌پذیری.
+  frm: [FRM-05-009]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [process, equipment]
+  dir: monitor
+- id: KPI-QLT-006
+  fa: شاخص لانژلیه (LSI)
+  en: Langelier saturation index (LSI)
+  def: شاخص لانژلیه. مثبت یعنی تمایل به رسوب و منفی یعنی تمایل به خوردگی.
+  frm: [FRM-05-011]
+  unit: '-'
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: target
+- id: KPI-QLT-007
+  fa: شاخص ریزنار (RSI)
+  en: Ryznar stability index (RSI)
+  def: شاخص ریزنار برای تمایل رسوب یا خوردگی.
+  frm: [FRM-05-012]
+  unit: '-'
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: target
+- id: KPI-QLT-008
+  fa: کلرخواهی آب
+  en: Chlorine demand
+  def: 'کلرخواهی آب: دوز تزریقی منهای کلر باقی‌مانده.'
+  frm: [FRM-05-013]
+  unit: mg/L
+  per: [monthly, yearly]
+  lvl: [process, equipment]
+  dir: monitor
+- id: KPI-QLT-009
+  fa: کاهش لگاریتمی میکروب (ضدعفونی)
+  en: Log reduction of microorganisms (disinfection)
+  def: کاهش لگاریتمی میکروب در ضدعفونی.
+  frm: [FRM-05-014]
+  unit: log
+  per: [monthly, yearly]
+  lvl: [process, equipment]
+  dir: higher

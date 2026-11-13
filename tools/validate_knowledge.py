@@ -137,6 +137,82 @@ def check_calcs(v, subs, errors):
     return out
 
 
+KPI_DIR = ROOT / "knowledge" / "indicators"
+KPI_RE = re.compile(r"^KPI-([A-Z]{3})-(\d{3})$")
+KPI_REQ = ["id", "fa", "en", "def", "frm", "unit", "per", "lvl", "dir"]
+KPI_OPT = ["ref", "status", "reviewed_by", "reviewed_on", "note"]
+KPI_PER = {"daily", "monthly", "yearly"}
+KPI_DIRS = {"lower", "higher", "target", "monitor"}
+
+
+def check_kpis(v, formulas, errors):
+    """Validate knowledge/indicators/KPI-*.yaml. Thresholds are per plant and are not stored in the bank."""
+    groups = ids("kpi_groups.yaml")
+    fmap = {f["id"]: f for f in formulas}
+    out, seen_id, seen_en, seen_fa = [], {}, set(), set()
+    for f in sorted(KPI_DIR.glob("KPI-*.yaml")):
+        doc = yaml.safe_load(f.read_text(encoding="utf-8"))
+        grp = doc.get("group")
+        if grp not in groups:
+            errors.append(f"{f.name}: unknown KPI group {grp}")
+            continue
+        if not f.name.startswith(f"KPI-{grp}-"):
+            errors.append(f"{f.name}: file name must start with KPI-{grp}-")
+        for rec in doc.get("records", []):
+            r = {**doc.get("defaults", {}), **rec}
+            rid = r.get("id", "<no id>")
+            where = f"{f.name}:{rid}"
+            for k in KPI_REQ:
+                if not r.get(k):
+                    errors.append(f"{where}: missing required field '{k}'")
+            for k in r:
+                if k not in KPI_REQ + KPI_OPT:
+                    errors.append(f"{where}: unknown field '{k}'")
+            m = KPI_RE.match(str(rid))
+            if not m or m.group(1) != grp:
+                errors.append(f"{where}: id must look like KPI-{grp}-NNN")
+            if rid in seen_id:
+                errors.append(f"{where}: duplicate id")
+            seen_id[rid] = f.name
+            for key, seen in (("en", seen_en), ("fa", seen_fa)):
+                val = (r.get(key) or "").strip().lower()
+                if val in seen:
+                    errors.append(f"{where}: duplicate {key} name '{r.get(key)}'")
+                seen.add(val)
+            frm = r.get("frm") or []
+            for x in frm:
+                if x not in fmap:
+                    errors.append(f"{where}: unknown formula {x}")
+            if frm and frm[0] in fmap:
+                fu = fmap[frm[0]]["res"]["u"]
+                if r.get("unit") != fu:
+                    errors.append(f"{where}: unit '{r.get('unit')}' differs from the unit '{fu}' of its main formula {frm[0]}")
+                bad = [x for x in r.get("lvl", []) if x not in fmap[frm[0]].get("lvl", [])]
+                if bad:
+                    errors.append(f"{where}: level(s) {bad} are not allowed by formula {frm[0]}")
+            if not set(r.get("per", [])) <= KPI_PER:
+                errors.append(f"{where}: per must be a subset of {sorted(KPI_PER)}")
+            if not set(r.get("lvl", [])) <= v["levels"]:
+                errors.append(f"{where}: unknown lvl values")
+            if r.get("dir") not in KPI_DIRS:
+                errors.append(f"{where}: dir must be one of {sorted(KPI_DIRS)}")
+            bad = [x for x in r.get("ref", []) if x not in v["sources"]]
+            if bad:
+                errors.append(f"{where}: unknown ref {bad}")
+            if r.get("status") not in v["statuses"]:
+                errors.append(f"{where}: unknown status {r.get('status')}")
+            if r.get("status") in ("expert_reviewed", "approved"):
+                if not (isinstance(r.get("reviewed_by"), str) and r["reviewed_by"].strip()):
+                    errors.append(f"{where}: reviewed/approved records need 'reviewed_by'")
+                if not DATE_RE.match(str(r.get("reviewed_on", ""))):
+                    errors.append(f"{where}: reviewed/approved records need 'reviewed_on' as YYYY-MM-DD")
+            elif r.get("reviewed_by") or r.get("reviewed_on"):
+                errors.append(f"{where}: reviewed_by/reviewed_on only allowed on reviewed or approved records")
+            r["_group"] = grp
+            out.append(r)
+    return out
+
+
 def main():
     errors = []
     v = {
@@ -257,6 +333,7 @@ def main():
             records.append(r)
 
     formulas = check_calcs(v, {r["sub"] for r in records}, errors)
+    kpis = check_kpis(v, formulas, errors)
     # coverage checks
     per_system = Counter(r["_system"] for r in records)
     for s in sorted(v["systems"]):
@@ -284,6 +361,7 @@ def main():
     print(f"records: {len(records)} | systems: {len(per_system)} | errors: {len(errors)}")
     per_engine = Counter(r["_engine"] for r in formulas)
     print(f"formulas: {len(formulas)} (first-package target for output 2: 100) | engines with formulas: {len(per_engine)}/10")
+    print(f"indicators: {len(kpis)} (target for output 2: 60) | groups: {len({k['_group'] for k in kpis})}")
     for s in sorted(per_system):
         print(f"  {s}: {per_system[s]}")
     if unused_params:

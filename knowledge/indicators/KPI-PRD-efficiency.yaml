@@ -1,0 +1,106 @@
+group: PRD
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-PRD-001
+  fa: درصد استفاده‌ی مجدد از آب (بازیافت)
+  en: Water reuse rate
+  def: درصد آب بازیافتی و استفاده‌ی مجدد‌شده از کل آب مصرفی.
+  frm: [FRM-03-001]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
+  ref: [M1-4.4]
+- id: KPI-PRD-002
+  fa: شدت برداشت آب تازه (به ازای واحد تولید)
+  en: Fresh-water withdrawal intensity (FWI)
+  def: شدت برداشت آب تازه به ازای واحد تولید (FWI).
+  frm: [FRM-03-002]
+  unit: m3/t
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-4.5]
+- id: KPI-PRD-003
+  fa: شدت تولید پساب (به ازای واحد تولید)
+  en: Wastewater generation intensity (WWI)
+  def: شدت تولید پساب به ازای واحد تولید (WWI).
+  frm: [FRM-03-003]
+  unit: m3/t
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-4.6]
+- id: KPI-PRD-004
+  fa: راندمان مصرف آب (نسبت مصرف مفید به ورودی)
+  en: Water use efficiency
+  def: نسبت مصرف مفید به کل آب ورودی. مصرف مفید برآوردی است.
+  frm: [FRM-03-004]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
+  ref: [M1-4.7]
+- id: KPI-PRD-005
+  fa: نسبت بازچرخانی داخلی
+  en: Internal recirculation ratio
+  def: سهم بازچرخانی داخلی از کل ورودی.
+  frm: [FRM-03-005]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
+- id: KPI-PRD-006
+  fa: نسبت استفاده از پساب تصفیه‌شده
+  en: Treated effluent reuse ratio
+  def: سهم پساب تصفیه‌شده‌ی مصرف‌شده از کل پساب تصفیه‌شده.
+  frm: [FRM-03-006]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: higher
+- id: KPI-PRD-007
+  fa: بهره‌وری آب (تولید به ازای واحد آب)
+  en: Water productivity
+  def: مقدار تولید به ازای هر مترمکعب آب. معکوس مصرف ویژه.
+  frm: [FRM-03-007]
+  unit: t/m3
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
+- id: KPI-PRD-008
+  fa: نسبت بازیافت بلودان
+  en: Blowdown recovery ratio
+  def: نسبت بلودان بازیافت‌شده به کل بلودان.
+  frm: [FRM-03-009]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [process, equipment]
+  dir: higher
+- id: KPI-PRD-009
+  fa: سهم آب غیرمتعارف از کل ورودی
+  en: Share of non-conventional water in total input
+  def: سهم آب غیرمتعارف (بازیافتی و باران) از کل ورودی.
+  frm: [FRM-03-010]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site]
+  dir: higher
+- id: KPI-PRD-010
+  fa: سهم تخلیه از آب ورودی
+  en: Discharge fraction of intake
+  def: سهم پساب تخلیه‌شده از آب ورودی.
+  frm: [FRM-03-011]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site]
+  dir: monitor
+- id: KPI-PRD-011
+  fa: سهم مصرف خالص از آب ورودی
+  en: Consumptive fraction of intake
+  def: سهم مصرف خالص از آب ورودی. در صنایع پرتبخیر بالا بودنش طبیعی است.
+  frm: [FRM-03-012]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site]
+  dir: monitor

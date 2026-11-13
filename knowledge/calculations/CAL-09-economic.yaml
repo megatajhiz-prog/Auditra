@@ -1,5 +1,5 @@
 engine: CAL-09
-defaults: {lvl: [site, process, equipment], eq: [ALL], status: draft}
+defaults: {lvl: [site, process, equipment], eq: [ALL], status: expert_reviewed, reviewed_by: "CEP", reviewed_on: "2026-11-12"}
 records:
 - id: FRM-09-001
   fa: "هزینه‌ی واقعی هر مترمکعب آب"

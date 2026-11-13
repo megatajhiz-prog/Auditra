@@ -1,0 +1,39 @@
+group: ENV
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-ENV-001
+  fa: احتمال زیان (NPV منفی)
+  en: Probability of loss (negative NPV)
+  def: احتمال زیان (NPV منفی) در شبیه‌سازی مونت‌کارلو.
+  frm: [FRM-09-026]
+  unit: '-'
+  per: [yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-ENV-002
+  fa: ارزش در معرض ریسک NPV (VaR)
+  en: NPV value at risk (VaR)
+  def: ارزش در معرض ریسک NPV.
+  frm: [FRM-09-028]
+  unit: currency
+  per: [yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-ENV-003
+  fa: زیان مورد انتظار دُم (Expected Shortfall)
+  en: Expected shortfall of NPV
+  def: میانگین NPV در بدترین بخش توزیع (زیان مورد انتظار دُم).
+  frm: [FRM-09-029]
+  unit: currency
+  per: [yearly]
+  lvl: [site, process]
+  dir: higher
+- id: KPI-ENV-004
+  fa: ضریب تغییرات NPV
+  en: Coefficient of variation of NPV
+  def: ضریب تغییرات NPV برای سنجش پراکندگی ریسک.
+  frm: [FRM-09-031]
+  unit: '-'
+  per: [yearly]
+  lvl: [site, process]
+  dir: lower

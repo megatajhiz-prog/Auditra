@@ -1,7 +1,10 @@
-- {id: CON, en: Consumption, fa: مصرف}
-- {id: PRD, en: Productivity, fa: بهره‌وری}
-- {id: LSS, en: Losses, fa: اتلاف}
-- {id: QLT, en: Quality, fa: کیفیت}
-- {id: ECO, en: Economic, fa: اقتصادی}
-- {id: ENV, en: Environmental and risk, fa: زیست‌محیطی و ریسک}
-- {id: EQP, en: Equipment performance, fa: عملکرد تجهیز}
+# KPI groups. Thresholds (target, warning, critical) are set per plant in the software, never in this shared bank.
+- {id: BAL, en: "Water balance and data reliability", fa: "موازنه و اعتماد به داده"}
+- {id: CON, en: "Consumption", fa: "مصرف"}
+- {id: PRD, en: "Efficiency and productivity", fa: "بهره‌وری و راندمان"}
+- {id: LSS, en: "Losses and anomalies", fa: "اتلاف و ناهنجاری"}
+- {id: QLT, en: "Water quality", fa: "کیفیت آب"}
+- {id: EQP, en: "Equipment performance", fa: "عملکرد تجهیزات"}
+- {id: SAV, en: "Baseline and verified savings", fa: "خط مبنا و صرفه‌جویی تأییدشده"}
+- {id: ECO, en: "Economics", fa: "اقتصادی"}
+- {id: ENV, en: "Economic risk", fa: "ریسک اقتصادی"}

@@ -29,3 +29,4 @@
 - {id: M1-5.2, doc: "Methodology.doc", loc: "part 1, 5.2 water consumption regression model"}
 - {id: M1-5.3, doc: "Methodology.doc", loc: "part 1, 5.3 abnormal consumption detection"}
 - {id: M1-9, doc: "Methodology.doc", loc: "part 1, 9 economic evaluation and prioritization of solutions (payback, NPV, TOPSIS/AHP)"}
+- {id: M1-8.2, doc: "Methodology.doc", loc: "part 1, 8.2 savings verification (before/after with adjustments, method, baseline, period, uncertainty)"}

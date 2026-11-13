@@ -1,0 +1,80 @@
+group: BAL
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-BAL-001
+  fa: درصد آب حسابرسی‌نشده نسبت به ورودی (R_balance)
+  en: Unaccounted water as a percentage of input (R_balance)
+  def: نسبت آب حسابرسی‌نشده به کل ورودی گره. نشانه‌ی کیفیت موازنه است و الزاماً نشتی نیست.
+  frm: [FRM-04-002]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-4.2]
+- id: KPI-BAL-002
+  fa: درصد خطای موازنه نسبت به کل ورودی
+  en: Balance error as a percentage of total input
+  def: درصد خطای موازنه نسبت به کل ورودی در یک بازه. فقط برای غربالگری.
+  frm: [FRM-01-003]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: lower
+  ref: [M1-4.2, M2-4.2]
+- id: KPI-BAL-003
+  fa: شاخص معناداری باقیمانده (Z_R)
+  en: Residual significance index (Z_R)
+  def: نسبت باقیمانده‌ی موازنه به عدم قطعیت ترکیبی. قدر مطلق کوچک یعنی اختلاف در حد خطای اندازه‌گیری است.
+  frm: [FRM-01-009]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: lower
+  ref: [M2-4.3]
+- id: KPI-BAL-004
+  fa: تصمیم پذیرش بسته شدن موازنه
+  en: Balance closure acceptance decision
+  def: تصمیم بسته شدن موازنه با ضریب پوشش مشخص. اثبات نبودن نشتی نیست.
+  frm: [FRM-01-011]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+  ref: [M2-4.3]
+- id: KPI-BAL-005
+  fa: آب حسابرسی‌نشده
+  en: Unaccounted water
+  def: حجم آب ورودی که در مصارف و خروجی‌های شناخته‌شده حساب نشده است.
+  frm: [FRM-04-001]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-4.2]
+- id: KPI-BAL-006
+  fa: اختلاف تطبیق کنتور بالادست و مجموع کنتورهای پایین‌دست
+  en: Upstream meter versus sum of downstream meters
+  def: اختلاف دبی کنتور بالادست با مجموع کنتورهای پایین‌دست.
+  frm: [FRM-04-014]
+  unit: '%'
+  per: [daily, monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-BAL-007
+  fa: باقیمانده‌ی موازنه‌ی املاح محلول (بررسی متقاطع)
+  en: Dissolved-solids mass balance residual (cross-check)
+  def: باقیمانده‌ی موازنه‌ی املاح محلول برای بررسی متقاطع موازنه‌ی آب.
+  frm: [FRM-01-016]
+  unit: g/h
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+- id: KPI-BAL-008
+  fa: باقیمانده‌ی تبیین‌نشده پس از کسر تلفات برآوردی
+  en: Unexplained residual after estimated losses
+  def: باقیمانده‌ای که پس از کسر تلفات برآوردی هنوز توضیح داده نشده است.
+  frm: [FRM-01-017]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower

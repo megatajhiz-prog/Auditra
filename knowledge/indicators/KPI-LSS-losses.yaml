@@ -1,0 +1,68 @@
+group: LSS
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-LSS-001
+  fa: سهم جریان پایه از مصرف متوسط
+  en: Base-flow share of average consumption
+  def: سهم جریان پایه‌ی زمان توقف تولید از مصرف متوسط.
+  frm: [FRM-04-006]
+  unit: '%'
+  per: [daily, monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-LSS-002
+  fa: برآورد نشتی از دبی پایه
+  en: Leakage estimate from base flow
+  def: برآورد دبی نشتی از جریان پایه منهای مصرف خدماتی.
+  frm: [FRM-04-007]
+  unit: m3/h
+  per: [daily, monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: lower
+- id: KPI-LSS-003
+  fa: امتیاز استاندارد (Z) برای تشخیص مصرف غیرعادی
+  en: Standard score (Z) for abnormal consumption
+  def: امتیاز استاندارد مقدار پایش‌شده نسبت به رفتار تاریخی.
+  frm: [FRM-04-009]
+  unit: '-'
+  per: [daily, monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+  ref: [M1-5.3]
+- id: KPI-LSS-004
+  fa: پرچم مصرف غیرعادی
+  en: Abnormal consumption flag
+  def: هشدار مصرف غیرعادی بر اساس امتیاز استاندارد.
+  frm: [FRM-04-012]
+  unit: '-'
+  per: [daily, monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+  ref: [M1-5.3]
+- id: KPI-LSS-005
+  fa: باقیمانده‌ی استانداردشده‌ی مصرف نسبت به خط مبنا
+  en: Standardized residual against the baseline
+  def: باقیمانده‌ی استانداردشده‌ی مصرف نسبت به مدل خط مبنا.
+  frm: [FRM-04-013]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+- id: KPI-LSS-006
+  fa: نشتی مخزن از افت سطح بدون جریان ورودی و خروجی
+  en: Tank loss from level drop with no inflow or outflow
+  def: دبی افت مخزن در آزمون بدون ورودی و خروجی.
+  frm: [FRM-04-015]
+  unit: m3/h
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-LSS-007
+  fa: قاعده‌ی تداوم هشدار (کاهش هشدار کاذب)
+  en: Alert persistence rule
+  def: هشدار پایدار پس از تکرار در چند دوره، برای کاهش هشدار کاذب.
+  frm: [FRM-04-016]
+  unit: '-'
+  per: [daily, monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor

@@ -1,0 +1,121 @@
+group: SAV
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-SAV-001
+  fa: صرفه‌جویی آب در دوره
+  en: Water saving in a period
+  def: صرفه‌جویی آب نسبت به خط مبنای تعدیل‌شده.
+  frm: [FRM-07-004]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: higher
+  ref: [M2-4.4]
+- id: KPI-SAV-002
+  fa: درصد صرفه‌جویی نسبت به خط مبنا
+  en: Saving as a percentage of baseline
+  def: درصد صرفه‌جویی نسبت به خط مبنای تعدیل‌شده.
+  frm: [FRM-07-005]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: higher
+- id: KPI-SAV-003
+  fa: مصرف نرمال‌شده به شرایط مرجع
+  en: Consumption normalized to reference conditions
+  def: مصرف نرمال‌شده به شرایط مرجع برای مقایسه‌ی دوره‌ها.
+  frm: [FRM-07-011]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: monitor
+- id: KPI-SAV-004
+  fa: سهم مصرف ثابت از کل مصرف
+  en: Fixed consumption share
+  def: سهم مصرف ثابت (مستقل از تولید) از کل مصرف.
+  frm: [FRM-07-012]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-SAV-005
+  fa: ضریب تعیین مدل (R2)
+  en: Coefficient of determination (R2)
+  def: ضریب تعیین مدل خط مبنا.
+  frm: [FRM-07-008]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
+- id: KPI-SAV-006
+  fa: ضریب تغییرات ریشه‌ی میانگین مربعات خطا (CV(RMSE))
+  en: Coefficient of variation of the RMSE (CV(RMSE))
+  def: CV(RMSE) مدل خط مبنا.
+  frm: [FRM-07-009]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-SAV-007
+  fa: سوگیری میانگین نرمال‌شده‌ی مدل (NMBE)
+  en: Normalized mean bias error (NMBE)
+  def: سوگیری میانگین نرمال‌شده‌ی مدل خط مبنا.
+  frm: [FRM-07-010]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: monitor
+- id: KPI-SAV-008
+  fa: مجموع تجمعی صرفه‌جویی (CUSUM)
+  en: Cumulative sum of savings (CUSUM)
+  def: مجموع تجمعی صرفه‌جویی برای دیدن روند و تغییر عملکرد.
+  frm: [FRM-07-013]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
+- id: KPI-SAV-009
+  fa: شاخص معناداری صرفه‌جویی
+  en: Saving significance index
+  def: شاخص معناداری صرفه‌جویی نسبت به عدم قطعیت.
+  frm: [FRM-10-006]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: monitor
+- id: KPI-SAV-010
+  fa: عدم قطعیت نسبی صرفه‌جویی
+  en: Relative uncertainty of the saving
+  def: عدم قطعیت نسبی صرفه‌جویی.
+  frm: [FRM-10-008]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-SAV-011
+  fa: کمینه‌ی صرفه‌جویی قابل‌تشخیص (درصد خط مبنا)
+  en: Minimum detectable saving (% of baseline)
+  def: کمینه‌ی صرفه‌جویی که با این مدل و اندازه‌گیری قابل‌تشخیص است.
+  frm: [FRM-10-009]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-SAV-012
+  fa: پایداری صرفه‌جویی در زمان
+  en: Persistence of the saving
+  def: پایداری صرفه‌جویی نسبت به اولین دوره‌ی تأییدشده.
+  frm: [FRM-10-013]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
+- id: KPI-SAV-013
+  fa: نرخ تحقق صرفه‌جویی (نسبت به پیش‌بینی)
+  en: Savings realization rate
+  def: نرخ تحقق صرفه‌جویی نسبت به پیش‌بینی راهکار.
+  frm: [FRM-10-014]
+  unit: '%'
+  per: [yearly]
+  lvl: [site, process]
+  dir: target

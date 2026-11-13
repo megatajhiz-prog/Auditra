@@ -1,0 +1,106 @@
+group: CON
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-CON-001
+  fa: کل آب برداشت‌شده (ورودی ناخالص)
+  en: Gross water intake
+  def: کل آب برداشت‌شده از همه‌ی منابع خارجی مجتمع.
+  frm: [FRM-02-001]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site]
+  dir: monitor
+- id: KPI-CON-002
+  fa: مصرف خالص آب (ورودی منهای آب برگشتی به محیط)
+  en: Net water consumption
+  def: 'مصرف خالص آب: ورودی ناخالص منهای آب برگشتی به محیط.'
+  frm: [FRM-02-002]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site]
+  dir: monitor
+- id: KPI-CON-003
+  fa: سهم مصرف هر گره از کل
+  en: Share of each node in total consumption
+  def: سهم مصرف یک واحد یا تجهیز از مصرف کل سطح بالاتر.
+  frm: [FRM-02-003]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: monitor
+- id: KPI-CON-004
+  fa: دبی متوسط در بازه‌ی کارکرد
+  en: Average flow over operating time
+  def: دبی متوسط مصرف در زمان کارکرد.
+  frm: [FRM-02-005]
+  unit: m3/h
+  per: [daily, monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor
+- id: KPI-CON-005
+  fa: مصرف ویژه‌ی آب (مصرف به ازای واحد تولید)
+  en: Specific water consumption
+  def: 'مصرف ویژه‌ی آب: آب مصرفی به ازای واحد تولید.'
+  frm: [FRM-02-007]
+  unit: m3/t
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-4.3]
+- id: KPI-CON-006
+  fa: مصرف سرانه‌ی آب بهداشتی
+  en: Per-capita sanitary water consumption
+  def: مصرف سرانه‌ی آب بهداشتی و آشامیدنی.
+  frm: [FRM-02-008]
+  unit: L/person/day
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-CON-007
+  fa: آب جبرانی برج خنک‌کن
+  en: Cooling tower make-up water
+  def: آب جبرانی برج خنک‌کن که شامل تبخیر، بلودان، دریفت و نشتی است.
+  frm: [FRM-02-012]
+  unit: m3/h
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+  ref: [M1-6.1]
+- id: KPI-CON-008
+  fa: آب جبرانی بویلر
+  en: Boiler make-up water
+  def: آب جبرانی بویلر برای جبران بخار بازنگشته و بلودان.
+  frm: [FRM-02-013]
+  unit: m3/h
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-CON-009
+  fa: نسبت بازگشت کندانس
+  en: Condensate return ratio
+  def: نسبت کندانس بازگشتی به بخار تولیدی.
+  frm: [FRM-02-014]
+  unit: '%'
+  per: [daily, monthly, yearly]
+  lvl: [process, equipment]
+  dir: higher
+  ref: [M1-6.2]
+- id: KPI-CON-010
+  fa: آب موجود در محصول
+  en: Water embedded in product
+  def: آب خارج‌شده در محصول، به‌عنوان بخشی از موازنه‌ی مجتمع.
+  frm: [FRM-02-015]
+  unit: m3
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: monitor
+  ref: [M1-4.1]
+- id: KPI-CON-011
+  fa: درصد تغییر مصرف نسبت به دوره‌ی قبل
+  en: Consumption change versus previous period
+  def: درصد تغییر مصرف نسبت به دوره‌ی مقایسه. بدون تعدیل با تولید و دما نتیجه‌ی صرفه‌جویی نیست.
+  frm: [FRM-02-016]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: monitor

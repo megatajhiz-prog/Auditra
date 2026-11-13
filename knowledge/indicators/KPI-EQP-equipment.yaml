@@ -1,0 +1,150 @@
+group: EQP
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-EQP-001
+  fa: راندمان کلی پمپ
+  en: Overall pump efficiency
+  def: 'راندمان کلی پمپ: توان هیدرولیکی به توان الکتریکی.'
+  frm: [FRM-06-002]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [equipment]
+  dir: higher
+  ref: [M2-4.6]
+- id: KPI-EQP-002
+  fa: مصرف ویژه‌ی انرژی انتقال آب
+  en: Specific pumping energy
+  def: مصرف ویژه‌ی انرژی انتقال آب.
+  frm: [FRM-06-003]
+  unit: kWh/m3
+  per: [monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-EQP-003
+  fa: دور تغلیظ برج از هدایت الکتریکی
+  en: Cycles of concentration from conductivity
+  def: دور تغلیظ برج خنک‌کن بر اساس هدایت الکتریکی.
+  frm: [FRM-06-007]
+  unit: '-'
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: target
+  ref: [M2-4.6, M1-6.1]
+- id: KPI-EQP-004
+  fa: حداکثر دور تغلیظ مجاز بر اساس گونه‌ی محدودکننده
+  en: Maximum allowable cycles of concentration
+  def: حداکثر دور تغلیظ مجاز بر اساس حد کیفیت آب گردشی.
+  frm: [FRM-06-010]
+  unit: '-'
+  per: [monthly, yearly]
+  lvl: [equipment]
+  dir: monitor
+- id: KPI-EQP-005
+  fa: اپروچ برج خنک‌کن
+  en: Cooling tower approach
+  def: 'اپروچ برج: اختلاف دمای آب سرد با دمای حباب تر.'
+  frm: [FRM-06-011]
+  unit: K
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-EQP-006
+  fa: اثربخشی برج خنک‌کن
+  en: Cooling tower effectiveness
+  def: اثربخشی برج خنک‌کن.
+  frm: [FRM-06-012]
+  unit: '%'
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: higher
+- id: KPI-EQP-007
+  fa: برآورد دریفت برج از کسر دریفت
+  en: Drift estimate from drift fraction
+  def: برآورد دریفت برج.
+  frm: [FRM-06-013]
+  unit: m3/h
+  per: [monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-EQP-008
+  fa: بازیابی (Recovery) اسمز معکوس
+  en: RO recovery
+  def: بازیابی (Recovery) اسمز معکوس.
+  frm: [FRM-06-014]
+  unit: '%'
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: target
+  ref: [M2-4.6, M1-6.3]
+- id: KPI-EQP-009
+  fa: دفع نمک ظاهری غشا
+  en: Apparent salt rejection
+  def: دفع نمک ظاهری غشا.
+  frm: [FRM-06-015]
+  unit: '%'
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: higher
+- id: KPI-EQP-010
+  fa: مصرف ویژه‌ی انرژی غشا
+  en: Membrane specific energy consumption
+  def: مصرف ویژه‌ی انرژی غشا به ازای مترمکعب آب تولیدی.
+  frm: [FRM-06-017]
+  unit: kWh/m3
+  per: [monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-EQP-011
+  fa: افزایش اختلاف فشار غشا یا فیلتر (شاخص گرفتگی)
+  en: Differential pressure rise (fouling indicator)
+  def: افزایش اختلاف فشار غشا یا فیلتر نسبت به حالت تمیز. نشانه‌ی گرفتگی.
+  frm: [FRM-06-018]
+  unit: '%'
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-EQP-012
+  fa: دبی بلودان بویلر از غلظت املاح
+  en: Boiler blowdown flow from dissolved solids
+  def: دبی بلودان بویلر بر اساس TDS.
+  frm: [FRM-06-019]
+  unit: t/h
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-EQP-013
+  fa: زمان ماند هیدرولیکی
+  en: Hydraulic retention time
+  def: زمان ماند هیدرولیکی واحد تصفیه.
+  frm: [FRM-06-020]
+  unit: h
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: monitor
+- id: KPI-EQP-014
+  fa: بار هیدرولیکی سطحی فیلتر
+  en: Filter hydraulic loading rate
+  def: بار هیدرولیکی سطحی فیلتر.
+  frm: [FRM-06-021]
+  unit: m/h
+  per: [daily, monthly, yearly]
+  lvl: [equipment]
+  dir: monitor
+- id: KPI-EQP-015
+  fa: سهم آب شست‌وشوی معکوس از آب فیلتر‌شده
+  en: Backwash water fraction
+  def: سهم آب شست‌وشوی معکوس از آب فیلترشده.
+  frm: [FRM-06-022]
+  unit: '%'
+  per: [monthly, yearly]
+  lvl: [equipment]
+  dir: lower
+- id: KPI-EQP-016
+  fa: دوز مواد شیمیایی
+  en: Chemical dose
+  def: دوز مواد شیمیایی بر حسب گرم در مترمکعب.
+  frm: [FRM-06-023]
+  unit: mg/L
+  per: [monthly, yearly]
+  lvl: [equipment]
+  dir: monitor

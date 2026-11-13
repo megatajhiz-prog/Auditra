@@ -1,0 +1,108 @@
+group: ECO
+defaults: {status: expert_reviewed, reviewed_by: CEP, reviewed_on: '2026-11-12'}
+records:
+- id: KPI-ECO-001
+  fa: هزینه‌ی واقعی هر مترمکعب آب
+  en: Real cost of one cubic metre of water
+  def: هزینه‌ی واقعی هر مترمکعب آب شامل تأمین، پمپاژ، تصفیه، توزیع و دفع.
+  frm: [FRM-09-001]
+  unit: currency/m3
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-4.9]
+- id: KPI-ECO-002
+  fa: هزینه‌ی پمپاژ به ازای هر مترمکعب
+  en: Pumping cost per cubic metre
+  def: هزینه‌ی انرژی پمپاژ به ازای هر مترمکعب.
+  frm: [FRM-09-002]
+  unit: currency/m3
+  per: [monthly, yearly]
+  lvl: [site, process, equipment]
+  dir: lower
+- id: KPI-ECO-003
+  fa: هزینه‌ی تصفیه به ازای هر مترمکعب
+  en: Treatment cost per cubic metre
+  def: هزینه‌ی تصفیه به ازای هر مترمکعب.
+  frm: [FRM-09-003]
+  unit: currency/m3
+  per: [monthly, yearly]
+  lvl: [process, equipment]
+  dir: lower
+- id: KPI-ECO-004
+  fa: صرفه‌جویی خالص سالانه
+  en: Annual net savings
+  def: صرفه‌جویی خالص سالانه‌ی راهکار پس از کسر هزینه‌های اضافه.
+  frm: [FRM-09-005]
+  unit: currency/year
+  per: [yearly]
+  lvl: [site, process]
+  dir: higher
+  ref: [M1-9]
+- id: KPI-ECO-005
+  fa: دوره‌ی بازگشت سرمایه (ساده)
+  en: Simple payback period
+  def: دوره‌ی بازگشت ساده‌ی سرمایه‌ی راهکار.
+  frm: [FRM-09-006]
+  unit: year
+  per: [yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-9]
+- id: KPI-ECO-006
+  fa: ارزش فعلی خالص (NPV)
+  en: Net present value (NPV)
+  def: ارزش فعلی خالص راهکار.
+  frm: [FRM-09-007]
+  unit: currency
+  per: [yearly]
+  lvl: [site, process]
+  dir: higher
+  ref: [M1-9]
+- id: KPI-ECO-007
+  fa: نرخ بازده داخلی (IRR)
+  en: Internal rate of return (IRR)
+  def: نرخ بازده داخلی راهکار.
+  frm: [FRM-09-008]
+  unit: 1/year
+  per: [yearly]
+  lvl: [site, process]
+  dir: higher
+  ref: [M1-9]
+- id: KPI-ECO-008
+  fa: هزینه‌ی هر مترمکعب آب صرفه‌جویی‌شده
+  en: Cost of saved water
+  def: هزینه‌ی هر مترمکعب آب صرفه‌جویی‌شده.
+  frm: [FRM-09-011]
+  unit: currency/m3
+  per: [yearly]
+  lvl: [site, process]
+  dir: lower
+- id: KPI-ECO-009
+  fa: هزینه‌ی چرخه‌ی عمر (LCC)
+  en: Life cycle cost (LCC)
+  def: هزینه‌ی چرخه‌ی عمر راهکار.
+  frm: [FRM-09-012]
+  unit: currency
+  per: [yearly]
+  lvl: [site, process]
+  dir: lower
+  ref: [M1-9]
+- id: KPI-ECO-010
+  fa: نسبت منفعت به هزینه (BCR)
+  en: Benefit-cost ratio (BCR)
+  def: نسبت منفعت به هزینه‌ی راهکار.
+  frm: [FRM-09-013]
+  unit: '-'
+  per: [yearly]
+  lvl: [site, process]
+  dir: higher
+- id: KPI-ECO-011
+  fa: ارزش مالی صرفه‌جویی تأییدشده (محافظه‌کارانه)
+  en: Verified financial value of the saving (conservative)
+  def: ارزش مالی صرفه‌جویی تأییدشده با مقدار محافظه‌کارانه.
+  frm: [FRM-10-018]
+  unit: currency
+  per: [monthly, yearly]
+  lvl: [site, process]
+  dir: higher
