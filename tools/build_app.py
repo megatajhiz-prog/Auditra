@@ -29,10 +29,13 @@ for f in sorted(glob.glob(str(ROOT / "knowledge" / "indicators" / "KPI-*.yaml"))
         K.append({"id": r["id"], "g": d["group"], "fa": r["fa"], "en": r["en"], "f": r["frm"], "u": r["unit"], "p": r["per"], "l": r["lvl"], "d": r["dir"],
                   "rv": r.get("status") in ("expert_reviewed", "approved")})
 pick = lambda rows: [{"id": x["id"], "fa": x["fa"], "en": x["en"]} for x in rows]
-D = {"meta": {"v": "0.4.0", "built": str(date.today())}, "S": pick(load("systems.yaml")), "I": pick(load("industries.yaml")),
+D = {"meta": {"v": "0.5.0", "built": str(date.today())}, "S": pick(load("systems.yaml")), "I": pick(load("industries.yaml")),
      "T": pick(load("stream_types.yaml")), "X": pick(load("other_flows.yaml")), "R": pick(load("roles.yaml")),
      "P": [{"id": x["id"], "fa": x["fa"], "en": x["en"], "u": x["unit"]} for x in load("parameters.yaml")], "E": recs, "F": F, "K": K, "CE": pick(load("calc_engines.yaml")), "KG": pick(load("kpi_groups.yaml"))}
+b64 = lambda p: base64.b64encode((ROOT / "templates" / p).read_bytes()).decode()
+D["TPL"] = {"xlsx": b64("Auditra-DataTemplate.xlsx"), "csv": b64("Auditra-CSV-Templates.zip"), "sample": b64("Sample-TrainingPlant.xlsx")}
+D["SAMPLE"] = {k.lower(): v for k, v in json.loads((ROOT / "templates" / "sample.json").read_text(encoding="utf-8")).items()}
 uri = lambda f: "data:image/png;base64," + base64.b64encode((ROOT / "assets" / f).read_bytes()).decode()
-html = (ROOT / "tools" / "app_template.html").read_text(encoding="utf-8").replace("/*DATA*/", "const D=" + json.dumps(D, ensure_ascii=False) + ";").replace("/*ECON*/", (ROOT / "tools" / "econ.js").read_text(encoding="utf-8")).replace("/*LOGO*/", uri("logo.png")).replace("/*ICON*/", uri("icon-64.png"))
+html = (ROOT / "tools" / "app_template.html").read_text(encoding="utf-8").replace("/*DATA*/", "const D=" + json.dumps(D, ensure_ascii=False) + ";").replace("/*IMPORT*/", (ROOT / "tools" / "import.js").read_text(encoding="utf-8")).replace("/*MODELUI*/", (ROOT / "tools" / "model_ui.js").read_text(encoding="utf-8")).replace("/*ECON*/", (ROOT / "tools" / "econ.js").read_text(encoding="utf-8")).replace("/*LOGO*/", uri("logo.png")).replace("/*ICON*/", uri("icon-64.png"))
 out = ROOT / "app" / "index.html"; out.parent.mkdir(exist_ok=True); out.write_text(html, encoding="utf-8")
 print(f"app/index.html written: {len(recs)} records, {len(html)//1024} KB")
